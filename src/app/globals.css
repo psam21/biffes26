@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card-bg: #1a1a1a;
+  --card-border: #2a2a2a;
+  --accent-gold: #d4af37;
+  --accent-red: #dc2626;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* Category card gradients */
+.category-gradient-asian {
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f1f33 100%);
+}
+
+.category-gradient-indian {
+  background: linear-gradient(135deg, #5f3a1e 0%, #331f0f 100%);
+}
+
+.category-gradient-kannada {
+  background: linear-gradient(135deg, #3a5f1e 0%, #1f330f 100%);
+}
+
+.category-gradient-world {
+  background: linear-gradient(135deg, #5f1e5f 0%, #330f33 100%);
+}
+
+.category-gradient-critics {
+  background: linear-gradient(135deg, #5f5f1e 0%, #33330f 100%);
+}
+
+.category-gradient-retrospective {
+  background: linear-gradient(135deg, #1e5f5f 0%, #0f3333 100%);
+}
+
+.category-gradient-africa {
+  background: linear-gradient(135deg, #5f2e1e 0%, #331a0f 100%);
+}
+
+.category-gradient-biopics {
+  background: linear-gradient(135deg, #2e1e5f 0%, #1a0f33 100%);
+}
+
+.category-gradient-restored {
+  background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+}
+
+.category-gradient-default {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+}
+
+/* Film card hover effect */
+.film-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.film-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Gold accent for special badges */
+.badge-premiere {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #b8962e 100%);
+  color: #000;
+}
