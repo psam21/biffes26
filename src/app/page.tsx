@@ -9,6 +9,7 @@ import {
   CategoryView,
   FilmCard,
   WatchlistButton,
+  ShareWatchlist,
 } from "@/components";
 import { Category, Film, Venue } from "@/types";
 import festivalData from "@/data/biffes_data.json";
@@ -278,14 +279,17 @@ export default function Home() {
                     </motion.p>
                   </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2"
-                  >
-                    <span className="text-xl font-bold text-white">{watchlistFilms.length}</span>
-                    <span className="text-sm text-white/60">films</span>
-                  </motion.div>
+                  <div className="flex items-center gap-3">
+                    <ShareWatchlist />
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2"
+                    >
+                      <span className="text-xl font-bold text-white">{watchlistFilms.length}</span>
+                      <span className="text-sm text-white/60">films</span>
+                    </motion.div>
+                  </div>
                 </div>
               </div>
             </div>
