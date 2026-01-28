@@ -9,6 +9,7 @@ import {
   CategoryView,
   FilmCard,
   WatchlistButton,
+  WatchlistIcon,
   ShareWatchlist,
 } from "@/components";
 import { Category, Film, Venue } from "@/types";
@@ -360,17 +361,17 @@ export default function Home() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="relative"
                 >
-                  <div className={`flex items-center gap-2 rounded-lg transition-all ${
+                  <div className={`flex items-center gap-1.5 rounded-md transition-all ${
                     showSearch
                       ? "bg-zinc-800 border border-zinc-600"
                       : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
                   }`}>
                     <button
                       onClick={() => setShowSearch(!showSearch)}
-                      className="flex items-center gap-2 px-3 py-2"
+                      className="flex items-center gap-1.5 px-2 py-1.5"
                     >
-                      <span className="text-zinc-400">🔍</span>
-                      {!showSearch && <span className="text-sm text-zinc-300 hidden sm:inline">Search</span>}
+                      <span className="text-zinc-400 text-sm">🔍</span>
+                      {!showSearch && <span className="text-xs text-zinc-300 hidden sm:inline">Search</span>}
                     </button>
                     {showSearch && (
                       <input
@@ -379,7 +380,7 @@ export default function Home() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Film, director, country..."
                         autoFocus
-                        className="bg-transparent text-white text-sm placeholder:text-zinc-500 outline-none w-40 sm:w-52 pr-3 py-2"
+                        className="bg-transparent text-white text-xs placeholder:text-zinc-500 outline-none w-36 sm:w-44 pr-2 py-1.5"
                       />
                     )}
                   </div>
@@ -468,26 +469,19 @@ export default function Home() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   onClick={handleWatchlistClick}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${
                     watchlist.length > 0
                       ? "bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
                       : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
                   }`}
                 >
-                  {watchlist.length > 0 ? (
-                    <>
-                      <span className="text-amber-400">🎬</span>
-                      <span className="text-sm text-white hidden sm:inline">My Watchlist</span>
-                      <span className="bg-amber-500 text-black text-xs font-bold px-1.5 py-0.5 rounded-full">
-                        {watchlist.length}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-zinc-400">+</span>
-                      <span className="text-sm text-zinc-300 hidden sm:inline">Create Watchlist</span>
-                    </>
-                  )}
+                  <WatchlistIcon filled={watchlist.length > 0} size={16} className={watchlist.length > 0 ? "text-amber-400" : "text-zinc-400"} />
+                  <span className={`text-xs hidden sm:inline ${watchlist.length > 0 ? "text-white" : "text-zinc-300"}`}>
+                    {watchlist.length > 0 ? "My Watchlist" : "Watchlist"}
+                  </span>
+                  <span className={`text-[10px] font-bold px-1 py-0.5 rounded-full ${watchlist.length > 0 ? "bg-amber-500 text-black" : "bg-zinc-600 text-zinc-300"}`}>
+                    {watchlist.length}
+                  </span>
                 </motion.button>
               </div>
             </header>
