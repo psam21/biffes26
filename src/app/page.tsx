@@ -276,56 +276,86 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Award Winners Section */}
+            {/* Award Winners Section - Grouped by Festival */}
             <section className="max-w-7xl mx-auto px-4 pb-6">
-              <div className="text-center mb-4">
+              <div className="text-center mb-6">
                 <h2 className="text-lg font-semibold text-white">
                   🏆 Award-Winning Films
                 </h2>
                 <p className="text-xs text-zinc-500 mt-1">
-                  {films.filter(film => film.awardsWon).length} festival favorites and critically acclaimed selections
+                  {films.filter(film => film.awardsWon).length} festival favorites grouped by prestige
                 </p>
               </div>
-              <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
-                {films
-                  .filter(film => film.awardsWon)
-                  .sort((a, b) => {
-                    // Prioritize major festivals: Cannes, Venice, Berlin, Sundance, Toronto
-                    const majorFests = ['cannes', 'venice', 'berlin', 'sundance', 'toronto', 'locarno'];
-                    const aHasMajor = majorFests.some(f => a.awardsWon?.toLowerCase().includes(f));
-                    const bHasMajor = majorFests.some(f => b.awardsWon?.toLowerCase().includes(f));
-                    if (aHasMajor && !bHasMajor) return -1;
-                    if (!aHasMajor && bHasMajor) return 1;
-                    return (b.awardsWon?.length || 0) - (a.awardsWon?.length || 0);
-                  })
-                  .map((film) => (
-                    <button
-                      key={film.id}
-                      onClick={() => handleFilmClick(film)}
-                      className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
-                    >
-                      <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
-                        {film.posterUrl ? (
-                          <img
-                            src={film.posterUrl}
-                            alt={film.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
-                            {film.title}
-                          </div>
-                        )}
-                        <div className="absolute top-1 right-1 bg-yellow-500 text-black text-[10px] px-1.5 py-0.5 rounded font-medium">
-                          🏆
-                        </div>
+              
+              {/* Festival Groups */}
+              {(() => {
+                const festivalGroups = [
+                  { name: 'Cannes Film Festival', key: 'cannes', emoji: '🌴', color: 'from-yellow-600/30 to-amber-600/20 border-yellow-500/40' },
+                  { name: 'Venice Film Festival', key: 'venice', emoji: '🦁', color: 'from-red-600/30 to-rose-600/20 border-red-500/40' },
+                  { name: 'Berlin Film Festival', key: 'berlin', emoji: '🐻', color: 'from-amber-600/30 to-orange-600/20 border-amber-500/40' },
+                  { name: 'Sundance Film Festival', key: 'sundance', emoji: '🎿', color: 'from-blue-600/30 to-cyan-600/20 border-blue-500/40' },
+                  { name: 'Toronto Film Festival', key: 'toronto', emoji: '🍁', color: 'from-red-600/30 to-pink-600/20 border-red-500/40' },
+                  { name: 'Locarno Film Festival', key: 'locarno', emoji: '🐆', color: 'from-purple-600/30 to-violet-600/20 border-purple-500/40' },
+                  { name: 'San Sebastián Film Festival', key: 'san sebast', emoji: '🌊', color: 'from-teal-600/30 to-emerald-600/20 border-teal-500/40' },
+                  { name: 'Karlovy Vary', key: 'karlovy', emoji: '💎', color: 'from-cyan-600/30 to-sky-600/20 border-cyan-500/40' },
+                  { name: 'National Film Awards (India)', key: 'national film award', emoji: '🇮🇳', color: 'from-orange-600/30 to-green-600/20 border-orange-500/40' },
+                  { name: 'Other Festivals', key: '__other__', emoji: '🎬', color: 'from-zinc-600/30 to-slate-600/20 border-zinc-500/40' },
+                ];
+                
+                const awardFilms = films.filter(film => film.awardsWon);
+                const usedFilmIds = new Set<string>();
+                
+                return festivalGroups.map(festival => {
+                  const festivalFilms = festival.key === '__other__' 
+                    ? awardFilms.filter(film => !usedFilmIds.has(film.id))
+                    : awardFilms.filter(film => {
+                        const matches = film.awardsWon?.toLowerCase().includes(festival.key);
+                        if (matches) usedFilmIds.add(film.id);
+                        return matches;
+                      });
+                  
+                  if (festivalFilms.length === 0) return null;
+                  
+                  return (
+                    <div key={festival.key} className="mb-6">
+                      <div className={`flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-gradient-to-r ${festival.color}`}>
+                        <span className="text-lg">{festival.emoji}</span>
+                        <h3 className="text-sm font-semibold text-white">{festival.name}</h3>
+                        <span className="text-xs text-zinc-400">({festivalFilms.length})</span>
                       </div>
-                      <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
-                        {film.title}
-                      </p>
-                    </button>
-                  ))}
-              </div>
+                      <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+                        {festivalFilms.map((film) => (
+                          <button
+                            key={film.id}
+                            onClick={() => handleFilmClick(film)}
+                            className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
+                          >
+                            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
+                              {film.posterUrl ? (
+                                <img
+                                  src={film.posterUrl}
+                                  alt={film.title}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
+                                  {film.title}
+                                </div>
+                              )}
+                              <div className="absolute top-1 right-1 bg-yellow-500 text-black text-[10px] px-1.5 py-0.5 rounded font-medium">
+                                🏆
+                              </div>
+                            </div>
+                            <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
+                              {film.title}
+                            </p>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
             </section>
 
             {/* Compact Footer */}
