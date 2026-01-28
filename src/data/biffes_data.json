@@ -23,7 +23,7 @@
         "mapUrl": "https://maps.app.goo.gl/ruU2WZ2T991hrSLo7"
       }
     ],
-    "lastUpdated": "2026-01-28T03:32:43.818Z"
+    "lastUpdated": "2026-01-28T03:54:00.684Z"
   },
   "categories": [
     {
@@ -147,7 +147,7 @@
   "films": [
     {
       "id": "285",
-      "title": "2025\n                •\n                HINDI",
+      "title": "FLAMES",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -156,11 +156,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/285.png",
       "categoryId": "1",
+      "imdbId": "tt28744268",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/999202601212114206204.png"
     },
     {
       "id": "277",
-      "title": "2025\n                •\n                FARSI (PERSIAN)",
+      "title": "INSIDE AMIR",
       "director": "",
       "country": "IRAN",
       "year": 2025,
@@ -169,11 +170,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/277.jpg",
       "categoryId": "1",
+      "letterboxdRating": "3.37/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/239202601212024496264.jpg"
     },
     {
       "id": "279",
-      "title": "2025\n                •\n                FARSI (PERSIAN)",
+      "title": "K POPPER",
       "director": "",
       "country": "IRAN",
       "year": 2025,
@@ -186,7 +188,7 @@
     },
     {
       "id": "278",
-      "title": "2025\n                •\n                KYRGYZ | RUSSIAN",
+      "title": "KURAK",
       "director": "",
       "country": "KYRGYZSTAN",
       "year": 2025,
@@ -195,11 +197,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/278.jpg",
       "categoryId": "1",
+      "imdbId": "tt32475775",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/727202601212030301454.jpg"
     },
     {
       "id": "270",
-      "title": "2025\n                •\n                ROHINGYA",
+      "title": "LOST LAND",
       "director": "",
       "country": "JAPAN",
       "year": 2025,
@@ -208,11 +211,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/270.jpg",
       "categoryId": "1",
+      "letterboxdRating": "3.51/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/491202601211851356117.jpg"
     },
     {
       "id": "308",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "NAM SAALI",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -225,7 +229,7 @@
     },
     {
       "id": "275",
-      "title": "2025\n                •\n                TAGALOG",
+      "title": "REPUBLIC OF PIPOLIPINAS",
       "director": "",
       "country": "PHILIPPINES",
       "year": 2025,
@@ -238,7 +242,7 @@
     },
     {
       "id": "281",
-      "title": "2025\n                •\n                BENGALI",
+      "title": "SHADOWBOX",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -251,7 +255,7 @@
     },
     {
       "id": "280",
-      "title": "2025\n                •\n                NEPALI",
+      "title": "SHAPE OF MOMO",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -260,11 +264,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/280.jpg",
       "categoryId": "1",
+      "imdbId": "tt34424701",
+      "letterboxdRating": "3.36/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/512202601212040212024.jpg"
     },
     {
       "id": "286",
-      "title": "2025\n                •\n                JAPANESE",
+      "title": "THE DEEPEST SPACE IN US",
       "director": "",
       "country": "JAPAN",
       "year": 2025,
@@ -277,7 +283,7 @@
     },
     {
       "id": "284",
-      "title": "2025\n                •\n                KOREAN",
+      "title": "THE FIN",
       "director": "",
       "country": "SOUTH KOREA",
       "year": 2025,
@@ -286,11 +292,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/284.jpg",
       "categoryId": "1",
+      "imdbId": "tt37538626",
+      "letterboxdRating": "3.14/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/723202601212110381485.jpg"
     },
     {
       "id": "276",
-      "title": "2025\n                •\n                MANDARIN CHINESE",
+      "title": "THE LAST SUMMER",
       "director": "",
       "country": "CHINA",
       "year": 2025,
@@ -299,11 +307,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/276.png",
       "categoryId": "1",
+      "imdbId": "tt37802007",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/692202601212018449547.png"
     },
     {
       "id": "282",
-      "title": "2025\n                •\n                TAMIL",
+      "title": "THE TABLET",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -316,7 +325,7 @@
     },
     {
       "id": "287",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "TIGER'S POND",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -329,7 +338,7 @@
     },
     {
       "id": "274",
-      "title": "2025\n                •\n                JAPANESE",
+      "title": "TWO SEASONS, TWO STRANGERS",
       "director": "",
       "country": "JAPAN",
       "year": 2025,
@@ -338,11 +347,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/274.png",
       "categoryId": "1",
+      "letterboxdRating": "3.58/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/328202601211948275807.png"
     },
     {
       "id": "299",
-      "title": "2025\n                •\n                MALAYALAM",
+      "title": "A PREGNANT WIDOW",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -355,7 +365,7 @@
     },
     {
       "id": "311",
-      "title": "2025\n                •\n                MALAYALAM",
+      "title": "A SHORT TRIP",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -364,11 +374,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/311.jpg",
       "categoryId": "2",
+      "letterboxdRating": "3.13/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/833202601212253149234.jpg"
     },
     {
       "id": "310",
-      "title": "2025\n                •\n                MARATHI",
+      "title": "CACTUS PEARS",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -377,11 +388,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/310.png",
       "categoryId": "2",
+      "imdbRating": "7.4",
+      "rottenTomatoes": "97%",
+      "metacritic": "81/100",
+      "imdbId": "tt29310002",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/291202601212248517411.png"
     },
     {
       "id": "307",
-      "title": "2025\n                •\n                MALAYALAM",
+      "title": "DESIRE",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -390,11 +405,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/307.jpg",
       "categoryId": "2",
+      "imdbId": "tt32368924",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/380202601212239295003.jpg"
     },
     {
       "id": "301",
-      "title": "2025\n                •\n                MARATHI",
+      "title": "GAMAN",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -403,11 +419,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/301.jpg",
       "categoryId": "2",
+      "letterboxdRating": "3.63/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/118202601212220174740.jpg"
     },
     {
       "id": "302",
-      "title": "2025\n                •\n                ASSAMESE",
+      "title": "GANARAAG",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -420,7 +437,7 @@
     },
     {
       "id": "303",
-      "title": "2025\n                •\n                MARATHI",
+      "title": "GONDHAL",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -433,7 +450,7 @@
     },
     {
       "id": "300",
-      "title": "2025\n                •\n                MALAYALAM",
+      "title": "HIDDEN TREMORS",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -446,7 +463,7 @@
     },
     {
       "id": "304",
-      "title": "2025\n                •\n                MALAYALAM",
+      "title": "KAADU",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -459,7 +476,7 @@
     },
     {
       "id": "306",
-      "title": "2025\n                •\n                MALAYALAM",
+      "title": "MALAVAZHI",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -472,7 +489,7 @@
     },
     {
       "id": "293",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "OUR SCHOOL",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -485,7 +502,7 @@
     },
     {
       "id": "309",
-      "title": "2025\n                •\n                MANIPURI",
+      "title": "PHOUOIBEE (THE GODDESS OF PADDY)",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -498,7 +515,7 @@
     },
     {
       "id": "351",
-      "title": "2025\n                •\n                MARATHI",
+      "title": "THE CREATURE",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -507,11 +524,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/351.jpeg",
       "categoryId": "2",
+      "imdbId": "tt21982406",
+      "letterboxdRating": "3.43/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/107202601272356413393.jpeg"
     },
     {
       "id": "305",
-      "title": "2025\n                •\n                KARBI",
+      "title": "THE LOST PATH",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -520,11 +539,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/305.jpeg",
       "categoryId": "2",
+      "imdbId": "tt37729025",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/458202601212232582484.jpeg"
     },
     {
       "id": "352",
-      "title": "2025\n                •\n                URDU",
+      "title": "WHITE SNOW",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -533,11 +553,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/352.jpg",
       "categoryId": "2",
+      "imdbId": "tt35657235",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/638202601280017131021.jpg"
     },
     {
       "id": "294",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "4 BY 4",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -550,7 +571,7 @@
     },
     {
       "id": "290",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "AGNYATHAVASI",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -559,11 +580,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/290.jpg",
       "categoryId": "3",
+      "imdbRating": "8.6",
+      "imdbId": "tt27470862",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/675202601212136404292.jpg"
     },
     {
       "id": "297",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "EMPTY PAGE",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -576,7 +599,7 @@
     },
     {
       "id": "354",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "HAKKIGHAGI",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -589,7 +612,7 @@
     },
     {
       "id": "288",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "KANTARA A LEGEND CHAPTER-1",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -598,11 +621,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/288.jpg",
       "categoryId": "3",
+      "imdbRating": "8.5",
+      "imdbId": "tt26439764",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/736202601212127494125.jpg"
     },
     {
       "id": "292",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "MIRAGE",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -611,11 +636,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/292.jpg",
       "categoryId": "3",
+      "imdbId": "tt37729652",
+      "letterboxdRating": "3.57/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/436202601212145485815.jpg"
     },
     {
       "id": "353",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "OUR SCHOOL",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -628,7 +655,7 @@
     },
     {
       "id": "295",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "RAVANA RAJYADALLI NAVADAMPATHIGALU",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -641,7 +668,7 @@
     },
     {
       "id": "289",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "RUBY CUBE",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -654,7 +681,7 @@
     },
     {
       "id": "355",
-      "title": "2026\n                •\n                KANNADA",
+      "title": "SRI JAGANNATHA DAASARU PART 2",
       "director": "",
       "country": "INDIA",
       "year": 2026,
@@ -667,7 +694,7 @@
     },
     {
       "id": "296",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "TO MY SACRED FATHER",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -680,7 +707,7 @@
     },
     {
       "id": "298",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "VANYA",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -689,11 +716,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/298.png",
       "categoryId": "3",
+      "imdbId": "tt33055239",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/684202601212208325851.png"
     },
     {
       "id": "291",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "X & Y",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -702,11 +730,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/291.png",
       "categoryId": "3",
+      "imdbId": "tt23790310",
+      "letterboxdRating": "3.00/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/106202601212142062789.png"
     },
     {
       "id": "70",
-      "title": "2025\n                •\n                ENGLISH | MANDARIN",
+      "title": "AMOEBA",
       "director": "",
       "country": "SINGAPORE",
       "year": 2025,
@@ -719,7 +749,7 @@
     },
     {
       "id": "127",
-      "title": "2025\n                •\n                CATALAN | SPANISH | ENGLISH",
+      "title": "FORASTERA",
       "director": "",
       "country": "SPAIN",
       "year": 2025,
@@ -728,11 +758,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/127.jpg",
       "categoryId": "6",
+      "letterboxdRating": "3.34/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/916202601021611018035.jpg"
     },
     {
       "id": "69",
-      "title": "2025\n                •\n                SLOVENIAN",
+      "title": "LITTLE TROUBLE GIRLS",
       "director": "",
       "country": "UK",
       "year": 2025,
@@ -741,11 +772,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/69.jpg",
       "categoryId": "6",
+      "letterboxdRating": "3.57/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/613202512291754485708.jpg"
     },
     {
       "id": "36",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "OUT OF LOVE",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -758,7 +790,7 @@
     },
     {
       "id": "4",
-      "title": "2025\n                •\n                GERMAN | ENGLISH",
+      "title": "SILENT FRIEND",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -767,11 +799,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/4.jpg",
       "categoryId": "6",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt27811632",
+      "letterboxdRating": "3.77/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/537202512171613085245.jpg"
     },
     {
       "id": "33",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "SUNDAYS",
       "director": "",
       "country": "SPAIN",
       "year": 2025,
@@ -780,11 +815,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/33.JPG",
       "categoryId": "6",
+      "imdbRating": "9.8",
+      "imdbId": "tt31712903",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/968202512271744477901.JPG"
     },
     {
       "id": "7",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "THE PRESIDENT'S CAKE",
       "director": "",
       "country": "USA",
       "year": 2025,
@@ -793,11 +830,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/7.jpg",
       "categoryId": "6",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt36580119",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/781202512181135575609.jpg"
     },
     {
       "id": "98",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "TO THE WEST, IN ZAPATA",
       "director": "",
       "country": "SPAIN",
       "year": 2025,
@@ -806,11 +845,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/98.jpg",
       "categoryId": "6",
+      "imdbId": "tt36514797",
+      "letterboxdRating": "3.54/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/150202512311334189223.jpg"
     },
     {
       "id": "96",
-      "title": "2025\n                •\n                FINNISH",
+      "title": "A LIGHT THAT NEVER GOES OUT",
       "director": "",
       "country": "",
       "year": 2025,
@@ -819,11 +860,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/96.jpg",
       "categoryId": "4",
+      "imdbId": "tt6932624",
+      "letterboxdRating": "3.54/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/791202512311248447984.jpg"
     },
     {
       "id": "14",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "A POET",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -832,11 +875,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/14.jpg",
       "categoryId": "4",
+      "imdbRating": "8.2",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt36544524",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/190202512241607039688.jpg"
     },
     {
       "id": "41",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "A SAD AND BEAUTIFUL WORLD",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -845,11 +891,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/41.jpeg",
       "categoryId": "4",
+      "imdbId": "tt32622406",
+      "letterboxdRating": "3.89/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/476202512272020172231.jpeg"
     },
     {
       "id": "63",
-      "title": "2025\n                •\n                THAI",
+      "title": "A USEFUL GHOST",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -858,11 +906,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/63.jpg",
       "categoryId": "4",
+      "imdbRating": "7.1",
+      "rottenTomatoes": "89%",
+      "metacritic": "81/100",
+      "imdbId": "tt22530226",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/648202512291639184644.jpg"
     },
     {
       "id": "23",
-      "title": "2025\n                •\n                GERMAN",
+      "title": "AMRUM",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -871,11 +923,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/23.jpg",
       "categoryId": "4",
+      "imdbRating": "7.2",
+      "rottenTomatoes": "92%",
+      "metacritic": "78/100",
+      "imdbId": "tt22507216",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/266202512181849123401.jpg"
     },
     {
       "id": "133",
-      "title": "2025\n                •\n                TURKISH",
+      "title": "AS WE BREATHE",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -884,11 +940,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/133.jpg",
       "categoryId": "4",
+      "imdbId": "tt37674996",
+      "letterboxdRating": "3.21/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/473202601021735467498.jpg"
     },
     {
       "id": "186",
-      "title": "2025\n                •\n                GREEK",
+      "title": "BEACHCOMBER",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -897,11 +955,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/186.jpeg",
       "categoryId": "4",
+      "imdbId": "tt28089990",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/531202601171111392230.jpeg"
     },
     {
       "id": "124",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "BEFORE THE BODY",
       "director": "",
       "country": "ARGENTINA",
       "year": 2025,
@@ -914,7 +973,7 @@
     },
     {
       "id": "342",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "BELÉN",
       "director": "",
       "country": "ARGENTINA",
       "year": 2025,
@@ -923,11 +982,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/342.jpg",
       "categoryId": "4",
+      "imdbId": "tt37531036",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/321202601261121204684.jpg"
     },
     {
       "id": "28",
-      "title": "2025\n                •\n                CZECH",
+      "title": "BETTER GO MAD IN THE WILD",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -936,11 +996,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/28.jpg",
       "categoryId": "4",
+      "imdbId": "tt37438800",
+      "letterboxdRating": "3.51/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/734202512191551372644.jpg"
     },
     {
       "id": "177",
-      "title": "2025\n                •\n                ENGLISH | HUNGARIAN",
+      "title": "BLUE HERON",
       "director": "",
       "country": "CANADA",
       "year": 2025,
@@ -949,11 +1011,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/177.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt32252801",
+      "letterboxdRating": "3.87/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/108202601062000051373.jpg"
     },
     {
       "id": "188",
-      "title": "2025\n                •\n                CZECH",
+      "title": "BROKEN VOICES",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -962,11 +1027,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/188.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "80%",
+      "imdbId": "tt28149522",
+      "letterboxdRating": "3.58/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/565202601071349447484.jpg"
     },
     {
       "id": "129",
-      "title": "2025\n                •\n                CZECH | ITALIAN | SLOVAK | ENGLISH",
+      "title": "CARAVAN",
       "director": "",
       "country": "ITALY",
       "year": 2025,
@@ -975,11 +1043,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/129.jpg",
       "categoryId": "4",
+      "imdbId": "tt36026036",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/795202601021615041250.jpg"
     },
     {
       "id": "24",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "CASE 137",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -988,11 +1057,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/24.jpeg",
       "categoryId": "4",
+      "imdbRating": "7.1",
+      "rottenTomatoes": "92%",
+      "metacritic": "73/100",
+      "imdbId": "tt34794183",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/812202512191209367641.jpeg"
     },
     {
       "id": "48",
-      "title": "2025\n                •\n                ROMANIAN",
+      "title": "CATANE",
       "director": "",
       "country": "ITALY",
       "year": 2025,
@@ -1005,7 +1078,7 @@
     },
     {
       "id": "50",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "CHRISTY",
       "director": "",
       "country": "UK",
       "year": 2025,
@@ -1014,11 +1087,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/50.jpeg",
       "categoryId": "4",
+      "imdbRating": "6.3",
+      "rottenTomatoes": "100%",
+      "metacritic": "58/100",
+      "imdbId": "tt32323252",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/517202512291340576919.jpeg"
     },
     {
       "id": "257",
-      "title": "2025\n                •\n                ROMANIAN | SERBIAN | ENGLISH | ITALIAN",
+      "title": "CLOISTERED SISTER",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1027,11 +1104,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/257.jpeg",
       "categoryId": "4",
+      "letterboxdRating": "3.43/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/121202601181401512248.jpeg"
     },
     {
       "id": "57",
-      "title": "2025\n                •\n                SPANISH | GERMAN",
+      "title": "COMANDANTE FRITZ",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1040,11 +1118,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/57.jpeg",
       "categoryId": "4",
+      "imdbId": "tt33091008",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/392202601192035344524.jpeg"
     },
     {
       "id": "267",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "DE TAL PALO",
       "director": "",
       "country": "Vietnam",
       "year": 2025,
@@ -1053,11 +1132,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/267.png",
       "categoryId": "4",
+      "imdbId": "tt35534400",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/946202601211336451187.png"
     },
     {
       "id": "114",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "DEAD DOG",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1066,11 +1146,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/114.jpg",
       "categoryId": "4",
+      "imdbId": "tt35625052",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/170202601011548217167.jpg"
     },
     {
       "id": "95",
-      "title": "2025\n                •\n                FARSI | AZERI",
+      "title": "DIVINE COMEDY",
       "director": "",
       "country": "IRAN",
       "year": 2025,
@@ -1083,7 +1164,7 @@
     },
     {
       "id": "2",
-      "title": "2025\n                •\n                TURKISH | MACEDONIAN | ENGLISH",
+      "title": "DJ AHMET",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -1092,11 +1173,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/2.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.72/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/867202512161653521108.jpg"
     },
     {
       "id": "181",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "DRAGONFLY",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -1105,11 +1187,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/181.jpeg",
       "categoryId": "4",
+      "rottenTomatoes": "92%",
+      "imdbId": "tt32383425",
+      "letterboxdRating": "2.89/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/381202601071138561701.jpeg"
     },
     {
       "id": "38",
-      "title": "2024\n                •\n                NORWEGIAN",
+      "title": "DREAMS",
       "director": "",
       "country": "usa",
       "year": 2024,
@@ -1118,11 +1203,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/38.jpg",
       "categoryId": "4",
+      "imdbRating": "5.5",
+      "rottenTomatoes": "69%",
+      "imdbId": "tt22399738",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/754202512271957124070.jpg"
     },
     {
       "id": "61",
-      "title": "2025\n                •\n                GEORGIAN",
+      "title": "DRY LEAF",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1131,11 +1219,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/61.webp",
       "categoryId": "4",
+      "rottenTomatoes": "90%",
+      "imdbId": "tt37537636",
+      "letterboxdRating": "3.86/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/428202512291627204347.webp"
     },
     {
       "id": "29",
-      "title": "2025\n                •\n                SLOVAK",
+      "title": "FATHER",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -1144,11 +1235,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/29.jpeg",
       "categoryId": "4",
+      "imdbId": "tt36647330",
+      "letterboxdRating": "3.85/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/221202512201203449704.jpeg"
     },
     {
       "id": "18",
-      "title": "2025\n                •\n                ENGLISH | FRENCH",
+      "title": "FATHER MOTHER SISTER BROTHER",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1157,11 +1250,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/18.jpg",
       "categoryId": "4",
+      "imdbRating": "6.8",
+      "rottenTomatoes": "82%",
+      "metacritic": "76/100",
+      "imdbId": "tt31189315",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/145202512181636376391.jpg"
     },
     {
       "id": "42",
-      "title": "2025\n                •\n                CROATIAN | ITALIAN",
+      "title": "FIUME O MORTE!",
       "director": "",
       "country": "ITALY",
       "year": 2025,
@@ -1170,11 +1267,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/42.png",
       "categoryId": "4",
+      "imdbId": "tt34383611",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/672202512272024367202.png"
     },
     {
       "id": "152",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "FOLLIES",
       "director": "",
       "country": "CANADA",
       "year": 2025,
@@ -1183,11 +1281,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/152.jpeg",
       "categoryId": "4",
+      "imdbRating": "6.2",
+      "imdbId": "tt31226985",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/298202601031842398004.jpeg"
     },
     {
       "id": "105",
-      "title": "2025\n                •\n                CROATIAN | SPANISH",
+      "title": "GOD WILL NOT HELP",
       "director": "",
       "country": "ITALY",
       "year": 2025,
@@ -1196,11 +1296,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/105.jpg",
       "categoryId": "4",
+      "imdbId": "tt37537475",
+      "letterboxdRating": "3.30/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/699202512311748226861.jpg"
     },
     {
       "id": "145",
-      "title": "2025\n                •\n                ARABIC | ENGLISH",
+      "title": "HALF MOON",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1209,11 +1311,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/145.jpg",
       "categoryId": "4",
+      "imdbId": "tt35618593",
+      "letterboxdRating": "3.68/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/708202601031656438911.jpg"
     },
     {
       "id": "199",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "HAPPY BIRTHDAY",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -1222,11 +1326,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/199.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt36591512",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/434202601071717581566.jpg"
     },
     {
       "id": "200",
-      "title": "2025\n                •\n                THAI",
+      "title": "HUMAN RESOURCE",
       "director": "",
       "country": "THAILAND",
       "year": 2025,
@@ -1235,11 +1341,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/200.jpeg",
       "categoryId": "4",
+      "imdbId": "tt30252183",
+      "letterboxdRating": "3.50/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/846202601081823461274.jpeg"
     },
     {
       "id": "53",
-      "title": "2025\n                •\n                PORTUGUESE",
+      "title": "I ONLY REST IN THE STORM",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1248,11 +1356,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/53.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.85/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/488202512291458271274.jpg"
     },
     {
       "id": "59",
-      "title": "2025\n                •\n                GERMAN",
+      "title": "IMPATIENCE OF THE HEART",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1261,11 +1370,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/59.jpeg",
       "categoryId": "4",
+      "letterboxdRating": "3.31/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/401202512291617562568.jpeg"
     },
     {
       "id": "12",
-      "title": "2025\n                •\n                PERSIAN",
+      "title": "IT WAS JUST AN ACCIDENT",
       "director": "",
       "country": "IRAN",
       "year": 2025,
@@ -1274,11 +1384,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/12.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "98%",
+      "imdbId": "tt36491653",
+      "letterboxdRating": "3.99/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/495202512181337591859.jpg"
     },
     {
       "id": "94",
-      "title": "2025\n                •\n                GERMAN",
+      "title": "JANINE MOVES TO THE COUNTRY",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1287,11 +1400,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/94.jpg",
       "categoryId": "4",
+      "imdbId": "tt35440096",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/878202512301845161088.jpg"
     },
     {
       "id": "183",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "KIKA",
       "director": "",
       "country": "UK",
       "year": 2025,
@@ -1300,11 +1414,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/183.jpg",
       "categoryId": "4",
+      "imdbId": "tt33400055",
+      "letterboxdRating": "3.19/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/910202601071241292741.jpg"
     },
     {
       "id": "179",
-      "title": "2025\n                •\n                GREEK",
+      "title": "KOKORAS",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -1317,7 +1433,7 @@
     },
     {
       "id": "91",
-      "title": "2025\n                •\n                ROMANIAN | HUNGARIAN | GERMAN",
+      "title": "KONTINENTAL '25",
       "director": "",
       "country": "Hong Kong",
       "year": 2025,
@@ -1326,11 +1442,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/91.jpeg",
       "categoryId": "4",
+      "imdbRating": "6.9",
+      "metacritic": "82/100",
+      "imdbId": "tt35492581",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/793202512301642599973.jpeg"
     },
     {
       "id": "21",
-      "title": "2025\n                •\n                SWISS-GERMAN | GERMAN",
+      "title": "LATE SHIFT",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1339,11 +1458,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/21.jpeg",
       "categoryId": "4",
+      "imdbRating": "7.8",
+      "imdbId": "tt32204858",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/844202512181740042725.jpeg"
     },
     {
       "id": "125",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "LOVE ME TENDER",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1352,11 +1473,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/125.jpeg",
       "categoryId": "4",
+      "imdbId": "tt35354686",
+      "letterboxdRating": "3.07/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/173202601021347369062.jpeg"
     },
     {
       "id": "15",
-      "title": "2025\n                •\n                PORTUGUESE | SPANISH | TAGALOG | FRENCH",
+      "title": "MAGELLAN",
       "director": "",
       "country": "SPAIN",
       "year": 2025,
@@ -1365,11 +1488,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/15.jpg",
       "categoryId": "4",
+      "letterboxdRating": "2.86/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/410202512241618312690.jpg"
     },
     {
       "id": "185",
-      "title": "2025\n                •\n                GERMAN | ARABIC",
+      "title": "MAYSOON",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1378,11 +1502,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/185.jpg",
       "categoryId": "4",
+      "imdbId": "tt13868484",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/729202601071312263825.jpg"
     },
     {
       "id": "268",
-      "title": "2025\n                •\n                UKRAINIAN",
+      "title": "MILITANTROPOS",
       "director": "",
       "country": "UK",
       "year": 2025,
@@ -1391,11 +1516,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/268.jpeg",
       "categoryId": "4",
+      "rottenTomatoes": "80%",
+      "imdbId": "tt36554869",
+      "letterboxdRating": "3.53/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/896202601211504168995.jpeg"
     },
     {
       "id": "32",
-      "title": "2025\n                •\n                PERSIAN",
+      "title": "MORTICIAN",
       "director": "",
       "country": "CANADA",
       "year": 2025,
@@ -1404,11 +1532,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/32.jpg",
       "categoryId": "4",
+      "imdbId": "tt36983099",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/867202512271738205261.jpg"
     },
     {
       "id": "40",
-      "title": "2025\n                •\n                MANDARIN",
+      "title": "MOTHERTONGUE",
       "director": "",
       "country": "CHINA",
       "year": 2025,
@@ -1421,7 +1550,7 @@
     },
     {
       "id": "8",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "MY FATHER'S SHADOW",
       "director": "",
       "country": "usa",
       "year": 2025,
@@ -1430,11 +1559,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/8.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "97%",
+      "imdbId": "tt35695538",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/793202512181159523106.jpg"
     },
     {
       "id": "72",
-      "title": "2025\n                •\n                KURDISH | NORWEGIAN",
+      "title": "MY UNCLE JENS",
       "director": "",
       "country": "Iran",
       "year": 2025,
@@ -1443,11 +1574,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/72.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.49/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/566202512291812179312.jpg"
     },
     {
       "id": "120",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "NINO",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1456,11 +1588,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/120.jpeg",
       "categoryId": "4",
+      "imdbRating": "6.9",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt35519445",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/739202601011726007428.jpeg"
     },
     {
       "id": "9",
-      "title": "2025\n                •\n                KOREAN",
+      "title": "NO OTHER CHOICE",
       "director": "",
       "country": "SOUTH KOREA",
       "year": 2025,
@@ -1469,11 +1604,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/9.jpg",
       "categoryId": "4",
+      "imdbRating": "7.5",
+      "rottenTomatoes": "98%",
+      "metacritic": "87/100",
+      "imdbId": "tt1527793",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/651202512181221163893.jpg"
     },
     {
       "id": "237",
-      "title": "2025\n                •\n                ARABIC | SPANISH",
+      "title": "NOMAD SHADOW",
       "director": "",
       "country": "USA",
       "year": 2025,
@@ -1482,11 +1621,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/237.jpg",
       "categoryId": "4",
+      "imdbId": "tt37751099",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/839202601141332362465.jpg"
     },
     {
       "id": "266",
-      "title": "2025\n                •\n                FINNISH | ENGLISH",
+      "title": "ORENDA",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1495,11 +1635,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/266.jpg",
       "categoryId": "4",
+      "imdbId": "tt33589472",
+      "letterboxdRating": "3.28/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/824202601211330274537.jpg"
     },
     {
       "id": "339",
-      "title": "2025\n                •\n                HINDI | ENGLISH | MARATHI",
+      "title": "OSLO: A TAIL OF PROMISE",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -1512,7 +1654,7 @@
     },
     {
       "id": "71",
-      "title": "2025\n                •\n                FARSI",
+      "title": "OUTCRY",
       "director": "",
       "country": "IRAN",
       "year": 2025,
@@ -1521,11 +1663,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/71.jpg",
       "categoryId": "4",
+      "imdbId": "tt37437746",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/950202512291756466178.jpg"
     },
     {
       "id": "49",
-      "title": "2025\n                •\n                FRENCH | ARABIC",
+      "title": "PROMISED SKY",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1534,11 +1677,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/49.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.43/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/576202512291244269224.jpg"
     },
     {
       "id": "113",
-      "title": "2025\n                •\n                DUTCH",
+      "title": "REEDLAND",
       "director": "",
       "country": "New Zealand",
       "year": 2025,
@@ -1547,11 +1691,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/113.png",
       "categoryId": "4",
+      "letterboxdRating": "3.27/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/566202601011535462643.png"
     },
     {
       "id": "196",
-      "title": "2025\n                •\n                LITHUANIAN",
+      "title": "RENOVATION",
       "director": "",
       "country": "Uk",
       "year": 2025,
@@ -1560,11 +1705,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/196.jpeg",
       "categoryId": "4",
+      "imdbId": "tt37266315",
+      "letterboxdRating": "3.34/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/347202601071643384791.jpeg"
     },
     {
       "id": "13",
-      "title": "2025\n                •\n                CHINESE",
+      "title": "RESURRECTION",
       "director": "",
       "country": "CHINA",
       "year": 2025,
@@ -1573,11 +1720,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/13.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "88%",
+      "imdbId": "tt29002950",
+      "letterboxdRating": "2.89/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/152202512241544126649.jpg"
     },
     {
       "id": "317",
-      "title": "2025\n                •\n                SINHALA",
+      "title": "RIVERSTONE",
       "director": "",
       "country": "SRI LANKA",
       "year": 2025,
@@ -1590,7 +1740,7 @@
     },
     {
       "id": "5",
-      "title": "2025\n                •\n                ENGLISH | NORWEGIAN",
+      "title": "SENTIMENTAL VALUE",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1599,11 +1749,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/5.webp",
       "categoryId": "4",
+      "imdbRating": "7.9",
+      "rottenTomatoes": "97%",
+      "metacritic": "86/100",
+      "imdbId": "tt27714581",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/384202512171629242595.webp"
     },
     {
       "id": "16",
-      "title": "2025\n                •\n                SPANISH | FRENCH | ARABIC | ENGLISH",
+      "title": "SIRĀT",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1612,11 +1766,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/16.jpg",
       "categoryId": "4",
+      "imdbRating": "7.3",
+      "rottenTomatoes": "94%",
+      "metacritic": "82/100",
+      "imdbId": "tt32298285",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/825202512241629091522.jpg"
     },
     {
       "id": "26",
-      "title": "2025\n                •\n                VIETNAMESE",
+      "title": "SKIN OF YOUTH",
       "director": "",
       "country": "VIETNAM",
       "year": 2025,
@@ -1625,11 +1783,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/26.jpg",
       "categoryId": "4",
+      "imdbId": "tt9783540",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/990202512191321328439.jpg"
     },
     {
       "id": "65",
-      "title": "2025\n                •\n                SPANISH | ARABIC",
+      "title": "SLEEPLESS CITY",
       "director": "",
       "country": "SPAIN",
       "year": 2025,
@@ -1638,11 +1797,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/65.jpg",
       "categoryId": "4",
+      "imdbId": "tt32472708",
+      "letterboxdRating": "3.52/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/220202512291725578351.jpg"
     },
     {
       "id": "6",
-      "title": "2025\n                •\n                GERMAN",
+      "title": "SOUND OF FALLING",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1651,11 +1812,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/6.jpeg",
       "categoryId": "4",
+      "rottenTomatoes": "95%",
+      "metacritic": "91/100",
+      "imdbId": "tt28690468",
+      "letterboxdRating": "3.66/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/297202512171751115945.jpeg"
     },
     {
       "id": "60",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "STRAIGHT CIRCLE",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -1664,11 +1829,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/60.jpeg",
       "categoryId": "4",
+      "imdbId": "tt29630535",
+      "letterboxdRating": "3.62/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/902202512291622506951.jpeg"
     },
     {
       "id": "142",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "TALES OF THE WOUNDED LAND",
       "director": "",
       "country": "uk",
       "year": 2025,
@@ -1677,11 +1844,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/142.jpeg",
       "categoryId": "4",
+      "imdbId": "tt37540821",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/688202601031547517766.jpeg"
     },
     {
       "id": "112",
-      "title": "2025\n                •\n                DUTCH | FRENCH | ARABIC",
+      "title": "TÊTES BRÛLÉES",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1690,11 +1858,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/112.jpg",
       "categoryId": "4",
+      "imdbId": "tt35051039",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/510202601011347127990.jpg"
     },
     {
       "id": "39",
-      "title": "2025\n                •\n                PORTUGUESE",
+      "title": "THE BLUE TRAIL",
       "director": "",
       "country": "BRAZIL",
       "year": 2025,
@@ -1703,11 +1872,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/39.jpeg",
       "categoryId": "4",
+      "letterboxdRating": "3.71/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/492202512272001309468.jpeg"
     },
     {
       "id": "172",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "THE DEVIL SMOKES",
       "director": "",
       "country": "Hong Kong",
       "year": 2025,
@@ -1720,7 +1890,7 @@
     },
     {
       "id": "102",
-      "title": "2025\n                •\n                GERMAN | PORTUGUESE | SPANISH | HUNGARIAN",
+      "title": "THE DISAPPEARANCE OF JOSEF MENGELE",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -1729,11 +1899,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/102.jpg",
       "categoryId": "4",
+      "imdbRating": "7.2",
+      "imdbId": "tt22852560",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/879202512311601437856.jpg"
     },
     {
       "id": "255",
-      "title": "2016\n                •\n                GERMAN",
+      "title": "THE DREAMED ONES",
       "director": "",
       "country": "",
       "year": 2016,
@@ -1742,11 +1914,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/255.jpg",
       "categoryId": "4",
+      "imdbRating": "6.6",
+      "rottenTomatoes": "91%",
+      "imdbId": "tt5463370",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/728202601171602088561.jpg"
     },
     {
       "id": "128",
-      "title": "2025\n                •\n                DARI | ENGLISH",
+      "title": "THE LAST AMBASSADOR",
       "director": "",
       "country": "Afghanistan",
       "year": 2025,
@@ -1755,11 +1930,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/128.jpeg",
       "categoryId": "4",
+      "imdbId": "tt35598071",
+      "letterboxdRating": "3.62/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/173202601021614291227.jpeg"
     },
     {
       "id": "84",
-      "title": "2025\n                •\n                ENGLISH | SWEDISH | FRENCH",
+      "title": "THE LOVE THAT REMAINS",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1768,11 +1945,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/84.jpeg",
       "categoryId": "4",
+      "rottenTomatoes": "95%",
+      "imdbId": "tt33381401",
+      "letterboxdRating": "3.60/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/989202512301315352651.jpeg"
     },
     {
       "id": "19",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "THE MASTERMIND",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1781,11 +1961,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/19.jpeg",
       "categoryId": "4",
+      "imdbRating": "6.4",
+      "rottenTomatoes": "90%",
+      "metacritic": "80/100",
+      "imdbId": "tt33455099",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/127202601171053262092.jpeg"
     },
     {
       "id": "47",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "THE MYSTERIOUS GAZE OF THE FLAMINGO",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1794,11 +1978,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/47.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "96%",
+      "imdbId": "tt22237964",
+      "letterboxdRating": "3.77/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/238202512272100076466.jpg"
     },
     {
       "id": "150",
-      "title": "2025\n                •\n                SPANISH | PORTUGUESE",
+      "title": "THE PORTUGUESE HOUSE",
       "director": "",
       "country": "SPAIN",
       "year": 2025,
@@ -1807,11 +1994,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/150.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.44/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/454202601031827533941.jpg"
     },
     {
       "id": "54",
-      "title": "2025\n                •\n                DUTCH",
+      "title": "THE PUPIL",
       "director": "",
       "country": "India",
       "year": 2025,
@@ -1824,7 +2012,7 @@
     },
     {
       "id": "43",
-      "title": "2025\n                •\n                TURKISH",
+      "title": "THE THINGS YOU KILL",
       "director": "",
       "country": "CANADA",
       "year": 2025,
@@ -1833,11 +2021,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/43.jpg",
       "categoryId": "4",
+      "rottenTomatoes": "98%",
+      "imdbId": "tt32367116",
+      "letterboxdRating": "3.48/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/729202512272031476994.jpg"
     },
     {
       "id": "35",
-      "title": "2025\n                •\n                UKRAINIAN",
+      "title": "TO THE VICTORY!",
       "director": "",
       "country": "UK",
       "year": 2025,
@@ -1846,11 +2037,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/35.webp",
       "categoryId": "4",
+      "imdbId": "tt37661902",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/177202512271854498596.webp"
     },
     {
       "id": "256",
-      "title": "2025\n                •\n                RUSSIAN | UKRAINIAN | ENGLISH",
+      "title": "TWO PROSECUTORS",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1859,11 +2051,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/256.jpeg",
       "categoryId": "4",
+      "imdbRating": "7.1",
+      "rottenTomatoes": "95%",
+      "metacritic": "84/100",
+      "imdbId": "tt35521200",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/983202601181355425526.jpeg"
     },
     {
       "id": "175",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "VANILLA",
       "director": "",
       "country": "MEXICO",
       "year": 2025,
@@ -1872,11 +2068,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/175.jpg",
       "categoryId": "4",
+      "imdbId": "tt13238176",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/495202601061947177555.jpg"
     },
     {
       "id": "27",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "WE BELIEVE YOU",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1885,11 +2082,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/27.jpeg",
       "categoryId": "4",
+      "letterboxdRating": "3.98/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/731202512191515116144.jpeg"
     },
     {
       "id": "131",
-      "title": "2025\n                •\n                KOREAN",
+      "title": "WHAT DOES THAT NATURE SAY TO YOU",
       "director": "",
       "country": "SOUTH KOREA",
       "year": 2025,
@@ -1898,11 +2096,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/131.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.69/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/203202601021721341841.jpg"
     },
     {
       "id": "10",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "WHERE THE WIND COMES FROM",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1911,11 +2110,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/10.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.56/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/437202512181236034417.jpg"
     },
     {
       "id": "187",
-      "title": "2025\n                •\n                SERBIAN",
+      "title": "WIND, TALK TO ME",
       "director": "",
       "country": "",
       "year": 2025,
@@ -1924,11 +2124,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/187.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.67/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/942202601071342046709.jpg"
     },
     {
       "id": "45",
-      "title": "2025\n                •\n                FRENCH",
+      "title": "YOUNG MOTHERS",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -1937,11 +2138,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/45.jpg",
       "categoryId": "4",
+      "letterboxdRating": "3.41/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/457202512272041115870.jpg"
     },
     {
       "id": "76",
-      "title": "1989\n                •\n                FRENCH",
+      "title": "DANCING IN THE DUST",
       "director": "",
       "country": "",
       "year": 1989,
@@ -1950,11 +2152,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/76.jpg",
       "categoryId": "25",
+      "letterboxdRating": "3.22/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/610202512291925275896.jpg"
     },
     {
       "id": "79",
-      "title": "1994\n                •\n                WOLOF",
+      "title": "LE FRANC",
       "director": "",
       "country": "FRANCE",
       "year": 1994,
@@ -1963,11 +2166,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/79.jpg",
       "categoryId": "25",
+      "imdbRating": "6.7",
+      "imdbId": "tt0109834",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/287202512301109133409.jpg"
     },
     {
       "id": "30",
-      "title": "1987\n                •\n                FRENCH",
+      "title": "LIFE IS ROSY",
       "director": "",
       "country": "FRANCE",
       "year": 1987,
@@ -1976,11 +2181,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/30.jpg",
       "categoryId": "25",
+      "imdbRating": "5.8",
+      "imdbId": "tt0094265",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/619202512271543136643.jpg"
     },
     {
       "id": "78",
-      "title": "1975\n                •\n                FRENCH",
+      "title": "NATIONALITY: IMMIGRANT",
       "director": "",
       "country": "FRANCE",
       "year": 1975,
@@ -1989,11 +2196,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/78.jpg",
       "categoryId": "25",
+      "letterboxdRating": "3.63/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/374202512291953097976.jpg"
     },
     {
       "id": "81",
-      "title": "1992\n                •\n                FRENCH",
+      "title": "SAMBA TRAORÉ",
       "director": "",
       "country": "FRANCE",
       "year": 1992,
@@ -2002,11 +2210,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/81.jpeg",
       "categoryId": "25",
+      "imdbRating": "6.9",
+      "imdbId": "tt0108031",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/905202512301209478195.jpeg"
     },
     {
       "id": "31",
-      "title": "1988\n                •\n                MALAGASY | FRENCH",
+      "title": "TABATABA",
       "director": "",
       "country": "FRANCE",
       "year": 1988,
@@ -2015,11 +2225,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/31.jpg",
       "categoryId": "25",
+      "imdbRating": "5.9",
+      "imdbId": "tt0096208",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/808202512271620568476.jpg"
     },
     {
       "id": "86",
-      "title": "2019\n                •\n                ARABIC",
+      "title": "TALKING ABOUT TREES",
       "director": "",
       "country": "FRANCE",
       "year": 2019,
@@ -2028,11 +2240,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/86.jpg",
       "categoryId": "25",
+      "imdbRating": "7.4",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt9658178",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/486202512301402198721.jpg"
     },
     {
       "id": "90",
-      "title": "2023\n                •\n                FRENCH | PULAAR | EASTERN MANINKAKN",
+      "title": "THE CEMETERY OF CINEMA",
       "director": "",
       "country": "FRANCE",
       "year": 2023,
@@ -2041,11 +2256,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/90.jpg",
       "categoryId": "25",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt24577296",
+      "letterboxdRating": "3.66/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/171202512301553484162.jpg"
     },
     {
       "id": "83",
-      "title": "1979\n                •\n                LINGALA | FRENCH",
+      "title": "THE CHAPEL",
       "director": "",
       "country": "UK",
       "year": 1979,
@@ -2058,7 +2276,7 @@
     },
     {
       "id": "80",
-      "title": "1999\n                •\n                WOLOF | FRENCH",
+      "title": "THE LITTLE GIRL WHO SOLD THE SUN",
       "director": "",
       "country": "FRANCE",
       "year": 1999,
@@ -2067,11 +2285,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/80.jpg",
       "categoryId": "25",
+      "imdbRating": "7.3",
+      "imdbId": "tt0196848",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/844202512301126013718.jpg"
     },
     {
       "id": "88",
-      "title": "2021\n                •\n                SWAHILI",
+      "title": "TUG OF WAR",
       "director": "",
       "country": "GERMANY",
       "year": 2021,
@@ -2080,11 +2300,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/88.jpg",
       "categoryId": "25",
+      "imdbRating": "7.2",
+      "imdbId": "tt15138462",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/760202512301538454055.jpg"
     },
     {
       "id": "73",
-      "title": "1983\n                •\n                FRENCH",
+      "title": "TWENTY YEARS OF AFRICAN CINEMA",
       "director": "",
       "country": "FRANCE",
       "year": 1983,
@@ -2093,11 +2315,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/73.jpg",
       "categoryId": "25",
+      "imdbRating": "7.1",
+      "imdbId": "tt0302385",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/105202512291827552305.jpg"
     },
     {
       "id": "74",
-      "title": "1993\n                •\n                FRENCH",
+      "title": "WENDEMI, THE GOOD LORD'S CHILD",
       "director": "",
       "country": "FRANCE",
       "year": 1993,
@@ -2110,7 +2334,7 @@
     },
     {
       "id": "178",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "BLUE MOON",
       "director": "",
       "country": "USA",
       "year": 2025,
@@ -2119,11 +2343,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/178.jpg",
       "categoryId": "7",
+      "imdbRating": "7.1",
+      "rottenTomatoes": "90%",
+      "metacritic": "78/100",
+      "imdbId": "tt32536315",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/982202601062007415645.jpg"
     },
     {
       "id": "343",
-      "title": "2008\n                •\n                ENGLISH",
+      "title": "FAMILY PATTABIC",
       "director": "",
       "country": "INDIA",
       "year": 2008,
@@ -2136,7 +2364,7 @@
     },
     {
       "id": "89",
-      "title": "2025\n                •\n                ENGLISH",
+      "title": "PETER HUJAR'S DAY",
       "director": "",
       "country": "USA",
       "year": 2025,
@@ -2145,11 +2373,15 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/89.jpg",
       "categoryId": "7",
+      "imdbRating": "6.6",
+      "rottenTomatoes": "91%",
+      "metacritic": "82/100",
+      "imdbId": "tt34250044",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/150202512301550114284.jpg"
     },
     {
       "id": "330",
-      "title": "2025\n                •\n                KANNADA",
+      "title": "THE EPIC POET",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -2162,7 +2394,7 @@
     },
     {
       "id": "93",
-      "title": "2025\n                •\n                FRENCH | DANISH | ENGLISH | ITALIAN",
+      "title": "THE GREAT ARCH",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -2171,11 +2403,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/93.jpeg",
       "categoryId": "7",
+      "imdbId": "tt32398150",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/714202512301825002452.jpeg"
     },
     {
       "id": "222",
-      "title": "1958\n                •\n                EGYPTIAN ARABIC",
+      "title": "CAIRO STATION",
       "director": "",
       "country": "",
       "year": 1958,
@@ -2184,11 +2417,14 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/222.jpg",
       "categoryId": "12",
+      "imdbRating": "7.5",
+      "rottenTomatoes": "100%",
+      "imdbId": "tt0051390",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/903202601121929522444.jpg"
     },
     {
       "id": "168",
-      "title": "1993\n                •\n                HINDI",
+      "title": "RUDAALI",
       "director": "",
       "country": "INDIA",
       "year": 1993,
@@ -2197,11 +2433,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/168.jpeg",
       "categoryId": "12",
+      "imdbRating": "7.4",
+      "imdbId": "tt0108001",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/644202601061354173240.jpeg"
     },
     {
       "id": "337",
-      "title": "2025\n                •\n                HINDI",
+      "title": "ANMOL- LOVINGLY OURS",
       "director": "",
       "country": "INDIA",
       "year": 2025,
@@ -2214,7 +2452,7 @@
     },
     {
       "id": "191",
-      "title": "2025\n                •\n                SPANISH  | ARABIC",
+      "title": "CALLE MÁLAGA",
       "director": "",
       "country": "FRANCE",
       "year": 2025,
@@ -2223,11 +2461,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/191.jpg",
       "categoryId": "26",
+      "imdbId": "tt32429174",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/855202601071535426298.jpg"
     },
     {
       "id": "154",
-      "title": "2025\n                •\n                ARABIC",
+      "title": "COTTON QUEEN",
       "director": "",
       "country": "GERMANY",
       "year": 2025,
@@ -2236,11 +2475,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/154.jpg",
       "categoryId": "26",
+      "imdbId": "tt37645474",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/349202601031857006900.jpg"
     },
     {
       "id": "253",
-      "title": "2022\n                •\n                GERMAN",
+      "title": "ELFRIEDE JELINEK: LANGUAGE UNLEASHED",
       "director": "",
       "country": "GERMANY",
       "year": 2022,
@@ -2249,11 +2489,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/253.jpg",
       "categoryId": "26",
+      "letterboxdRating": "3.54/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/291202601171541258072.jpg"
     },
     {
       "id": "104",
-      "title": "2025\n                •\n                ENGLISH | FRENCH",
+      "title": "INVISIBLES",
       "director": "",
       "country": "CANADA",
       "year": 2025,
@@ -2262,11 +2503,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/104.jpg",
       "categoryId": "26",
+      "imdbId": "tt37536114",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/587202601251219171764.jpg"
     },
     {
       "id": "182",
-      "title": "2025\n                •\n                ITALIAN",
+      "title": "MOSQUITOES",
       "director": "",
       "country": "ITALY",
       "year": 2025,
@@ -2279,7 +2521,7 @@
     },
     {
       "id": "92",
-      "title": "2025\n                •\n                GERMAN | SLOVAK | RUSSIAN",
+      "title": "PERLA",
       "director": "",
       "country": "usa",
       "year": 2025,
@@ -2288,11 +2530,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/92.jpg",
       "categoryId": "26",
+      "imdbId": "tt14635044",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/415202512301713128628.jpg"
     },
     {
       "id": "174",
-      "title": "2025\n                •\n                SPANISH",
+      "title": "THE IVY",
       "director": "",
       "country": "MEXICO",
       "year": 2025,
@@ -2301,11 +2544,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/174.jpg",
       "categoryId": "26",
+      "imdbId": "tt33056488",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/305202601061934474320.jpg"
     },
     {
       "id": "75",
-      "title": "2025\n                •\n                PORTUGUESE",
+      "title": "THE NATURE OF INVISIBLE THINGS",
       "director": "",
       "country": "BRAZIL",
       "year": 2025,
@@ -2314,11 +2558,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/75.jpeg",
       "categoryId": "26",
+      "imdbId": "tt35051106",
+      "letterboxdRating": "3.81/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/664202512291911386068.jpeg"
     },
     {
       "id": "341",
-      "title": "2025\n                •\n                VIETNAMESE",
+      "title": "KY NAM INN",
       "director": "",
       "country": "VIETNAM",
       "year": 2025,
@@ -2327,11 +2573,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/341.jpeg",
       "categoryId": "29",
+      "imdbId": "tt36616095",
+      "letterboxdRating": "3.71/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/907202601261123087268.jpeg"
     },
     {
       "id": "204",
-      "title": "1984\n                •\n                KANNADA",
+      "title": "ACCIDENT",
       "director": "",
       "country": "INDIA",
       "year": 1984,
@@ -2340,11 +2588,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/204.png",
       "categoryId": "24",
+      "letterboxdRating": "3.54/5",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/731202601101616419390.png"
     },
     {
       "id": "238",
-      "title": "2011\n                •\n                KANNADA",
+      "title": "KOORMAVATARA",
       "director": "",
       "country": "INDIA",
       "year": 2011,
@@ -2353,11 +2602,13 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/238.jpg",
       "categoryId": "24",
+      "imdbRating": "8.9",
+      "imdbId": "tt3053768",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/962202601141355281158.jpg"
     },
     {
       "id": "322",
-      "title": "1995\n                •\n                KANNADA",
+      "title": "KRAURYA",
       "director": "",
       "country": "INDIA",
       "year": 1995,
@@ -2366,11 +2617,12 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/322.jpeg",
       "categoryId": "24",
+      "imdbId": "tt6348600",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/729202601221651542473.jpeg"
     },
     {
       "id": "205",
-      "title": "2010\n                •\n                KANNADA",
+      "title": "RIDING THE STALLION OF DREAM",
       "director": "",
       "country": "INDIA",
       "year": 2010,
@@ -2383,7 +2635,7 @@
     },
     {
       "id": "206",
-      "title": "1997\n                •\n                KANNADA",
+      "title": "THAAYI SAHEBA",
       "director": "",
       "country": "INDIA",
       "year": 1997,
@@ -2392,6 +2644,7 @@
       "synopsis": "Nandini FHS Layout, Next to Presidency School, Bengaluru-560096",
       "posterUrl": "/posters/206.jpg",
       "categoryId": "24",
+      "imdbId": "tt15137728",
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/809202601101632479321.jpg"
     }
   ]

@@ -68,33 +68,46 @@ async function scrapeCategory(categoryId: string): Promise<Film[]> {
 
     const $ = cheerio.load(response.data);
 
-    // Parse film cards - based on biffes.org structure
-    $("a[href*='/filmdetails/']").each((_, el) => {
-      const $el = $(el);
-      const href = $el.attr("href") || "";
+    // Parse film cards - look for h3 titles that link to filmdetails
+    $("h3").each((_, el) => {
+      const $h3 = $(el);
+      const $link = $h3.find("a[href*='/filmdetails/']");
+      if ($link.length === 0) return;
+
+      const href = $link.attr("href") || "";
       const idMatch = href.match(/filmdetails\/(\d+)/);
       if (!idMatch) return;
 
       const id = idMatch[1];
-      const title = $el.find("h3, .title").text().trim() || $el.text().trim();
-      const posterUrl = $el.find("img").attr("src") || "";
+      const title = $link.text().trim();
       
-      // Extract year and language from nearby text
-      const infoText = $el.parent().text();
-      const yearMatch = infoText.match(/(\d{4})/);
+      // Find poster - look at previous siblings or parent's img
+      const $card = $h3.parent();
+      let posterUrl = $card.find("img").first().attr("src") || "";
+      if (!posterUrl) {
+        posterUrl = $h3.prev("img").attr("src") || $h3.prevAll("img").first().attr("src") || "";
+      }
+      
+      // Extract year and language from nearby text (usually a sibling link or div)
+      const infoText = $card.text();
+      const yearMatch = infoText.match(/(\d{4})\s*[•·]/);
       const year = yearMatch ? parseInt(yearMatch[1]) : 2025;
+      
+      // Language is usually after the bullet
+      const langMatch = infoText.match(/[•·]\s*([A-Z\s|]+?)(?:\n|$)/);
+      const language = langMatch ? langMatch[1].trim() : "";
 
       if (title && !films.find(f => f.id === id)) {
         films.push({
           id,
-          title: title.toUpperCase() === title ? title : title,
+          title,
           director: "",
           country: "",
           year,
           duration: 0,
-          language: "",
+          language,
           synopsis: "",
-          posterUrl: posterUrl.startsWith("http") ? posterUrl : `${BASE_URL}${posterUrl}`,
+          posterUrl: posterUrl.startsWith("http") ? posterUrl : posterUrl ? `${BASE_URL}${posterUrl}` : "",
           categoryId,
         });
       }
