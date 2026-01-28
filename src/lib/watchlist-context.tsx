@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 
 interface WatchlistContextType {
   watchlist: string[];
@@ -16,6 +16,17 @@ interface WatchlistContextType {
 }
 
 const WatchlistContext = createContext<WatchlistContextType | null>(null);
+
+// Cache configuration
+const CACHE_VERSION = 1;
+const SYNC_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes - don't re-sync more often than this
+const STORAGE_KEYS = {
+  userId: "biffes_user_id",
+  watchlist: "biffes_watchlist",
+  syncCode: "biffes_sync_code",
+  lastSync: "biffes_last_sync",
+  cacheVersion: "biffes_cache_version",
+} as const;
 
 // Generate a UUID for anonymous users
 function generateUserId(): string {
@@ -36,62 +47,115 @@ function generateShortCode(): string {
   return code;
 }
 
+// Check if we should sync with server (not too recently)
+function shouldSyncWithServer(): boolean {
+  try {
+    const lastSync = localStorage.getItem(STORAGE_KEYS.lastSync);
+    if (!lastSync) return true;
+    const elapsed = Date.now() - parseInt(lastSync, 10);
+    return elapsed > SYNC_INTERVAL_MS;
+  } catch {
+    return true;
+  }
+}
+
+// Mark sync timestamp
+function markSynced(): void {
+  try {
+    localStorage.setItem(STORAGE_KEYS.lastSync, Date.now().toString());
+  } catch {
+    // Storage full or unavailable
+  }
+}
+
+// Check and migrate cache if version changed
+function checkCacheVersion(): void {
+  try {
+    const storedVersion = localStorage.getItem(STORAGE_KEYS.cacheVersion);
+    if (storedVersion !== CACHE_VERSION.toString()) {
+      // Version mismatch - could clear cache here if needed for breaking changes
+      localStorage.setItem(STORAGE_KEYS.cacheVersion, CACHE_VERSION.toString());
+    }
+  } catch {
+    // Storage unavailable
+  }
+}
+
 export function WatchlistProvider({ children }: { children: ReactNode }) {
   const [watchlist, setWatchlist] = useState<string[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [syncCode, setSyncCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Track pending changes for debounced sync
+  const pendingChangesRef = useRef<{ add: Set<string>; remove: Set<string> }>({
+    add: new Set(),
+    remove: new Set(),
+  });
+  const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize user ID and load watchlist
   useEffect(() => {
     const initUser = async () => {
-      let id = localStorage.getItem("biffes_user_id");
+      checkCacheVersion();
+      
+      let id = localStorage.getItem(STORAGE_KEYS.userId);
       if (!id) {
         id = generateUserId();
-        localStorage.setItem("biffes_user_id", id);
+        localStorage.setItem(STORAGE_KEYS.userId, id);
       }
       setUserId(id);
 
       // Load existing sync code if any
-      const existingCode = localStorage.getItem("biffes_sync_code");
+      const existingCode = localStorage.getItem(STORAGE_KEYS.syncCode);
       if (existingCode) {
         setSyncCode(existingCode);
       }
 
-      // Load from localStorage first (instant)
-      const localWatchlist = localStorage.getItem("biffes_watchlist");
-      const localData = localWatchlist ? JSON.parse(localWatchlist) : [];
+      // Load from localStorage first (instant) - this is the cache
+      const localWatchlist = localStorage.getItem(STORAGE_KEYS.watchlist);
+      const localData: string[] = localWatchlist ? JSON.parse(localWatchlist) : [];
       if (localData.length > 0) {
         setWatchlist(localData);
       }
-
-      // Then try to fetch from Redis (may have newer data from other devices)
-      try {
-        const res = await fetch(`/api/watchlist?userId=${id}`);
-        if (res.ok) {
-          const data = await res.json();
-          const serverData = data.watchlist || [];
-          
-          // Merge: use server data if it has items, otherwise keep local
-          if (serverData.length > 0) {
-            // Merge local and server (union of both)
-            const merged = [...new Set([...localData, ...serverData])];
-            setWatchlist(merged);
-            localStorage.setItem("biffes_watchlist", JSON.stringify(merged));
-          } else if (localData.length > 0) {
-            // Server empty but local has data - push local to server
-            await fetch("/api/watchlist", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ userId: id, watchlist: localData, action: "sync" }),
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Failed to sync with server:", error);
-        // Keep using localStorage data (already set above)
-      }
+      
+      // Mark loading done immediately - user sees cached data
       setIsLoading(false);
+
+      // Background sync with server (if not recently synced)
+      if (shouldSyncWithServer()) {
+        try {
+          const res = await fetch(`/api/watchlist?userId=${id}`);
+          if (res.ok) {
+            const data = await res.json();
+            const serverData: string[] = data.watchlist || [];
+            
+            // Smart merge: union of local and server
+            if (serverData.length > 0 || localData.length > 0) {
+              const merged = [...new Set([...localData, ...serverData])];
+              
+              // Only update if different
+              if (JSON.stringify(merged.sort()) !== JSON.stringify(localData.sort())) {
+                setWatchlist(merged);
+                localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(merged));
+              }
+              
+              // Push merged to server if we had local-only items
+              if (merged.length > serverData.length) {
+                await fetch("/api/watchlist", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ userId: id, watchlist: merged, action: "sync" }),
+                });
+              }
+            }
+            markSynced();
+          }
+        } catch (error) {
+          console.error("Background sync failed:", error);
+          // Keep using localStorage data - already set above
+        }
+      }
     };
 
     initUser();
@@ -100,9 +164,39 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
   // Sync to localStorage as backup (always sync, even empty to clear old data)
   useEffect(() => {
     if (!isLoading) {
-      localStorage.setItem("biffes_watchlist", JSON.stringify(watchlist));
+      localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(watchlist));
     }
   }, [watchlist, isLoading]);
+  
+  // Debounced server sync - batches rapid changes
+  const scheduleServerSync = useCallback((currentUserId: string, currentWatchlist: string[]) => {
+    if (syncTimeoutRef.current) {
+      clearTimeout(syncTimeoutRef.current);
+    }
+    
+    syncTimeoutRef.current = setTimeout(async () => {
+      // Only sync if there were pending changes
+      if (pendingChangesRef.current.add.size > 0 || pendingChangesRef.current.remove.size > 0) {
+        try {
+          await fetch("/api/watchlist", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              userId: currentUserId, 
+              watchlist: currentWatchlist, 
+              action: "sync" 
+            }),
+          });
+          // Clear pending changes on success
+          pendingChangesRef.current.add.clear();
+          pendingChangesRef.current.remove.clear();
+          markSynced();
+        } catch (error) {
+          console.error("Debounced sync failed:", error);
+        }
+      }
+    }, 1000); // 1 second debounce
+  }, []);
 
   const isInWatchlist = useCallback((filmId: string) => {
     return watchlist.includes(filmId);
@@ -111,48 +205,32 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
   const addToWatchlist = useCallback(async (filmId: string) => {
     if (!userId || watchlist.includes(filmId)) return;
 
-    // Optimistic update
-    setWatchlist(prev => [...prev, filmId]);
-
-    try {
-      const res = await fetch("/api/watchlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, filmId, action: "add" }),
-      });
-      
-      if (!res.ok) {
-        // Revert on failure
-        setWatchlist(prev => prev.filter(id => id !== filmId));
-      }
-    } catch (error) {
-      console.error("Failed to add to watchlist:", error);
-      setWatchlist(prev => prev.filter(id => id !== filmId));
-    }
-  }, [userId, watchlist]);
+    // Optimistic update - instant UI response
+    const newWatchlist = [...watchlist, filmId];
+    setWatchlist(newWatchlist);
+    
+    // Track pending change
+    pendingChangesRef.current.add.add(filmId);
+    pendingChangesRef.current.remove.delete(filmId);
+    
+    // Schedule debounced sync (batches rapid adds)
+    scheduleServerSync(userId, newWatchlist);
+  }, [userId, watchlist, scheduleServerSync]);
 
   const removeFromWatchlist = useCallback(async (filmId: string) => {
     if (!userId || !watchlist.includes(filmId)) return;
 
-    // Optimistic update
-    setWatchlist(prev => prev.filter(id => id !== filmId));
-
-    try {
-      const res = await fetch("/api/watchlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, filmId, action: "remove" }),
-      });
-      
-      if (!res.ok) {
-        // Revert on failure
-        setWatchlist(prev => [...prev, filmId]);
-      }
-    } catch (error) {
-      console.error("Failed to remove from watchlist:", error);
-      setWatchlist(prev => [...prev, filmId]);
-    }
-  }, [userId, watchlist]);
+    // Optimistic update - instant UI response
+    const newWatchlist = watchlist.filter(id => id !== filmId);
+    setWatchlist(newWatchlist);
+    
+    // Track pending change
+    pendingChangesRef.current.remove.add(filmId);
+    pendingChangesRef.current.add.delete(filmId);
+    
+    // Schedule debounced sync (batches rapid removes)
+    scheduleServerSync(userId, newWatchlist);
+  }, [userId, watchlist, scheduleServerSync]);
 
   const toggleWatchlist = useCallback(async (filmId: string) => {
     if (isInWatchlist(filmId)) {
@@ -175,7 +253,7 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
 
       if (res.ok) {
         setSyncCode(code);
-        localStorage.setItem("biffes_sync_code", code);
+        localStorage.setItem(STORAGE_KEYS.syncCode, code);
         return code;
       }
     } catch (error) {
@@ -191,6 +269,9 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
         const data = await res.json();
         if (data.watchlist) {
           setWatchlist(data.watchlist);
+          localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(data.watchlist));
+          markSynced();
+          
           // Update our user's watchlist in Redis too
           if (userId) {
             await fetch("/api/watchlist", {
