@@ -214,7 +214,7 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
                     {film.letterboxdRating && (
                       <div className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 rounded-lg px-3 py-2">
                         <span className="text-orange-500 font-bold text-sm">LB</span>
-                        <span className="text-white font-semibold">{film.letterboxdRating}</span>
+                        <span className="text-white font-semibold">{film.letterboxdRating}/5</span>
                       </div>
                     )}
                   </div>

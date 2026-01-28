@@ -31,8 +31,20 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
     }
   };
 
-  // Get best available rating
-  const rating = film.imdbRating || film.letterboxdRating;
+  // Get best available rating normalized to 5-star scale
+  const getRating = (): string | null => {
+    if (film.imdbRating) {
+      // IMDB is out of 10, convert to 5
+      const score = (parseFloat(film.imdbRating) / 2).toFixed(1);
+      return score;
+    }
+    if (film.letterboxdRating) {
+      // Letterboxd is already out of 5
+      return film.letterboxdRating;
+    }
+    return null;
+  };
+  const rating = getRating();
 
   return (
     <motion.div
