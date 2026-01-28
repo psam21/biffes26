@@ -353,8 +353,8 @@ export default function Home() {
             exit={{ opacity: 0 }}
           >
             {/* Compact Header */}
-            <header className="px-4 pt-6 pb-4">
-              <div className="flex items-start justify-between max-w-7xl mx-auto">
+            <header className="pt-6 pb-4">
+              <div className="flex items-start justify-between max-w-7xl mx-auto px-4">
                 {/* Search Box - Left */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
