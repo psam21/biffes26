@@ -3,10 +3,26 @@
     "name": "Bengaluru International Film Festival",
     "edition": 17,
     "year": 2026,
-    "dates": "February 27 - March 6, 2026",
-    "venue": "Bengaluru, Karnataka, India",
-    "totalFilms": 200,
-    "totalCountries": 55
+    "dates": "January 29 – February 6, 2026",
+    "totalFilms": 225,
+    "totalCountries": 70,
+    "venues": [
+      {
+        "name": "LULU Mall",
+        "address": "Mysore Deviation Road, Rajajinagar, Bengaluru-560023",
+        "mapUrl": "https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7"
+      },
+      {
+        "name": "Dr. Rajkumar Bhavana",
+        "address": "Chamrajpet, Bengaluru-560002",
+        "mapUrl": "https://maps.app.goo.gl/8JZbsK4CSEm4AWm36"
+      },
+      {
+        "name": "Suchitra Cinema",
+        "address": "Banashankari Stage II, Bengaluru-560070",
+        "mapUrl": "https://maps.app.goo.gl/ruU2WZ2T991hrSLo7"
+      }
+    ]
   },
   "categories": [
     {

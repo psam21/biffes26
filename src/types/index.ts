@@ -39,15 +39,21 @@ export interface Subcategory {
   filmCount: number;
 }
 
+export interface Venue {
+  name: string;
+  address: string;
+  mapUrl: string;
+}
+
 export interface FestivalData {
   festival: {
     name: string;
     edition: number;
     year: number;
     dates: string;
-    venue: string;
     totalFilms: number;
     totalCountries: number;
+    venues: Venue[];
   };
   categories: Category[];
   films: Film[];

@@ -8,7 +8,7 @@ import {
   FestivalTicker,
   CategoryView,
 } from "@/components";
-import { Category, Film } from "@/types";
+import { Category, Film, Venue } from "@/types";
 import festivalData from "@/data/biffes_data.json";
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { festival, categories, films } = festivalData as {
-    festival: typeof festivalData.festival;
+    festival: typeof festivalData.festival & { venues: Venue[] };
     categories: Category[];
     films: Film[];
   };
@@ -54,6 +54,7 @@ export default function Home() {
         totalCountries={festival.totalCountries}
         edition={festival.edition}
         dates={festival.dates}
+        venues={festival.venues}
       />
 
       <AnimatePresence mode="wait">
@@ -74,41 +75,28 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Header */}
-            <header className="px-4 py-12 text-center">
+            {/* Compact Header */}
+            <header className="px-4 pt-6 pb-4 text-center">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-3xl mx-auto"
               >
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                <h1 className="text-2xl md:text-3xl font-bold text-white">
                   17th{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
                     BIFFes
                   </span>{" "}
                   2026
                 </h1>
-                <p className="text-lg text-zinc-400">
-                  Bengaluru International Film Festival
-                </p>
-                <p className="text-sm text-zinc-500 mt-2">
-                  Explore {festival.totalFilms}+ films from {festival.totalCountries}{" "}
-                  countries across {categories.length} curated categories
+                <p className="text-sm text-zinc-500 mt-1">
+                  {festival.totalFilms}+ films • {festival.totalCountries} countries • {categories.length} categories
                 </p>
               </motion.div>
             </header>
 
-            {/* Categories Grid */}
-            <section className="max-w-7xl mx-auto px-4 pb-16">
-              <motion.h2
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-xl font-semibold text-white mb-6"
-              >
-                Film Categories
-              </motion.h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {/* Categories Grid - More compact */}
+            <section className="max-w-7xl mx-auto px-4 pb-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {categories.map((category, index) => (
                   <CategoryCard
                     key={category.id}
@@ -120,15 +108,11 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Footer */}
-            <footer className="border-t border-zinc-800 py-8 px-4">
-              <div className="max-w-7xl mx-auto text-center text-zinc-500 text-sm">
+            {/* Compact Footer */}
+            <footer className="border-t border-zinc-800 py-4 px-4">
+              <div className="max-w-7xl mx-auto text-center text-zinc-500 text-xs">
                 <p>
-                  © 2026 Bengaluru International Film Festival (BIFFes). All
-                  rights reserved.
-                </p>
-                <p className="mt-2">
-                  Data sourced from{" "}
+                  © 2026 BIFFes • Data from{" "}
                   <a
                     href="https://biffes.org"
                     target="_blank"
