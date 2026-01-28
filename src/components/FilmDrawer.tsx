@@ -205,22 +205,37 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
                       </a>
                     )}
                     {film.rottenTomatoes && (
-                      <div className="flex items-center gap-2 bg-red-500/20 border border-red-500/30 rounded-lg px-3 py-2">
+                      <a
+                        href={`https://www.rottentomatoes.com/search?search=${encodeURIComponent(film.title)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-red-500/20 border border-red-500/30 rounded-lg px-3 py-2 hover:bg-red-500/30 transition-colors"
+                      >
                         <span className="text-red-500 font-bold">🍅</span>
                         <span className="text-white font-semibold">{film.rottenTomatoes}</span>
-                      </div>
+                      </a>
                     )}
                     {film.metacritic && (
-                      <div className="flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-2">
+                      <a
+                        href={`https://www.metacritic.com/search/${encodeURIComponent(film.title)}/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-2 hover:bg-green-500/30 transition-colors"
+                      >
                         <span className="text-green-500 font-bold text-sm">MC</span>
                         <span className="text-white font-semibold">{film.metacritic}</span>
-                      </div>
+                      </a>
                     )}
                     {film.letterboxdRating && (
-                      <div className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 rounded-lg px-3 py-2">
+                      <a
+                        href={`https://letterboxd.com/search/${encodeURIComponent(film.title)}/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 rounded-lg px-3 py-2 hover:bg-orange-500/30 transition-colors"
+                      >
                         <span className="text-orange-500 font-bold text-sm">LB</span>
-                        <span className="text-white font-semibold">{film.letterboxdRating}/5</span>
-                      </div>
+                        <span className="text-white font-semibold">{film.letterboxdRating}</span>
+                      </a>
                     )}
                   </div>
                 </div>
