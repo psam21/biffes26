@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CategoryCard,
@@ -24,20 +24,53 @@ export default function Home() {
     films: Film[];
   };
 
+  // Restore state from URL hash on initial load
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const category = categories.find((c) => c.slug === hash || hash.startsWith(c.slug + "/"));
+      if (category) {
+        setSelectedCategory(category);
+      }
+    }
+  }, [categories]);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      // Close drawer first if open
+      if (isDrawerOpen) {
+        setIsDrawerOpen(false);
+        setSelectedFilm(null);
+        return;
+      }
+      // Go back to home
+      setSelectedCategory(null);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [isDrawerOpen]);
+
   const handleCategoryClick = (category: Category) => {
+    // Push state so back button works
+    window.history.pushState({ category: category.id }, "", `#${category.slug}`);
     setSelectedCategory(category);
   };
 
   const handleBackToCategories = () => {
+    window.history.pushState(null, "", "/");
     setSelectedCategory(null);
   };
 
   const handleFilmClick = (film: Film) => {
+    window.history.pushState({ film: film.id }, "", `#${selectedCategory?.slug}/${film.id}`);
     setSelectedFilm(film);
     setIsDrawerOpen(true);
   };
 
   const handleCloseDrawer = () => {
+    window.history.back();
     setIsDrawerOpen(false);
     setTimeout(() => setSelectedFilm(null), 300);
   };
