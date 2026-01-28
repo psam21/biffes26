@@ -282,50 +282,49 @@ export default function Home() {
                 <h2 className="text-lg font-semibold text-white">
                   🏆 Award-Winning Films
                 </h2>
-                <p className="text-xs text-zinc-500 mt-1">Festival favorites and critically acclaimed selections</p>
+                <p className="text-xs text-zinc-500 mt-1">
+                  {films.filter(film => film.awardsWon).length} festival favorites and critically acclaimed selections
+                </p>
               </div>
-              <div className="overflow-x-auto pb-2 -mx-4 px-4">
-                <div className="flex gap-3" style={{ minWidth: 'max-content' }}>
-                  {films
-                    .filter(film => film.awardsWon)
-                    .sort((a, b) => {
-                      // Prioritize major festivals: Cannes, Venice, Berlin, Sundance, Toronto
-                      const majorFests = ['cannes', 'venice', 'berlin', 'sundance', 'toronto', 'locarno'];
-                      const aHasMajor = majorFests.some(f => a.awardsWon?.toLowerCase().includes(f));
-                      const bHasMajor = majorFests.some(f => b.awardsWon?.toLowerCase().includes(f));
-                      if (aHasMajor && !bHasMajor) return -1;
-                      if (!aHasMajor && bHasMajor) return 1;
-                      return (b.awardsWon?.length || 0) - (a.awardsWon?.length || 0);
-                    })
-                    .slice(0, 12)
-                    .map((film) => (
-                      <button
-                        key={film.id}
-                        onClick={() => handleFilmClick(film)}
-                        className="flex-shrink-0 group relative w-24 focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
-                      >
-                        <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
-                          {film.posterUrl ? (
-                            <img
-                              src={film.posterUrl}
-                              alt={film.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
-                              {film.title}
-                            </div>
-                          )}
-                          <div className="absolute top-1 right-1 bg-yellow-500 text-black text-[10px] px-1.5 py-0.5 rounded font-medium">
-                            🏆
+              <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+                {films
+                  .filter(film => film.awardsWon)
+                  .sort((a, b) => {
+                    // Prioritize major festivals: Cannes, Venice, Berlin, Sundance, Toronto
+                    const majorFests = ['cannes', 'venice', 'berlin', 'sundance', 'toronto', 'locarno'];
+                    const aHasMajor = majorFests.some(f => a.awardsWon?.toLowerCase().includes(f));
+                    const bHasMajor = majorFests.some(f => b.awardsWon?.toLowerCase().includes(f));
+                    if (aHasMajor && !bHasMajor) return -1;
+                    if (!aHasMajor && bHasMajor) return 1;
+                    return (b.awardsWon?.length || 0) - (a.awardsWon?.length || 0);
+                  })
+                  .map((film) => (
+                    <button
+                      key={film.id}
+                      onClick={() => handleFilmClick(film)}
+                      className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
+                    >
+                      <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
+                        {film.posterUrl ? (
+                          <img
+                            src={film.posterUrl}
+                            alt={film.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
+                            {film.title}
                           </div>
+                        )}
+                        <div className="absolute top-1 right-1 bg-yellow-500 text-black text-[10px] px-1.5 py-0.5 rounded font-medium">
+                          🏆
                         </div>
-                        <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
-                          {film.title}
-                        </p>
-                      </button>
-                    ))}
-                </div>
+                      </div>
+                      <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
+                        {film.title}
+                      </p>
+                    </button>
+                  ))}
               </div>
             </section>
 
