@@ -140,8 +140,23 @@ export default function Home() {
               </div>
             </section>
 
+            {/* Rating Filter Buttons */}
+            <section className="max-w-7xl mx-auto px-4 pb-6">
+              <div className="flex justify-center gap-3">
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 transition-colors text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                  <span className="text-yellow-500">★</span> 5 Star
+                </button>
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 transition-colors text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                  <span className="text-yellow-500">★</span> 4.5 Star
+                </button>
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 transition-colors text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                  <span className="text-yellow-500">★</span> 4 Star
+                </button>
+              </div>
+            </section>
+
             {/* Compact Footer */}
-            <footer className="border-t border-zinc-800 py-4 px-4">
+            <footer className="border-t border-zinc-800 py-4 px-4 mt-4">
               <div className="max-w-7xl mx-auto text-center text-zinc-500 text-xs">
                 <p>
                   © 2026 BIFFes • Data from{" "}
