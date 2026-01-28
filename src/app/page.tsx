@@ -385,7 +385,7 @@ export default function Home() {
                 </div>
                 <p>
                   <a 
-                    href="https://github.com/pSamratv1/biffes26" 
+                    href="https://github.com/psam21/biffes26" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="inline-flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
