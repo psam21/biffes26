@@ -394,6 +394,9 @@ export default function Home() {
                     Source Code
                   </a>
                 </p>
+                <p className="text-zinc-600 mt-2">
+                  Built with <span className="text-red-500">❤️</span> for cinema lovers
+                </p>
               </div>
             </footer>
           </motion.div>
