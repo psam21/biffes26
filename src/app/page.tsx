@@ -276,36 +276,56 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Critics' Picks Section */}
+            {/* Award Winners Section */}
             <section className="max-w-7xl mx-auto px-4 pb-6">
               <div className="text-center mb-4">
                 <h2 className="text-lg font-semibold text-white">
-                  🎬 Don't Miss These Gems
+                  🏆 Award-Winning Films
                 </h2>
-                <p className="text-xs text-zinc-500 mt-1">Critically acclaimed films playing at this festival</p>
+                <p className="text-xs text-zinc-500 mt-1">Festival favorites and critically acclaimed selections</p>
               </div>
-              <div className="flex flex-wrap justify-center gap-3">
-                <button 
-                  onClick={() => handleRatingFilter(4.5)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-yellow-600/20 to-amber-600/20 hover:from-yellow-600/30 hover:to-amber-600/30 border border-yellow-500/30 hover:border-yellow-500/50 transition-all text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                >
-                  <span className="text-yellow-400">🏆</span> Masterpieces
-                  {fiveStarFilms.length > 0 && <span className="text-yellow-400/70">({fiveStarFilms.length})</span>}
-                </button>
-                <button 
-                  onClick={() => handleRatingFilter(4.0)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 hover:from-purple-600/30 hover:to-pink-600/30 border border-purple-500/30 hover:border-purple-500/50 transition-all text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                >
-                  <span className="text-purple-400">🎭</span> Must Watch
-                  {fourHalfStarFilms.length > 0 && <span className="text-purple-400/70">({fourHalfStarFilms.length})</span>}
-                </button>
-                <button 
-                  onClick={() => handleRatingFilter(3.5)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-600/20 to-blue-600/20 hover:from-cyan-600/30 hover:to-blue-600/30 border border-cyan-500/30 hover:border-cyan-500/50 transition-all text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                >
-                  <span className="text-cyan-400">🎪</span> Worth Your Time
-                  {fourStarFilms.length > 0 && <span className="text-cyan-400/70">({fourStarFilms.length})</span>}
-                </button>
+              <div className="overflow-x-auto pb-2 -mx-4 px-4">
+                <div className="flex gap-3" style={{ minWidth: 'max-content' }}>
+                  {films
+                    .filter(film => film.awardsWon)
+                    .sort((a, b) => {
+                      // Prioritize major festivals: Cannes, Venice, Berlin, Sundance, Toronto
+                      const majorFests = ['cannes', 'venice', 'berlin', 'sundance', 'toronto', 'locarno'];
+                      const aHasMajor = majorFests.some(f => a.awardsWon?.toLowerCase().includes(f));
+                      const bHasMajor = majorFests.some(f => b.awardsWon?.toLowerCase().includes(f));
+                      if (aHasMajor && !bHasMajor) return -1;
+                      if (!aHasMajor && bHasMajor) return 1;
+                      return (b.awardsWon?.length || 0) - (a.awardsWon?.length || 0);
+                    })
+                    .slice(0, 12)
+                    .map((film) => (
+                      <button
+                        key={film.id}
+                        onClick={() => handleFilmClick(film)}
+                        className="flex-shrink-0 group relative w-24 focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
+                      >
+                        <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
+                          {film.posterUrl ? (
+                            <img
+                              src={film.posterUrl}
+                              alt={film.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
+                              {film.title}
+                            </div>
+                          )}
+                          <div className="absolute top-1 right-1 bg-yellow-500 text-black text-[10px] px-1.5 py-0.5 rounded font-medium">
+                            🏆
+                          </div>
+                        </div>
+                        <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
+                          {film.title}
+                        </p>
+                      </button>
+                    ))}
+                </div>
               </div>
             </section>
 
