@@ -8,9 +8,11 @@ import {
   FestivalTicker,
   CategoryView,
   FilmCard,
+  WatchlistButton,
 } from "@/components";
 import { Category, Film, Venue } from "@/types";
 import festivalData from "@/data/biffes_data.json";
+import { useWatchlist } from "@/lib/watchlist-context";
 
 // Convert various rating formats to a 5-star scale
 function getRatingScore(film: Film): number | null {
@@ -34,6 +36,9 @@ export default function Home() {
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
+  const [showWatchlist, setShowWatchlist] = useState(false);
+  
+  const { watchlist, isLoading: watchlistLoading } = useWatchlist();
 
   const { festival, categories, films } = festivalData as {
     festival: typeof festivalData.festival & { venues: Venue[]; lastUpdated: string };
@@ -52,6 +57,9 @@ export default function Home() {
   const fiveStarFilms = getFilteredFilms(4.5); // 4.5-5 stars
   const fourHalfStarFilms = getFilteredFilms(4.0); // 4-5 stars  
   const fourStarFilms = getFilteredFilms(3.5); // 3.5-5 stars
+
+  // Get watchlist films
+  const watchlistFilms = films.filter(film => watchlist.includes(film.id));
 
   // Restore state from URL hash on initial load
   useEffect(() => {
@@ -78,13 +86,18 @@ export default function Home() {
         setRatingFilter(null);
         return;
       }
+      // Close watchlist view
+      if (showWatchlist) {
+        setShowWatchlist(false);
+        return;
+      }
       // Go back to home
       setSelectedCategory(null);
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [isDrawerOpen, ratingFilter]);
+  }, [isDrawerOpen, ratingFilter, showWatchlist]);
 
   const handleCategoryClick = (category: Category) => {
     // Push state so back button works
@@ -96,6 +109,12 @@ export default function Home() {
     window.history.pushState(null, "", "/");
     setSelectedCategory(null);
     setRatingFilter(null);
+    setShowWatchlist(false);
+  };
+
+  const handleWatchlistClick = () => {
+    window.history.pushState({ watchlist: true }, "", "#watchlist");
+    setShowWatchlist(true);
   };
 
   const handleRatingFilter = (minRating: number) => {
@@ -216,6 +235,90 @@ export default function Home() {
               )}
             </div>
           </motion.div>
+        ) : showWatchlist ? (
+          /* Watchlist View */
+          <motion.div
+            key="watchlist"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="min-h-screen"
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/20 py-12 px-4 border-b border-green-800/30">
+              <div className="max-w-7xl mx-auto">
+                <motion.button
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  onClick={handleBackToCategories}
+                  className="flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg px-2 py-1 -ml-2"
+                  aria-label="Go back to all categories"
+                >
+                  <span>←</span>
+                  <span>All Categories</span>
+                </motion.button>
+
+                <div className="flex items-start justify-between">
+                  <div>
+                    <motion.h1
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-3xl md:text-4xl font-bold text-white flex items-center gap-3"
+                    >
+                      <span className="text-green-500">✓</span>
+                      My Watchlist
+                    </motion.h1>
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="mt-2 text-white/70"
+                    >
+                      Films you want to watch at BIFFes 2026
+                    </motion.p>
+                  </div>
+
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2"
+                  >
+                    <span className="text-xl font-bold text-white">{watchlistFilms.length}</span>
+                    <span className="text-sm text-white/60">films</span>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+
+            {/* Films Grid */}
+            <div className="max-w-7xl mx-auto px-4 py-8">
+              {watchlistLoading ? (
+                <div className="text-center py-16">
+                  <div className="animate-spin w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                  <p className="text-zinc-400">Loading your watchlist...</p>
+                </div>
+              ) : watchlistFilms.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {watchlistFilms.map((film, index) => (
+                    <FilmCard
+                      key={film.id}
+                      film={film}
+                      onClick={() => handleFilmClick(film)}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                  <span className="text-6xl mb-4 block">📝</span>
+                  <p className="text-zinc-400 text-lg mb-2">Your watchlist is empty</p>
+                  <p className="text-zinc-500 text-sm">
+                    Click the <span className="inline-flex items-center justify-center w-5 h-5 bg-zinc-700 rounded-full text-xs">+</span> button on any film to add it
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
         ) : selectedCategory ? (
           /* Category Detail View */
           <CategoryView
@@ -234,32 +337,51 @@ export default function Home() {
             exit={{ opacity: 0 }}
           >
             {/* Compact Header */}
-            <header className="px-4 pt-6 pb-4 text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <h1 className="text-2xl md:text-3xl font-bold text-white">
-                  17th{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
-                    BIFFes
-                  </span>{" "}
-                  2026
-                </h1>
-                <p className="text-sm text-zinc-400 mt-1">
-                  January 29 – February 6, 2026
-                </p>
-                <p className="text-xs text-zinc-500 mt-1">
-                  <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
-                  {" • "}
-                  <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Dr. Rajkumar Bhavana</a>
-                  {" • "}
-                  <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
-                </p>
-                <p className="text-xs text-zinc-500 mt-1">
-                  200+ Films | 60+ Countries | 9 Days
-                </p>
-              </motion.div>
+            <header className="px-4 pt-6 pb-4">
+              <div className="flex items-start justify-between max-w-7xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center flex-1"
+                >
+                  <h1 className="text-2xl md:text-3xl font-bold text-white">
+                    17th{" "}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
+                      BIFFes
+                    </span>{" "}
+                    2026
+                  </h1>
+                  <p className="text-sm text-zinc-400 mt-1">
+                    January 29 – February 6, 2026
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
+                    {" • "}
+                    <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Dr. Rajkumar Bhavana</a>
+                    {" • "}
+                    <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
+                  </p>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    200+ Films | 60+ Countries | 9 Days
+                  </p>
+                </motion.div>
+                
+                {/* Watchlist Button */}
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={handleWatchlistClick}
+                  className="flex items-center gap-2 px-3 py-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg transition-colors"
+                >
+                  <span className="text-green-400">✓</span>
+                  <span className="text-sm text-white hidden sm:inline">My Watchlist</span>
+                  {watchlist.length > 0 && (
+                    <span className="bg-green-500 text-black text-xs font-bold px-1.5 py-0.5 rounded-full">
+                      {watchlist.length}
+                    </span>
+                  )}
+                </motion.button>
+              </div>
             </header>
 
             {/* Categories Grid - More compact */}

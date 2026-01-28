@@ -6,6 +6,7 @@ import Image from "next/image";
 import { X, Clock, Globe, Languages, Calendar, User } from "lucide-react";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
+import { WatchlistButton } from "./WatchlistButton";
 
 interface FilmDrawerProps {
   film: Film | null;
@@ -112,19 +113,22 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
 
             {/* Content */}
             <div className="p-6 space-y-6">
-              {/* Title */}
-              <div>
-                <h2 className="text-2xl font-bold text-white">{film.title}</h2>
-                {film.kannadaTitle && (
-                  <p className="text-sm text-zinc-400 mt-1">
-                    {film.kannadaTitle}
-                  </p>
-                )}
-                {film.originalTitle && film.originalTitle !== film.kannadaTitle && (
-                  <p className="text-sm text-zinc-500 mt-1">
-                    {film.originalTitle}
-                  </p>
-                )}
+              {/* Title and Watchlist button */}
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-white">{film.title}</h2>
+                  {film.kannadaTitle && (
+                    <p className="text-sm text-zinc-400 mt-1">
+                      {film.kannadaTitle}
+                    </p>
+                  )}
+                  {film.originalTitle && film.originalTitle !== film.kannadaTitle && (
+                    <p className="text-sm text-zinc-500 mt-1">
+                      {film.originalTitle}
+                    </p>
+                  )}
+                </div>
+                <WatchlistButton filmId={film.id} variant="full" />
               </div>
 
               {/* Meta info grid */}

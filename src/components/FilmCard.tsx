@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
+import { WatchlistButton } from "./WatchlistButton";
 
 interface FilmCardProps {
   film: Film;
@@ -58,7 +59,7 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
       role="button"
       aria-label={`${film.title} by ${film.director || 'Unknown'} - ${film.country}, ${film.year}`}
       className={cn(
-        "film-card cursor-pointer rounded-lg overflow-hidden",
+        "film-card cursor-pointer rounded-lg overflow-hidden group",
         "bg-zinc-900 border border-zinc-800",
         "hover:border-zinc-600 transition-colors duration-200",
         "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
@@ -104,6 +105,11 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
             )}
           </div>
         )}
+
+        {/* Watchlist button (top-right) */}
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <WatchlistButton filmId={film.id} />
+        </div>
 
         {/* Language badge */}
         <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm rounded px-2 py-0.5">
