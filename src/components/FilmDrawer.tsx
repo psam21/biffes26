@@ -115,8 +115,13 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
               {/* Title */}
               <div>
                 <h2 className="text-2xl font-bold text-white">{film.title}</h2>
-                {film.originalTitle && (
+                {film.kannadaTitle && (
                   <p className="text-sm text-zinc-400 mt-1">
+                    {film.kannadaTitle}
+                  </p>
+                )}
+                {film.originalTitle && film.originalTitle !== film.kannadaTitle && (
+                  <p className="text-sm text-zinc-500 mt-1">
                     {film.originalTitle}
                   </p>
                 )}
@@ -230,6 +235,91 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
                   <p className="text-sm text-zinc-300 leading-relaxed">
                     {film.synopsis}
                   </p>
+                </div>
+              )}
+
+              {/* Cast */}
+              {film.cast && (
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                    Cast
+                  </h3>
+                  <p className="text-sm text-zinc-300">{film.cast}</p>
+                </div>
+              )}
+
+              {/* Crew Grid */}
+              {(film.producer || film.screenplay || film.cinematography || film.editor || film.music || film.sound) && (
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                    Crew
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    {film.producer && (
+                      <div>
+                        <p className="text-xs text-zinc-500">Producer</p>
+                        <p className="text-zinc-300">{film.producer}</p>
+                      </div>
+                    )}
+                    {film.screenplay && (
+                      <div>
+                        <p className="text-xs text-zinc-500">Screenplay</p>
+                        <p className="text-zinc-300">{film.screenplay}</p>
+                      </div>
+                    )}
+                    {film.cinematography && (
+                      <div>
+                        <p className="text-xs text-zinc-500">Cinematography</p>
+                        <p className="text-zinc-300">{film.cinematography}</p>
+                      </div>
+                    )}
+                    {film.editor && (
+                      <div>
+                        <p className="text-xs text-zinc-500">Editor</p>
+                        <p className="text-zinc-300">{film.editor}</p>
+                      </div>
+                    )}
+                    {film.music && (
+                      <div>
+                        <p className="text-xs text-zinc-500">Music</p>
+                        <p className="text-zinc-300">{film.music}</p>
+                      </div>
+                    )}
+                    {film.sound && (
+                      <div>
+                        <p className="text-xs text-zinc-500">Sound</p>
+                        <p className="text-zinc-300">{film.sound}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Awards */}
+              {(film.awardsWon || film.awardsNominated) && (
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                    🏆 Awards & Festivals
+                  </h3>
+                  {film.awardsWon && (
+                    <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3">
+                      <p className="text-xs text-yellow-500 font-semibold mb-1">Winner</p>
+                      <p className="text-sm text-zinc-300">{film.awardsWon}</p>
+                    </div>
+                  )}
+                  {film.awardsNominated && (
+                    <div className="bg-zinc-800 rounded-lg p-3">
+                      <p className="text-xs text-zinc-500 font-semibold mb-1">Official Selection / Nominations</p>
+                      <p className="text-sm text-zinc-400">{film.awardsNominated}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Film Courtesy */}
+              {film.filmCourtesy && (
+                <div className="text-xs text-zinc-500 pt-2 border-t border-zinc-800">
+                  Film courtesy: {film.filmCourtesy}
                 </div>
               )}
 

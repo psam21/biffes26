@@ -27,6 +27,7 @@ interface Film {
   id: string;
   title: string;
   originalTitle?: string;
+  kannadaTitle?: string;
   director: string;
   country: string;
   year: number;
@@ -36,6 +37,19 @@ interface Film {
   posterUrl: string;
   posterUrlRemote?: string;
   categoryId: string;
+  // Crew info
+  producer?: string;
+  screenplay?: string;
+  cinematography?: string;
+  editor?: string;
+  music?: string;
+  sound?: string;
+  cast?: string;
+  // Awards
+  awardsWon?: string;
+  awardsNominated?: string;
+  filmCourtesy?: string;
+  // Ratings
   imdbRating?: string;
   rottenTomatoes?: string;
   metacritic?: string;
@@ -121,6 +135,19 @@ async function scrapeCategory(categoryId: string): Promise<Film[]> {
   return films;
 }
 
+// Helper to extract field from movie information section
+function extractField($: cheerio.CheerioAPI, fieldName: string): string {
+  let value = "";
+  $(".text-color-movie").each((_, el) => {
+    const label = $(el).text().trim().toLowerCase();
+    if (label.includes(fieldName.toLowerCase())) {
+      const valueEl = $(el).parent().find("p.text").first();
+      value = valueEl.text().trim();
+    }
+  });
+  return value;
+}
+
 // Scrape detailed film info from film detail page
 async function scrapeFilmDetails(film: Film): Promise<Film> {
   const url = `${BASE_URL}/filmdetails/${film.id}`;
@@ -134,47 +161,65 @@ async function scrapeFilmDetails(film: Film): Promise<Film> {
     const $ = cheerio.load(response.data);
     const pageText = $("body").text();
 
-    // Extract director - look for pattern after title
-    const directorMatch = pageText.match(/([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s*\n*\s*INDIA|IRAN|JAPAN|KOREA|CHINA|NEPAL|PHILIPPINES|MYANMAR/i);
-    
-    // Extract from structured data if available
-    const infoSection = $(".film-info, .movie-info, [class*='detail']").text();
-    
-    // Country extraction
-    const countryMatch = pageText.match(/(INDIA|IRAN|JAPAN|SOUTH KOREA|KOREA|CHINA|NEPAL|PHILIPPINES|MYANMAR|BANGLADESH|SRI LANKA|PAKISTAN|THAILAND|INDONESIA|VIETNAM|MALAYSIA|SINGAPORE|TAIWAN|HONG KONG|KYRGYZSTAN|KAZAKHSTAN|UZBEKISTAN|MONGOLIA|AFGHANISTAN|USA|UK|FRANCE|GERMANY|ITALY|SPAIN|BRAZIL|ARGENTINA|MEXICO|CANADA|AUSTRALIA|NEW ZEALAND)/i);
-    const country = countryMatch ? countryMatch[1] : "";
+    // Extract Kannada title (usually after English title)
+    const kannadaTitleEl = $("h2, h3, .kn-language-content").filter((_, el) => {
+      const text = $(el).text().trim();
+      return /[\u0C80-\u0CFF]/.test(text); // Kannada Unicode range
+    }).first();
+    const kannadaTitle = kannadaTitleEl.text().trim() || "";
 
-    // Language extraction - normalize to lowercase first for proper deduplication
-    const langMatch = pageText.match(/(KANNADA|HINDI|MALAYALAM|TAMIL|TELUGU|BENGALI|MARATHI|GUJARATI|PUNJABI|ASSAMESE|MANIPURI|ODIA|URDU|ENGLISH|FARSI|PERSIAN|JAPANESE|KOREAN|MANDARIN|CHINESE|NEPALI|TAGALOG|ROHINGYA|KYRGYZ|RUSSIAN|ARABIC|FRENCH|GERMAN|SPANISH|PORTUGUESE|ITALIAN|KARBI)/gi);
-    const language = langMatch 
-      ? [...new Set(langMatch.map(l => l.toLowerCase()))]
-          .map(l => l.charAt(0).toUpperCase() + l.slice(1))
-          // Merge similar languages
-          .filter((l, i, arr) => {
-            if (l === "Persian" && arr.includes("Farsi")) return false;
-            if (l === "Chinese" && arr.includes("Mandarin")) return false;
-            return true;
-          })
-          .join(" | ") 
-      : "";
+    // Country extraction - from header info line
+    const headerInfo = $(".filmdetails, .entry-meta").text();
+    const countryMatch = headerInfo.match(/(INDIA|IRAN|JAPAN|SOUTH KOREA|KOREA|CHINA|NEPAL|PHILIPPINES|MYANMAR|BANGLADESH|SRI LANKA|PAKISTAN|THAILAND|INDONESIA|VIETNAM|MALAYSIA|SINGAPORE|TAIWAN|HONG KONG|KYRGYZSTAN|KAZAKHSTAN|UZBEKISTAN|MONGOLIA|AFGHANISTAN|USA|UK|FRANCE|GERMANY|ITALY|SPAIN|BRAZIL|ARGENTINA|MEXICO|CANADA|AUSTRALIA|NEW ZEALAND|POLAND|BELGIUM|NETHERLANDS|SWEDEN|NORWAY|DENMARK|FINLAND|SWITZERLAND|AUSTRIA)/i);
+    const country = countryMatch ? countryMatch[1] : film.country;
+
+    // Language extraction from header - format is "COUNTRY / LANGUAGE / YEAR / DURATION"
+    const langLineMatch = headerInfo.match(/\/\s*([A-Z][A-Z\s|]+)\s*\/\s*\d{4}/i);
+    let language = "";
+    if (langLineMatch) {
+      const langs = langLineMatch[1].split("|").map(l => l.trim().toLowerCase());
+      language = [...new Set(langs)]
+        .map(l => l.charAt(0).toUpperCase() + l.slice(1))
+        .filter((l, i, arr) => {
+          if (l === "Persian" && arr.includes("Farsi")) return false;
+          if (l === "Chinese" && arr.includes("Mandarin")) return false;
+          return true;
+        })
+        .join(" | ");
+    }
 
     // Duration extraction
     const durationMatch = pageText.match(/(\d+)\s*mins?/i);
-    const duration = durationMatch ? parseInt(durationMatch[1]) : 0;
+    const duration = durationMatch ? parseInt(durationMatch[1]) : film.duration;
 
-    // Synopsis extraction - exclude footer/address content
-    const synopsisEl = $("p").filter((_, el) => {
-      const text = $(el).text().trim();
-      const isValidLength = text.length > 50 && text.length < 1000;
-      const isNotFooter = !text.includes("©") && 
-                          !text.includes("Bengaluru-") && 
-                          !text.includes("biffesblr") &&
-                          !text.includes("Layout") &&
-                          !text.includes("Mon - Sat") &&
-                          !text.includes("All Rights Reserved");
-      return isValidLength && isNotFooter;
-    }).first();
-    const synopsis = synopsisEl.text().trim().slice(0, 500);
+    // Year extraction
+    const yearMatch = headerInfo.match(/\/\s*(20[12]\d)\s*\//i);
+    const year = yearMatch ? parseInt(yearMatch[1]) : film.year;
+
+    // Synopsis from tab1 (first tab content)
+    const synopsisEl = $("#tab1 p.text, #tab1 .text").first();
+    let synopsis = synopsisEl.text().trim();
+    // Remove Kannada text (keep only English)
+    synopsis = synopsis.replace(/[\u0C80-\u0CFF]+/g, "").trim();
+    // Clean up extra whitespace
+    synopsis = synopsis.replace(/\s+/g, " ").slice(0, 800);
+
+    // Extract crew from MOVIE INFORMATION tab (tab2)
+    const producer = extractField($, "producer");
+    const screenplay = extractField($, "screenplay");
+    const cinematography = extractField($, "photography") || extractField($, "cinematograph");
+    const editor = extractField($, "editor");
+    const music = extractField($, "music");
+    const sound = extractField($, "sound");
+    const cast = extractField($, "cast");
+    
+    // Awards
+    const awardsWon = extractField($, "awards - winner");
+    const awardsNominated = extractField($, "nomination") || extractField($, "official selection") || extractField($, "screened");
+    
+    // Film courtesy
+    const filmCourtesy = $("b:contains('FILM COURTESY')").parent().parent().find("p").text().trim() ||
+                         $(".extraText").find("p").text().trim();
 
     // Better poster URL
     const posterImg = $("img[src*='stills_img'], img[src*='poster']").first();
@@ -182,12 +227,26 @@ async function scrapeFilmDetails(film: Film): Promise<Film> {
 
     return {
       ...film,
+      kannadaTitle: kannadaTitle || film.kannadaTitle,
       director: film.director || "",
       country: country || film.country,
       language: language || film.language,
       duration: duration || film.duration,
+      year: year || film.year,
       synopsis: synopsis || film.synopsis,
       posterUrl: posterUrl.startsWith("http") ? posterUrl : `${BASE_URL}${posterUrl}`,
+      // Crew
+      producer: producer || film.producer,
+      screenplay: screenplay || film.screenplay,
+      cinematography: cinematography || film.cinematography,
+      editor: editor || film.editor,
+      music: music || film.music,
+      sound: sound || film.sound,
+      cast: cast || film.cast,
+      // Awards
+      awardsWon: awardsWon || film.awardsWon,
+      awardsNominated: awardsNominated || film.awardsNominated,
+      filmCourtesy: filmCourtesy || film.filmCourtesy,
     };
   } catch (error) {
     console.error(`  ⚠️  Could not get details for ${film.title}`);

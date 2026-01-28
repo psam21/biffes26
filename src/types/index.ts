@@ -4,6 +4,7 @@ export interface Film {
   id: string;
   title: string;
   originalTitle?: string;
+  kannadaTitle?: string;
   director: string;
   country: string;
   year: number;
@@ -17,6 +18,18 @@ export interface Film {
   isWorldPremiere?: boolean;
   isAsiaPremiere?: boolean;
   isIndiaPremiere?: boolean;
+  // Crew info
+  producer?: string;
+  screenplay?: string;
+  cinematography?: string;
+  editor?: string;
+  music?: string;
+  sound?: string;
+  cast?: string;
+  // Awards
+  awardsWon?: string;
+  awardsNominated?: string;
+  filmCourtesy?: string;
   // Ratings
   imdbRating?: string;
   rottenTomatoes?: string;
