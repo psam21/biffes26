@@ -272,29 +272,35 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Rating Filter Buttons */}
+            {/* Critics' Picks Section */}
             <section className="max-w-7xl mx-auto px-4 pb-6">
-              <div className="flex justify-center gap-3">
+              <div className="text-center mb-4">
+                <h2 className="text-lg font-semibold text-white">
+                  🎬 Don't Miss These Gems
+                </h2>
+                <p className="text-xs text-zinc-500 mt-1">Critically acclaimed films playing at this festival</p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
                 <button 
                   onClick={() => handleRatingFilter(4.5)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 transition-colors text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-yellow-600/20 to-amber-600/20 hover:from-yellow-600/30 hover:to-amber-600/30 border border-yellow-500/30 hover:border-yellow-500/50 transition-all text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 >
-                  <span className="text-yellow-500">★</span> 5 Star
-                  {fiveStarFilms.length > 0 && <span className="text-zinc-400">({fiveStarFilms.length})</span>}
+                  <span className="text-yellow-400">🏆</span> Masterpieces
+                  {fiveStarFilms.length > 0 && <span className="text-yellow-400/70">({fiveStarFilms.length})</span>}
                 </button>
                 <button 
                   onClick={() => handleRatingFilter(4.0)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 transition-colors text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 hover:from-purple-600/30 hover:to-pink-600/30 border border-purple-500/30 hover:border-purple-500/50 transition-all text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
-                  <span className="text-yellow-500">★</span> 4.5 Star
-                  {fourHalfStarFilms.length > 0 && <span className="text-zinc-400">({fourHalfStarFilms.length})</span>}
+                  <span className="text-purple-400">🎭</span> Must Watch
+                  {fourHalfStarFilms.length > 0 && <span className="text-purple-400/70">({fourHalfStarFilms.length})</span>}
                 </button>
                 <button 
                   onClick={() => handleRatingFilter(3.5)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 transition-colors text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-600/20 to-blue-600/20 hover:from-cyan-600/30 hover:to-blue-600/30 border border-cyan-500/30 hover:border-cyan-500/50 transition-all text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
-                  <span className="text-yellow-500">★</span> 4 Star
-                  {fourStarFilms.length > 0 && <span className="text-zinc-400">({fourStarFilms.length})</span>}
+                  <span className="text-cyan-400">🎪</span> Worth Your Time
+                  {fourStarFilms.length > 0 && <span className="text-cyan-400/70">({fourStarFilms.length})</span>}
                 </button>
               </div>
             </section>
