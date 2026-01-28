@@ -81,11 +81,27 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
           </div>
         )}
 
-        {/* Rating badge (top-left) */}
-        {rating && (
-          <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/80 backdrop-blur-sm rounded px-1.5 py-0.5">
-            <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-            <span className="text-xs font-medium text-white">{rating}</span>
+        {/* Rating badges (top-left) */}
+        {(film.imdbRating || film.rottenTomatoes || film.letterboxdRating) && (
+          <div className="absolute top-2 left-2 flex flex-col gap-1">
+            {film.imdbRating && (
+              <div className="flex items-center gap-1 bg-yellow-500/90 backdrop-blur-sm rounded px-1.5 py-0.5">
+                <span className="text-[10px] font-bold text-black">IMDb</span>
+                <span className="text-[10px] font-semibold text-black">{film.imdbRating}</span>
+              </div>
+            )}
+            {film.rottenTomatoes && (
+              <div className="flex items-center gap-1 bg-red-500/90 backdrop-blur-sm rounded px-1.5 py-0.5">
+                <span className="text-[10px]">🍅</span>
+                <span className="text-[10px] font-semibold text-white">{film.rottenTomatoes}</span>
+              </div>
+            )}
+            {film.letterboxdRating && !film.imdbRating && (
+              <div className="flex items-center gap-1 bg-orange-500/90 backdrop-blur-sm rounded px-1.5 py-0.5">
+                <span className="text-[10px] font-bold text-white">LB</span>
+                <span className="text-[10px] font-semibold text-white">{film.letterboxdRating}</span>
+              </div>
+            )}
           </div>
         )}
 
