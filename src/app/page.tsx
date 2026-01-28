@@ -449,8 +449,7 @@ export default function Home() {
                     17th{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
                       BIFFes
-                    </span>{" "}
-                    2026
+                    </span>
                   </h1>
                   <p className="text-sm text-zinc-400 mt-1">
                     January 29 – February 6, 2026
