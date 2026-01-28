@@ -144,9 +144,19 @@ async function scrapeFilmDetails(film: Film): Promise<Film> {
     const countryMatch = pageText.match(/(INDIA|IRAN|JAPAN|SOUTH KOREA|KOREA|CHINA|NEPAL|PHILIPPINES|MYANMAR|BANGLADESH|SRI LANKA|PAKISTAN|THAILAND|INDONESIA|VIETNAM|MALAYSIA|SINGAPORE|TAIWAN|HONG KONG|KYRGYZSTAN|KAZAKHSTAN|UZBEKISTAN|MONGOLIA|AFGHANISTAN|USA|UK|FRANCE|GERMANY|ITALY|SPAIN|BRAZIL|ARGENTINA|MEXICO|CANADA|AUSTRALIA|NEW ZEALAND)/i);
     const country = countryMatch ? countryMatch[1] : "";
 
-    // Language extraction
+    // Language extraction - normalize to lowercase first for proper deduplication
     const langMatch = pageText.match(/(KANNADA|HINDI|MALAYALAM|TAMIL|TELUGU|BENGALI|MARATHI|GUJARATI|PUNJABI|ASSAMESE|MANIPURI|ODIA|URDU|ENGLISH|FARSI|PERSIAN|JAPANESE|KOREAN|MANDARIN|CHINESE|NEPALI|TAGALOG|ROHINGYA|KYRGYZ|RUSSIAN|ARABIC|FRENCH|GERMAN|SPANISH|PORTUGUESE|ITALIAN|KARBI)/gi);
-    const language = langMatch ? [...new Set(langMatch)].map(l => l.charAt(0) + l.slice(1).toLowerCase()).join(" | ") : "";
+    const language = langMatch 
+      ? [...new Set(langMatch.map(l => l.toLowerCase()))]
+          .map(l => l.charAt(0).toUpperCase() + l.slice(1))
+          // Merge similar languages
+          .filter((l, i, arr) => {
+            if (l === "Persian" && arr.includes("Farsi")) return false;
+            if (l === "Chinese" && arr.includes("Mandarin")) return false;
+            return true;
+          })
+          .join(" | ") 
+      : "";
 
     // Duration extraction
     const durationMatch = pageText.match(/(\d+)\s*mins?/i);
