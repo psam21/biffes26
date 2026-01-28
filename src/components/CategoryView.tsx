@@ -10,7 +10,7 @@ interface CategoryViewProps {
   category: Category;
   films: Film[];
   onBack: () => void;
-  onFilmClick: (film: Film) => void;
+  onFilmClick: (film: Film, filmList?: Film[], index?: number) => void;
 }
 
 export function CategoryView({
@@ -88,7 +88,7 @@ export function CategoryView({
               <FilmCard
                 key={film.id}
                 film={film}
-                onClick={() => onFilmClick(film)}
+                onClick={() => onFilmClick(film, films, index)}
                 index={index}
               />
             ))}

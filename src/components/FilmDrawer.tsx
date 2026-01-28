@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
-import { X, Clock, Globe, Languages, Calendar, User } from "lucide-react";
+import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight } from "lucide-react";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "./WatchlistButton";
@@ -12,12 +12,27 @@ interface FilmDrawerProps {
   film: Film | null;
   isOpen: boolean;
   onClose: () => void;
+  // Navigation props
+  films?: Film[];
+  currentIndex?: number;
+  onNavigate?: (film: Film, index: number) => void;
 }
 
-export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
+export function FilmDrawer({ 
+  film, 
+  isOpen, 
+  onClose, 
+  films = [],
+  currentIndex = -1,
+  onNavigate 
+}: FilmDrawerProps) {
   const [imgSrc, setImgSrc] = useState(film?.posterUrl || "");
   const [hasError, setHasError] = useState(false);
+  const [direction, setDirection] = useState(0);
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < films.length - 1;
 
   useEffect(() => {
     if (film) {
@@ -26,22 +41,27 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
     }
   }, [film]);
 
-  // Handle Escape key to close drawer
+  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (!isOpen) return;
+      
+      if (e.key === "Escape") {
         onClose();
+      } else if (e.key === "ArrowLeft" && canGoPrev) {
+        navigatePrev();
+      } else if (e.key === "ArrowRight" && canGoNext) {
+        navigateNext();
       }
     };
 
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
-      // Focus the drawer for accessibility
       drawerRef.current?.focus();
     }
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, canGoPrev, canGoNext, currentIndex]);
 
   const handleImageError = () => {
     if (!hasError && film?.posterUrlRemote) {
@@ -50,10 +70,39 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
     }
   };
 
+  const navigatePrev = () => {
+    if (canGoPrev && onNavigate) {
+      setDirection(-1);
+      onNavigate(films[currentIndex - 1], currentIndex - 1);
+    }
+  };
+
+  const navigateNext = () => {
+    if (canGoNext && onNavigate) {
+      setDirection(1);
+      onNavigate(films[currentIndex + 1], currentIndex + 1);
+    }
+  };
+
+  const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const threshold = 50;
+    const velocity = 0.5;
+    
+    if (info.offset.x > threshold || info.velocity.x > velocity) {
+      // Swiped right -> go to previous
+      if (canGoPrev) navigatePrev();
+    } else if (info.offset.x < -threshold || info.velocity.x < -velocity) {
+      // Swiped left -> go to next
+      if (canGoNext) navigateNext();
+    }
+  };
+
   if (!film) return null;
 
+  const hasNavigation = films.length > 1 && onNavigate;
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <>
           {/* Backdrop */}
@@ -69,10 +118,15 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
           {/* Drawer */}
           <motion.div
             ref={drawerRef}
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
+            key={film.id}
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: direction >= 0 ? "-30%" : "100%", opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            drag={hasNavigation ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
@@ -80,9 +134,34 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
             className={cn(
               "fixed right-0 top-0 h-full w-full max-w-lg z-50",
               "bg-zinc-900 border-l border-zinc-800",
-              "overflow-y-auto focus:outline-none"
+              "overflow-y-auto focus:outline-none",
+              hasNavigation && "cursor-grab active:cursor-grabbing"
             )}
           >
+            {/* Navigation buttons */}
+            {hasNavigation && (
+              <>
+                {canGoPrev && (
+                  <button
+                    onClick={navigatePrev}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm transition-colors"
+                    aria-label="Previous film"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-white" />
+                  </button>
+                )}
+                {canGoNext && (
+                  <button
+                    onClick={navigateNext}
+                    className="absolute right-14 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm transition-colors"
+                    aria-label="Next film"
+                  >
+                    <ChevronRight className="w-6 h-6 text-white" />
+                  </button>
+                )}
+              </>
+            )}
+
             {/* Close button */}
             <button
               onClick={onClose}
@@ -91,6 +170,15 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
             >
               <X className="w-5 h-5 text-white" />
             </button>
+
+            {/* Film counter */}
+            {hasNavigation && (
+              <div className="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
+                <span className="text-xs text-white font-medium">
+                  {currentIndex + 1} / {films.length}
+                </span>
+              </div>
+            )}
 
             {/* Poster header */}
             <div className="relative aspect-video bg-zinc-800">
@@ -109,6 +197,15 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
                 </div>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
+              
+              {/* Swipe hint */}
+              {hasNavigation && (
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1">
+                  <ChevronLeft className="w-3 h-3 text-zinc-400" />
+                  <span className="text-[10px] text-zinc-400">swipe</span>
+                  <ChevronRight className="w-3 h-3 text-zinc-400" />
+                </div>
+              )}
             </div>
 
             {/* Content */}

@@ -42,6 +42,10 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   
+  // Navigation context for swipe in drawer
+  const [drawerFilms, setDrawerFilms] = useState<Film[]>([]);
+  const [drawerIndex, setDrawerIndex] = useState(-1);
+  
   const { watchlist, isLoading: watchlistLoading } = useWatchlist();
 
   const { festival, categories, films } = festivalData as {
@@ -135,11 +139,18 @@ export default function Home() {
     setRatingFilter(minRating);
   };
 
-  const handleFilmClick = (film: Film) => {
+  const handleFilmClick = (film: Film, filmList?: Film[], index?: number) => {
     const base = ratingFilter !== null ? `rated-${ratingFilter}` : selectedCategory?.slug;
     window.history.pushState({ film: film.id }, "", `#${base}/${film.id}`);
     setSelectedFilm(film);
+    setDrawerFilms(filmList || []);
+    setDrawerIndex(index ?? -1);
     setIsDrawerOpen(true);
+  };
+
+  const handleDrawerNavigate = (film: Film, index: number) => {
+    setSelectedFilm(film);
+    setDrawerIndex(index);
   };
 
   const handleCloseDrawer = () => {
@@ -232,7 +243,7 @@ export default function Home() {
                     <FilmCard
                       key={film.id}
                       film={film}
-                      onClick={() => handleFilmClick(film)}
+                      onClick={() => handleFilmClick(film, getRatedFilms(), index)}
                       index={index}
                     />
                   ))}
@@ -319,7 +330,7 @@ export default function Home() {
                     <FilmCard
                       key={film.id}
                       film={film}
-                      onClick={() => handleFilmClick(film)}
+                      onClick={() => handleFilmClick(film, watchlistFilms, index)}
                       index={index}
                     />
                   ))}
@@ -548,10 +559,10 @@ export default function Home() {
                         <span className="text-xs text-zinc-400">({festivalFilms.length})</span>
                       </div>
                       <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
-                        {festivalFilms.map((film) => (
+                        {festivalFilms.map((film, filmIndex) => (
                           <button
                             key={film.id}
-                            onClick={() => handleFilmClick(film)}
+                            onClick={() => handleFilmClick(film, festivalFilms, filmIndex)}
                             className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
                           >
                             <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
@@ -629,6 +640,9 @@ export default function Home() {
         film={selectedFilm}
         isOpen={isDrawerOpen}
         onClose={handleCloseDrawer}
+        films={drawerFilms}
+        currentIndex={drawerIndex}
+        onNavigate={handleDrawerNavigate}
       />
     </main>
   );
