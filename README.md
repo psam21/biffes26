@@ -1,15 +1,20 @@
 # 17th BIFFes 2026 - Film Festival Explorer
 
-A modern, interactive dashboard for exploring the 17th Bengaluru International Film Festival (BIFFes) 2026 film lineup.
+A modern, interactive Progressive Web App for exploring the 17th Bengaluru International Film Festival (BIFFes) 2026 film lineup.
+
+**🌐 Live Site: [biffes26.vercel.app](https://biffes26.vercel.app)**
 
 ![BIFFes 2026](https://biffes.org/frontend/images/logo/newlogoBIFFes.png)
 
 ## 🎬 Features
 
-- **Category Overview**: Browse films organized by 14+ curated categories including Asian Cinema, Indian Cinema, Kannada Cinema, World Cinema, and more
-- **Interactive Film Cards**: Responsive grid layout with film posters, language badges, and quick info
-- **Film Detail Drawer**: Slide-out panel with full film details including synopsis, director, duration, and premiere badges
-- **Festival Ticker**: Real-time stats showing total films, countries represented, and festival dates
+- **173 Films** across 13 curated categories including Asian Cinema, Indian Cinema, Kannada Cinema, World Cinema, and more
+- **Award Winners Gallery**: Films grouped by prestigious festivals (Cannes, Venice, Berlin, Sundance, Toronto, etc.)
+- **Rich Film Details**: Slide-out drawer with synopsis, director, cast, crew (producer, cinematography, editor, music, sound), and awards
+- **Multi-Source Ratings**: IMDb, Rotten Tomatoes, Letterboxd, and Metacritic with clickable links
+- **Festival Ticker**: Real-time stats - 173 films from 29 countries
+- **Kannada Titles**: Native script titles for Indian films where available
+- **PWA Support**: Installable app with offline caching for posters and data
 - **Smooth Animations**: Framer Motion powered transitions and interactions
 
 ## 🛠️ Tech Stack
@@ -18,98 +23,120 @@ A modern, interactive dashboard for exploring the 17th Bengaluru International F
 - **Language**: TypeScript 5
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Scraping**: Axios + Cheerio (for data pipeline)
+- **Data Pipeline**: Axios + Cheerio (scraping) + OMDB API (ratings)
+- **Deployment**: Vercel
 
 ## 📂 Project Structure
 
-```
+\`\`\`
 .
 ├── src/
-│   ├── app/            # Next.js App Router pages
-│   ├── components/     # React UI components
+│   ├── app/              # Next.js App Router pages
+│   │   ├── layout.tsx    # PWA meta tags & service worker
+│   │   └── page.tsx      # Main festival dashboard
+│   ├── components/       # React UI components
 │   │   ├── CategoryCard.tsx
 │   │   ├── CategoryView.tsx
 │   │   ├── FilmCard.tsx
 │   │   ├── FilmDrawer.tsx
 │   │   └── FestivalTicker.tsx
-│   ├── data/           # JSON data files
-│   ├── lib/            # Utility functions
-│   └── types/          # TypeScript definitions
-├── scripts/            # Data scraping scripts
-└── public/             # Static assets
-```
+│   ├── data/             # JSON data (173 films)
+│   └── types/            # TypeScript definitions
+├── scripts/
+│   ├── pipeline.ts       # Full data pipeline
+│   └── generate-icons.js # PWA icon generator
+├── public/
+│   ├── posters/          # Cached film posters
+│   ├── sw.js             # Service worker for offline
+│   └── manifest.json     # PWA manifest
+\`\`\`
 
 ## ⚡ Getting Started
 
 ### 1. Clone the repository
 
-```bash
+\`\`\`bash
 git clone https://github.com/psam21/biffes26.git
 cd biffes26
-```
+\`\`\`
 
 ### 2. Install dependencies
 
-```bash
+\`\`\`bash
 npm install
-```
+\`\`\`
 
 ### 3. Run the development server
 
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
 
-### 4. Data Pipeline (Optional)
+### 4. Data Pipeline
 
-To refresh film data from biffes.org:
+Refresh film data from biffes.org and fetch ratings:
 
-```bash
-# Scrape films from all categories
-npm run scrape
+\`\`\`bash
+# Quick incremental update (only new/changed films)
+npm run pipeline
 
-# Generate seed data
-npm run seed
-```
+# Full refresh of all film details
+OMDB_API_KEY=your_key npm run pipeline:full
+
+# Update only ratings
+OMDB_API_KEY=your_key npm run pipeline:ratings
+
+# Download missing posters
+npm run pipeline:posters
+\`\`\`
 
 ## 🚀 Deployment
 
-This project is optimized for deployment on [Vercel](https://vercel.com/).
+Deployed automatically on [Vercel](https://vercel.com/) via GitHub.
 
-1. Push your code to GitHub
-2. Import the project into Vercel
-3. Vercel will automatically detect Next.js and deploy
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/psam21/biffes26)
 
-## 📝 Data Sources
+## 📊 Data Sources
 
-Film data is sourced from [biffes.org](https://biffes.org/filmcategory), the official website of the Bengaluru International Film Festival.
+| Source | Data |
+|--------|------|
+| [biffes.org](https://biffes.org) | Films, categories, synopses, crew, cast, awards |
+| [OMDb API](https://www.omdbapi.com) | IMDb ratings, Rotten Tomatoes, Metacritic |
+| [IMDb](https://www.imdb.com) | Linked ratings |
+| [Letterboxd](https://letterboxd.com) | Community ratings |
+| [Rotten Tomatoes](https://www.rottentomatoes.com) | Critics scores |
 
-### Categories Included
+### Categories
 
-- Opening & Closing Films
-- Asian Cinema Competition
-- Indian Cinema Competition
-- Kannada Cinema Competition
-- Contemporary World Cinema
-- Critics' Week
-- Bio-Pics
-- Retrospective
-- Centenary Tributes
-- Chronicles of Africa
-- Voice for Equality
-- 50 Years of Cinematic Journey
-- And more...
+- 🎬 Opening & Closing Films
+- 🌏 Asian Cinema Competition (15 films)
+- 🇮🇳 Indian Cinema Competition (15 films)
+- 🎭 Kannada Cinema Competition (13 films)
+- 🎪 Children's World (8 films)
+- 🌍 Contemporary World Cinema (87 films)
+- 🏆 Critics' Choice (13 films)
+- 🎞️ Retrospective (5 films)
+- 💯 Centenary Tributes (2 films)
+- 🌍 Chronicles of Africa (9 films)
+- ✊ Voice for Equality (1 film)
+- 🎥 50 Years of Cinematic Journey (5 films)
+
+## 📱 PWA Features
+
+- **Installable**: Add to home screen on mobile/desktop
+- **Offline Support**: Service worker caches pages and posters
+- **Fast Loading**: Stale-while-revalidate caching strategy
+- **Custom Icons**: BIFFes branded icons for all platforms
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions welcome! Please submit a Pull Request.
 
 ## 📄 License
 
-MIT License - feel free to use this project for your own film festival dashboards.
+MIT License - feel free to use this for your own film festival apps.
 
 ---
 
