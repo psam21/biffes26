@@ -366,7 +366,7 @@ export default function Home() {
                     <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
                   </p>
                   <p className="text-xs text-zinc-500 mt-1">
-                    200+ Films | 60+ Countries | 9 Days
+                    126 festival favorites grouped by prestige, curated for this film festival
                   </p>
                 </motion.div>
                 
@@ -375,14 +375,25 @@ export default function Home() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   onClick={handleWatchlistClick}
-                  className="flex items-center gap-2 px-3 py-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg transition-colors"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                    watchlist.length > 0
+                      ? "bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
+                      : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
+                  }`}
                 >
-                  <span className="text-green-400">✓</span>
-                  <span className="text-sm text-white hidden sm:inline">My Watchlist</span>
-                  {watchlist.length > 0 && (
-                    <span className="bg-green-500 text-black text-xs font-bold px-1.5 py-0.5 rounded-full">
-                      {watchlist.length}
-                    </span>
+                  {watchlist.length > 0 ? (
+                    <>
+                      <span className="text-amber-400">🎬</span>
+                      <span className="text-sm text-white hidden sm:inline">My Watchlist</span>
+                      <span className="bg-amber-500 text-black text-xs font-bold px-1.5 py-0.5 rounded-full">
+                        {watchlist.length}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-zinc-400">+</span>
+                      <span className="text-sm text-zinc-300 hidden sm:inline">Create Watchlist</span>
+                    </>
                   )}
                 </motion.button>
               </div>
