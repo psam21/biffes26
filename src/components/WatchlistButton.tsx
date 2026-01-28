@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Plus, Check } from "lucide-react";
 import { useWatchlist } from "@/lib/watchlist-context";
+import { WatchlistIcon } from "./WatchlistIcon";
 import { cn } from "@/lib/utils";
 
 interface WatchlistButtonProps {
@@ -38,24 +38,15 @@ export function WatchlistButton({ filmId, variant = "icon", className }: Watchli
         whileTap={{ scale: 0.98 }}
         onClick={handleClick}
         className={cn(
-          "flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors",
+          "flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all",
           inWatchlist
-            ? "bg-green-600 hover:bg-green-700 text-white"
+            ? "bg-amber-500 hover:bg-amber-600 text-zinc-900"
             : "bg-zinc-700 hover:bg-zinc-600 text-white",
           className
         )}
       >
-        {inWatchlist ? (
-          <>
-            <Check className="w-4 h-4" />
-            <span>In Watchlist</span>
-          </>
-        ) : (
-          <>
-            <Plus className="w-4 h-4" />
-            <span>Add to Watchlist</span>
-          </>
-        )}
+        <WatchlistIcon filled={inWatchlist} size={18} />
+        <span>{inWatchlist ? "In Watchlist" : "Add to Watchlist"}</span>
       </motion.button>
     );
   }
@@ -67,18 +58,14 @@ export function WatchlistButton({ filmId, variant = "icon", className }: Watchli
       onClick={handleClick}
       aria-label={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
       className={cn(
-        "flex items-center justify-center w-8 h-8 rounded-full transition-colors",
+        "flex items-center justify-center w-9 h-9 rounded-lg transition-all",
         inWatchlist
-          ? "bg-green-600 hover:bg-green-700 text-white"
-          : "bg-black/70 hover:bg-black/90 text-white backdrop-blur-sm",
+          ? "bg-amber-500 hover:bg-amber-600 text-zinc-900"
+          : "bg-black/70 hover:bg-black/90 text-zinc-300 hover:text-white backdrop-blur-sm",
         className
       )}
     >
-      {inWatchlist ? (
-        <Check className="w-4 h-4" />
-      ) : (
-        <Plus className="w-4 h-4" />
-      )}
+      <WatchlistIcon filled={inWatchlist} size={22} />
     </motion.button>
   );
 }

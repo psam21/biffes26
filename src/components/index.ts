@@ -4,4 +4,5 @@ export { FilmDrawer } from "./FilmDrawer";
 export { FestivalTicker } from "./FestivalTicker";
 export { CategoryView } from "./CategoryView";
 export { WatchlistButton } from "./WatchlistButton";
+export { WatchlistIcon } from "./WatchlistIcon";
 export { ShareWatchlist } from "./ShareWatchlist";
