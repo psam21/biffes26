@@ -152,10 +152,17 @@ async function scrapeFilmDetails(film: Film): Promise<Film> {
     const durationMatch = pageText.match(/(\d+)\s*mins?/i);
     const duration = durationMatch ? parseInt(durationMatch[1]) : 0;
 
-    // Synopsis extraction
+    // Synopsis extraction - exclude footer/address content
     const synopsisEl = $("p").filter((_, el) => {
-      const text = $(el).text();
-      return text.length > 100 && text.length < 1000 && !text.includes("©");
+      const text = $(el).text().trim();
+      const isValidLength = text.length > 50 && text.length < 1000;
+      const isNotFooter = !text.includes("©") && 
+                          !text.includes("Bengaluru-") && 
+                          !text.includes("biffesblr") &&
+                          !text.includes("Layout") &&
+                          !text.includes("Mon - Sat") &&
+                          !text.includes("All Rights Reserved");
+      return isValidLength && isNotFooter;
     }).first();
     const synopsis = synopsisEl.text().trim().slice(0, 500);
 

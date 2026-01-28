@@ -36,7 +36,7 @@ export default function Home() {
   const [ratingFilter, setRatingFilter] = useState<number | null>(null);
 
   const { festival, categories, films } = festivalData as {
-    festival: typeof festivalData.festival & { venues: Venue[] };
+    festival: typeof festivalData.festival & { venues: Venue[]; lastUpdated: string };
     categories: Category[];
     films: Film[];
   };
@@ -250,10 +250,14 @@ export default function Home() {
                   January 29 – February 6, 2026
                 </p>
                 <p className="text-xs text-zinc-500 mt-1">
-                  LULU Mall • Dr. Rajkumar Bhavana • Suchitra Cinema
+                  <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
+                  {" • "}
+                  <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Dr. Rajkumar Bhavana</a>
+                  {" • "}
+                  <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
                 </p>
                 <p className="text-xs text-zinc-500 mt-1">
-                  200+ Films | 60+ Countries
+                  200+ Films | 60+ Countries | 9 Days
                 </p>
               </motion.div>
             </header>
@@ -318,6 +322,14 @@ export default function Home() {
                   >
                     biffes.org
                   </a>
+                  {" • Last updated: "}
+                  {new Date(festival.lastUpdated).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
               </div>
             </footer>
