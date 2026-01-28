@@ -98,6 +98,56 @@ Deployed automatically on [Vercel](https://vercel.com/) via GitHub.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/psam21/biffes26)
 
+## ⏰ Automated Data Refresh
+
+The app uses **Vercel Cron Jobs** + **Upstash Redis** to automatically refresh film data every hour.
+
+### Setup
+
+1. **Create Upstash Redis Database**
+   - Go to [console.upstash.com](https://console.upstash.com)
+   - Create a new Redis database (free tier works great)
+   - Copy the `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
+
+2. **Add Environment Variables in Vercel**
+   ```
+   UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
+   UPSTASH_REDIS_REST_TOKEN=AXxx...
+   OMDB_API_KEY=your_omdb_key        # Optional: for ratings
+   CRON_SECRET=your_random_secret    # Optional: protect manual triggers
+   ```
+
+3. **Deploy to Vercel**
+   - The `vercel.json` configures the hourly cron job automatically
+   - Cron runs at the top of every hour (`0 * * * *`)
+
+### Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/status` | Check data source and last update time |
+| `GET /api/cron/refresh` | Manually trigger a data refresh (requires `CRON_SECRET`) |
+
+### How It Works
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│  Vercel Cron    │────▶│  /api/cron/      │────▶│  Upstash Redis  │
+│  (every hour)   │     │  refresh         │     │  (data store)   │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+                               │
+                               ▼
+                        ┌──────────────────┐
+                        │  biffes.org +    │
+                        │  OMDB API        │
+                        │  (data sources)  │
+                        └──────────────────┘
+```
+
+The app reads from:
+1. **Upstash Redis** (if configured) - live data
+2. **Static JSON** (fallback) - build-time data
+
 ## 📊 Data Sources
 
 | Source | Data |
