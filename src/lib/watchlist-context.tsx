@@ -58,20 +58,38 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
         setSyncCode(existingCode);
       }
 
-      // Load watchlist from server
+      // Load from localStorage first (instant)
+      const localWatchlist = localStorage.getItem("biffes_watchlist");
+      const localData = localWatchlist ? JSON.parse(localWatchlist) : [];
+      if (localData.length > 0) {
+        setWatchlist(localData);
+      }
+
+      // Then try to fetch from Redis (may have newer data from other devices)
       try {
         const res = await fetch(`/api/watchlist?userId=${id}`);
         if (res.ok) {
           const data = await res.json();
-          setWatchlist(data.watchlist || []);
+          const serverData = data.watchlist || [];
+          
+          // Merge: use server data if it has items, otherwise keep local
+          if (serverData.length > 0) {
+            // Merge local and server (union of both)
+            const merged = [...new Set([...localData, ...serverData])];
+            setWatchlist(merged);
+            localStorage.setItem("biffes_watchlist", JSON.stringify(merged));
+          } else if (localData.length > 0) {
+            // Server empty but local has data - push local to server
+            await fetch("/api/watchlist", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ userId: id, watchlist: localData, action: "sync" }),
+            });
+          }
         }
       } catch (error) {
-        console.error("Failed to load watchlist:", error);
-        // Try to load from localStorage as fallback
-        const localWatchlist = localStorage.getItem("biffes_watchlist");
-        if (localWatchlist) {
-          setWatchlist(JSON.parse(localWatchlist));
-        }
+        console.error("Failed to sync with server:", error);
+        // Keep using localStorage data (already set above)
       }
       setIsLoading(false);
     };
@@ -79,12 +97,12 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
     initUser();
   }, []);
 
-  // Sync to localStorage as backup
+  // Sync to localStorage as backup (always sync, even empty to clear old data)
   useEffect(() => {
-    if (watchlist.length > 0) {
+    if (!isLoading) {
       localStorage.setItem("biffes_watchlist", JSON.stringify(watchlist));
     }
-  }, [watchlist]);
+  }, [watchlist, isLoading]);
 
   const isInWatchlist = useCallback((filmId: string) => {
     return watchlist.includes(filmId);
