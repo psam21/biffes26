@@ -156,6 +156,46 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
                 )}
               </div>
 
+              {/* Ratings Section */}
+              {(film.imdbRating || film.rottenTomatoes || film.metacritic || film.letterboxdRating) && (
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide">
+                    Ratings
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {film.imdbRating && (
+                      <a
+                        href={film.imdbId ? `https://www.imdb.com/title/${film.imdbId}` : "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/30 rounded-lg px-3 py-2 hover:bg-yellow-500/30 transition-colors"
+                      >
+                        <span className="text-yellow-500 font-bold text-lg">IMDb</span>
+                        <span className="text-white font-semibold">{film.imdbRating}/10</span>
+                      </a>
+                    )}
+                    {film.rottenTomatoes && (
+                      <div className="flex items-center gap-2 bg-red-500/20 border border-red-500/30 rounded-lg px-3 py-2">
+                        <span className="text-red-500 font-bold">🍅</span>
+                        <span className="text-white font-semibold">{film.rottenTomatoes}</span>
+                      </div>
+                    )}
+                    {film.metacritic && (
+                      <div className="flex items-center gap-2 bg-green-500/20 border border-green-500/30 rounded-lg px-3 py-2">
+                        <span className="text-green-500 font-bold text-sm">MC</span>
+                        <span className="text-white font-semibold">{film.metacritic}</span>
+                      </div>
+                    )}
+                    {film.letterboxdRating && (
+                      <div className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 rounded-lg px-3 py-2">
+                        <span className="text-orange-500 font-bold text-sm">LB</span>
+                        <span className="text-white font-semibold">{film.letterboxdRating}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Synopsis */}
               {film.synopsis && (
                 <div className="space-y-2">

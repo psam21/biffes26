@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "scrape": "tsx scripts/scrape-films.ts",
-    "seed": "tsx scripts/seed-data.ts",
-    "refresh": "tsx scripts/refresh-all.ts"
+    "pipeline": "tsx scripts/pipeline.ts",
+    "pipeline:quick": "tsx scripts/pipeline.ts --skip-scrape",
+    "pipeline:ratings": "tsx scripts/pipeline.ts --skip-scrape --skip-posters",
+    "download-posters": "tsx scripts/download-posters.ts"
   },
   "dependencies": {
     "axios": "^1.13.2",

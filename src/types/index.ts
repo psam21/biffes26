@@ -17,6 +17,12 @@ export interface Film {
   isWorldPremiere?: boolean;
   isAsiaPremiere?: boolean;
   isIndiaPremiere?: boolean;
+  // Ratings
+  imdbRating?: string;
+  rottenTomatoes?: string;
+  metacritic?: string;
+  letterboxdRating?: string;
+  imdbId?: string;
 }
 
 export interface Category {

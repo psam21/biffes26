@@ -4,8 +4,8 @@
     "edition": 17,
     "year": 2026,
     "dates": "January 29 – February 6, 2026",
-    "totalFilms": 225,
-    "totalCountries": 70,
+    "totalFilms": 43,
+    "totalCountries": 9,
     "venues": [
       {
         "name": "LULU Mall",
@@ -22,7 +22,8 @@
         "address": "Banashankari Stage II, Bengaluru-560070",
         "mapUrl": "https://maps.app.goo.gl/ruU2WZ2T991hrSLo7"
       }
-    ]
+    ],
+    "lastUpdated": "2026-01-28T03:24:34.116Z"
   },
   "categories": [
     {

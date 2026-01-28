@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Star } from "lucide-react";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 
@@ -22,6 +23,9 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
       setHasError(true);
     }
   };
+
+  // Get best available rating
+  const rating = film.imdbRating || film.letterboxdRating;
 
   return (
     <motion.div
@@ -50,6 +54,14 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-zinc-600 text-4xl">🎬</span>
+          </div>
+        )}
+
+        {/* Rating badge (top-left) */}
+        {rating && (
+          <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/80 backdrop-blur-sm rounded px-1.5 py-0.5">
+            <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+            <span className="text-xs font-medium text-white">{rating}</span>
           </div>
         )}
 
