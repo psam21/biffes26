@@ -282,6 +282,7 @@ async function main() {
   const skipScrape = args.includes("--skip-scrape");
   const skipPosters = args.includes("--skip-posters");
   const skipRatings = args.includes("--skip-ratings");
+  const fullRefresh = args.includes("--full");
 
   console.log("\n🎬 BIFFes 2026 Data Pipeline\n");
   console.log("━".repeat(50));
@@ -289,21 +290,42 @@ async function main() {
   let allFilms: Film[] = [];
   const categoryData: Category[] = [];
 
+  // Load existing data for incremental updates
+  const dataPath = path.join(process.cwd(), "src/data/biffes_data.json");
+  let existingFilms: Map<string, Film> = new Map();
+  let existingCategories: Category[] = [];
+  
+  if (fs.existsSync(dataPath)) {
+    const existing = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
+    existing.films.forEach((f: Film) => existingFilms.set(f.id, f));
+    existingCategories = existing.categories || [];
+  }
+
   // Step 1: Scrape films from biffes.org
   if (!skipScrape) {
     console.log("\n📥 Step 1: Scraping films from biffes.org...\n");
 
+    const scrapedFilms: Film[] = [];
+    const newFilmIds: Set<string> = new Set();
+    const changedFilms: Set<string> = new Set();
+    const categoryChanges: Map<string, string> = new Map(); // id -> old category
+
+    // First pass: quick scrape all categories to get film IDs and detect changes
+    console.log("  🔍 Scanning categories for changes...\n");
+    
     for (const cat of CATEGORIES) {
-      console.log(`\n🎯 ${cat.name}`);
       const films = await scrapeCategory(cat.id);
       
-      // Get details for each film
-      for (let i = 0; i < films.length; i++) {
-        const film = films[i];
-        console.log(`  [${i + 1}/${films.length}] ${film.title}`);
-        const detailed = await scrapeFilmDetails(film);
-        allFilms.push(detailed);
-        await delay(300);
+      for (const film of films) {
+        scrapedFilms.push(film);
+        
+        const existing = existingFilms.get(film.id);
+        if (!existing) {
+          newFilmIds.add(film.id);
+        } else if (existing.categoryId !== film.categoryId) {
+          changedFilms.add(film.id);
+          categoryChanges.set(film.id, existing.categoryId);
+        }
       }
 
       categoryData.push({
@@ -316,54 +338,151 @@ async function main() {
         hasSubcategories: false,
       });
 
-      await delay(500);
+      await delay(300);
     }
+
+    // Report what we found
+    const removedFilms = [...existingFilms.keys()].filter(id => !scrapedFilms.find(f => f.id === id));
+    
+    console.log("\n  📊 Change Summary:");
+    console.log(`     • New films: ${newFilmIds.size}`);
+    console.log(`     • Category changes: ${changedFilms.size}`);
+    console.log(`     • Removed films: ${removedFilms.length}`);
+    console.log(`     • Unchanged: ${scrapedFilms.length - newFilmIds.size - changedFilms.size}`);
+
+    if (fullRefresh) {
+      console.log("\n  🔄 Full refresh requested - fetching all details...\n");
+    }
+
+    // Second pass: only fetch details for new/changed films (or all if --full)
+    const filmsNeedingDetails = fullRefresh 
+      ? scrapedFilms 
+      : scrapedFilms.filter(f => newFilmIds.has(f.id) || changedFilms.has(f.id));
+
+    if (filmsNeedingDetails.length > 0) {
+      console.log(`\n  📥 Fetching details for ${filmsNeedingDetails.length} films...\n`);
+      
+      for (let i = 0; i < filmsNeedingDetails.length; i++) {
+        const film = filmsNeedingDetails[i];
+        const status = newFilmIds.has(film.id) ? "🆕" : changedFilms.has(film.id) ? "📦" : "🔄";
+        console.log(`  [${i + 1}/${filmsNeedingDetails.length}] ${status} ${film.title}`);
+        
+        const detailed = await scrapeFilmDetails(film);
+        
+        // Preserve ratings from existing data if not doing full refresh
+        const existing = existingFilms.get(film.id);
+        if (existing && !fullRefresh) {
+          detailed.imdbRating = existing.imdbRating;
+          detailed.rottenTomatoes = existing.rottenTomatoes;
+          detailed.metacritic = existing.metacritic;
+          detailed.imdbId = existing.imdbId;
+          (detailed as any).letterboxdRating = (existing as any).letterboxdRating;
+        }
+        
+        existingFilms.set(film.id, detailed);
+        await delay(300);
+      }
+    } else {
+      console.log("\n  ✨ No new films to fetch details for!");
+    }
+
+    // Build final film list preserving existing data for unchanged films
+    for (const film of scrapedFilms) {
+      const existingOrUpdated = existingFilms.get(film.id);
+      if (existingOrUpdated) {
+        // Update category if it changed
+        existingOrUpdated.categoryId = film.categoryId;
+        allFilms.push(existingOrUpdated);
+      } else {
+        allFilms.push(film);
+      }
+    }
+
   } else {
     // Load existing data
-    const existing = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src/data/biffes_data.json"), "utf-8"));
-    allFilms = existing.films;
-    categoryData.push(...existing.categories);
+    allFilms = [...existingFilms.values()];
+    categoryData.push(...existingCategories);
     console.log(`\n⏭️  Skipping scrape, loaded ${allFilms.length} existing films`);
   }
 
-  // Step 2: Fetch ratings
+  // Step 2: Fetch ratings (only for films missing ratings)
   if (!skipRatings && OMDB_API_KEY) {
-    console.log("\n\n⭐ Step 2: Fetching ratings...\n");
+    const filmsNeedingRatings = allFilms.filter(f => !f.imdbRating && !(f as any).letterboxdRating);
     
-    for (let i = 0; i < allFilms.length; i++) {
-      const film = allFilms[i];
-      console.log(`  [${i + 1}/${allFilms.length}] ${film.title}`);
-      allFilms[i] = await fetchRatings(film);
+    if (filmsNeedingRatings.length > 0) {
+      console.log(`\n\n⭐ Step 2: Fetching ratings for ${filmsNeedingRatings.length} films...\n`);
       
-      // Also try Letterboxd for festival films
-      if (!allFilms[i].imdbRating) {
-        const lbRating = await fetchLetterboxdRating(film);
-        if (lbRating) {
-          (allFilms[i] as any).letterboxdRating = lbRating;
+      for (let i = 0; i < filmsNeedingRatings.length; i++) {
+        const film = filmsNeedingRatings[i];
+        const filmIndex = allFilms.findIndex(f => f.id === film.id);
+        console.log(`  [${i + 1}/${filmsNeedingRatings.length}] ${film.title}`);
+        
+        const withRatings = await fetchRatings(film);
+        
+        // Also try Letterboxd for festival films
+        if (!withRatings.imdbRating) {
+          const lbRating = await fetchLetterboxdRating(film);
+          if (lbRating) {
+            (withRatings as any).letterboxdRating = lbRating;
+          }
         }
+        
+        allFilms[filmIndex] = withRatings;
+        await delay(200);
       }
-      
-      await delay(200);
+    } else {
+      console.log("\n\n⏭️  Step 2: All films already have ratings");
     }
   } else if (!OMDB_API_KEY) {
     console.log("\n\n⏭️  Skipping ratings (no OMDB_API_KEY set)");
     console.log("   Get a free API key at: https://www.omdbapi.com/apikey.aspx");
   }
 
-  // Step 3: Download posters
+  // Step 3: Download posters (only missing ones - already incremental)
   if (!skipPosters) {
-    console.log("\n\n📷 Step 3: Downloading posters...\n");
+    const postersDir = path.join(process.cwd(), "public", "posters");
+    const existingPosters = fs.existsSync(postersDir) 
+      ? new Set(fs.readdirSync(postersDir).map(f => f.split('.')[0]))
+      : new Set();
     
-    for (let i = 0; i < allFilms.length; i++) {
-      const film = allFilms[i];
-      const remoteUrl = film.posterUrl.replace("biffes.org//", "biffes.org/");
-      const localPath = await downloadPoster(film);
+    const filmsNeedingPosters = allFilms.filter(f => !existingPosters.has(f.id) && f.posterUrl);
+    
+    if (filmsNeedingPosters.length > 0) {
+      console.log(`\n\n📷 Step 3: Downloading ${filmsNeedingPosters.length} new posters...\n`);
       
-      allFilms[i] = {
-        ...film,
-        posterUrl: localPath,
-        posterUrlRemote: remoteUrl,
-      };
+      for (let i = 0; i < allFilms.length; i++) {
+        const film = allFilms[i];
+        if (!existingPosters.has(film.id) && film.posterUrl) {
+          const remoteUrl = film.posterUrl.replace("biffes.org//", "biffes.org/");
+          const localPath = await downloadPoster(film);
+          
+          allFilms[i] = {
+            ...film,
+            posterUrl: localPath,
+            posterUrlRemote: remoteUrl,
+          };
+        } else if (existingPosters.has(film.id)) {
+          // Use existing local poster
+          const ext = fs.readdirSync(postersDir).find(f => f.startsWith(film.id))?.split('.').pop() || 'jpg';
+          allFilms[i] = {
+            ...film,
+            posterUrl: `/posters/${film.id}.${ext}`,
+            posterUrlRemote: film.posterUrl.includes('biffes.org') ? film.posterUrl : (film as any).posterUrlRemote,
+          };
+        }
+      }
+    } else {
+      console.log("\n\n⏭️  Step 3: All posters already downloaded");
+      // Still update poster paths
+      for (let i = 0; i < allFilms.length; i++) {
+        const film = allFilms[i];
+        if (existingPosters.has(film.id)) {
+          const files = fs.readdirSync(postersDir).filter(f => f.startsWith(film.id + '.'));
+          if (files.length > 0) {
+            allFilms[i].posterUrl = `/posters/${files[0]}`;
+          }
+        }
+      }
     }
   }
 

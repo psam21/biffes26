@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "pipeline": "tsx scripts/pipeline.ts",
+    "pipeline:full": "tsx scripts/pipeline.ts --full",
     "pipeline:quick": "tsx scripts/pipeline.ts --skip-scrape",
     "pipeline:ratings": "tsx scripts/pipeline.ts --skip-scrape --skip-posters",
     "download-posters": "tsx scripts/download-posters.ts"
