@@ -15,6 +15,8 @@ export const REDIS_KEYS = {
   FILMS: "biffes:films",
   CATEGORIES: "biffes:categories",
   LAST_UPDATED: "biffes:lastUpdated",
+  FILM_IDS: "biffes:filmIds",           // Set of known film IDs
+  CATEGORY_COUNTS: "biffes:catCounts",  // Map of category -> film count
 } as const;
 
 // Type for the festival data structure
@@ -110,5 +112,45 @@ export async function getLastUpdated(): Promise<string | null> {
     return await redis.get<string>(REDIS_KEYS.LAST_UPDATED);
   } catch {
     return null;
+  }
+}
+
+// Get stored film IDs for diff comparison
+export async function getStoredFilmIds(): Promise<Set<string>> {
+  try {
+    if (!process.env.UPSTASH_REDIS_REST_URL) return new Set();
+    const ids = await redis.get<string[]>(REDIS_KEYS.FILM_IDS);
+    return new Set(ids || []);
+  } catch {
+    return new Set();
+  }
+}
+
+// Save film IDs
+export async function saveFilmIds(ids: string[]): Promise<void> {
+  try {
+    await redis.set(REDIS_KEYS.FILM_IDS, ids);
+  } catch (error) {
+    console.error("Error saving film IDs:", error);
+  }
+}
+
+// Get stored category counts for quick-check
+export async function getCategoryCounts(): Promise<Record<string, number>> {
+  try {
+    if (!process.env.UPSTASH_REDIS_REST_URL) return {};
+    const counts = await redis.get<Record<string, number>>(REDIS_KEYS.CATEGORY_COUNTS);
+    return counts || {};
+  } catch {
+    return {};
+  }
+}
+
+// Save category counts
+export async function saveCategoryCounts(counts: Record<string, number>): Promise<void> {
+  try {
+    await redis.set(REDIS_KEYS.CATEGORY_COUNTS, counts);
+  } catch (error) {
+    console.error("Error saving category counts:", error);
   }
 }

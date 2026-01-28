@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
-import { saveFestivalData, type FestivalData } from "@/lib/upstash";
+import { 
+  saveFestivalData, 
+  getFestivalData,
+  getStoredFilmIds,
+  saveFilmIds,
+  getCategoryCounts,
+  saveCategoryCounts,
+  type FestivalData 
+} from "@/lib/upstash";
 
 // Protect the cron endpoint
 const CRON_SECRET = process.env.CRON_SECRET;
@@ -75,8 +83,8 @@ async function fetchWithTimeout(url: string, timeout = 10000): Promise<Response>
   }
 }
 
-// Scrape film list from a category
-async function scrapeCategory(categoryId: string): Promise<Film[]> {
+// Scrape film list from a category (returns film IDs and basic info)
+async function scrapeCategory(categoryId: string): Promise<{ films: Film[]; count: number }> {
   const films: Film[] = [];
   const url = `${BASE_URL}/films?category_id=${categoryId}`;
 
@@ -126,7 +134,7 @@ async function scrapeCategory(categoryId: string): Promise<Film[]> {
     console.error(`Error scraping category ${categoryId}:`, error);
   }
 
-  return films;
+  return { films, count: films.length };
 }
 
 // Extract field from movie information section
@@ -291,41 +299,91 @@ export async function GET(request: NextRequest) {
   }
 
   const startTime = Date.now();
-  console.log("🎬 Starting BIFFes data refresh...");
+  console.log("🎬 Starting BIFFes incremental data refresh...");
 
   try {
-    // Step 1: Scrape all categories
-    console.log("📁 Scraping categories...");
-    const allFilms: Film[] = [];
-    const filmIds = new Set<string>();
-
-    for (const cat of CATEGORIES) {
-      const films = await scrapeCategory(cat.id);
-      for (const film of films) {
-        if (!filmIds.has(film.id)) {
-          filmIds.add(film.id);
-          allFilms.push(film);
-        }
+    // Load existing data from Redis
+    const existingData = await getFestivalData();
+    const existingFilmIds = await getStoredFilmIds();
+    const existingCategoryCounts = await getCategoryCounts();
+    
+    // Create a map of existing films for quick lookup
+    const existingFilmsMap = new Map<string, Film>();
+    if (existingData?.films) {
+      for (const film of existingData.films) {
+        existingFilmsMap.set(film.id, film as Film);
       }
-      await delay(300);
     }
 
-    console.log(`Found ${allFilms.length} unique films`);
+    console.log(`📊 Existing: ${existingFilmIds.size} films in ${Object.keys(existingCategoryCounts).length} categories`);
 
-    // Step 2: Scrape film details (batch with delays to avoid rate limiting)
-    console.log("📝 Fetching film details...");
-    for (let i = 0; i < allFilms.length; i++) {
-      allFilms[i] = await scrapeFilmDetails(allFilms[i]);
-      if ((i + 1) % 10 === 0) {
-        console.log(`  Progress: ${i + 1}/${allFilms.length}`);
+    // Step 1: Quick-check categories for changes
+    console.log("🔍 Step 1: Checking categories for changes...");
+    const newCategoryCounts: Record<string, number> = {};
+    const changedCategories: string[] = [];
+    const allScrapedFilms: Film[] = [];
+    const newFilmIds = new Set<string>();
+
+    for (const cat of CATEGORIES) {
+      const { films, count } = await scrapeCategory(cat.id);
+      newCategoryCounts[cat.id] = count;
+      
+      // Check if this category changed
+      const oldCount = existingCategoryCounts[cat.id] || 0;
+      if (count !== oldCount) {
+        changedCategories.push(cat.name);
+        console.log(`   📁 ${cat.name}: ${oldCount} → ${count} films`);
       }
+      
+      // Track all films
+      for (const film of films) {
+        if (!newFilmIds.has(film.id)) {
+          newFilmIds.add(film.id);
+          allScrapedFilms.push(film);
+        }
+      }
+      
       await delay(200);
     }
 
-    // Step 3: Fetch ratings (only for films without ratings)
-    if (OMDB_API_KEY) {
-      console.log("⭐ Fetching ratings...");
-      const filmsNeedingRatings = allFilms.filter(f => !f.imdbRating);
+    // Identify new vs existing films
+    const newFilms: Film[] = [];
+    const existingFilms: Film[] = [];
+    
+    for (const film of allScrapedFilms) {
+      if (existingFilmIds.has(film.id) && existingFilmsMap.has(film.id)) {
+        // Keep existing film data (already has details)
+        existingFilms.push(existingFilmsMap.get(film.id)!);
+      } else {
+        newFilms.push(film);
+      }
+    }
+
+    console.log(`\n📈 Changes detected:`);
+    console.log(`   • ${changedCategories.length} categories changed`);
+    console.log(`   • ${newFilms.length} new films to fetch`);
+    console.log(`   • ${existingFilms.length} existing films (cached)`);
+
+    // Step 2: Only fetch details for NEW films
+    if (newFilms.length > 0) {
+      console.log(`\n📝 Step 2: Fetching details for ${newFilms.length} new films...`);
+      for (let i = 0; i < newFilms.length; i++) {
+        newFilms[i] = await scrapeFilmDetails(newFilms[i]);
+        console.log(`   [${i + 1}/${newFilms.length}] ${newFilms[i].title}`);
+        await delay(250);
+      }
+    } else {
+      console.log("\n⏭️  Step 2: No new films to fetch");
+    }
+
+    // Combine existing + new films
+    const allFilms = [...existingFilms, ...newFilms];
+
+    // Step 3: Fetch ratings only for films without ratings
+    const filmsNeedingRatings = allFilms.filter(f => !f.imdbRating && !f.imdbId);
+    
+    if (OMDB_API_KEY && filmsNeedingRatings.length > 0) {
+      console.log(`\n⭐ Step 3: Fetching ratings for ${filmsNeedingRatings.length} films...`);
       for (let i = 0; i < filmsNeedingRatings.length; i++) {
         const idx = allFilms.findIndex(f => f.id === filmsNeedingRatings[i].id);
         if (idx !== -1) {
@@ -333,6 +391,10 @@ export async function GET(request: NextRequest) {
         }
         await delay(200);
       }
+    } else if (!OMDB_API_KEY) {
+      console.log("\n⏭️  Step 3: Skipping ratings (no OMDB_API_KEY)");
+    } else {
+      console.log("\n⏭️  Step 3: All films already have ratings");
     }
 
     // Step 4: Build category data
@@ -347,6 +409,8 @@ export async function GET(request: NextRequest) {
     }));
 
     // Step 5: Save to Upstash
+    console.log("\n💾 Step 4: Saving to Upstash...");
+    
     const festivalData: FestivalData = {
       festival: {
         name: "Bengaluru International Film Festival",
@@ -378,24 +442,38 @@ export async function GET(request: NextRequest) {
       films: allFilms,
     };
 
+    // Save all data
     const saved = await saveFestivalData(festivalData);
+    await saveFilmIds(Array.from(newFilmIds));
+    await saveCategoryCounts(newCategoryCounts);
     
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
 
     if (saved) {
-      console.log(`✅ Refresh complete in ${duration}s`);
-      return NextResponse.json({
+      const summary = {
         success: true,
-        message: "Data refreshed successfully",
+        mode: "incremental",
+        message: newFilms.length > 0 
+          ? `Added ${newFilms.length} new films` 
+          : "No changes detected",
         stats: {
-          films: allFilms.length,
+          totalFilms: allFilms.length,
+          newFilms: newFilms.length,
+          cachedFilms: existingFilms.length,
+          changedCategories: changedCategories.length,
           countries: festivalData.festival.totalCountries,
-          categories: categoryData.length,
           withRatings: allFilms.filter(f => f.imdbRating).length,
           duration: `${duration}s`,
         },
         lastUpdated: festivalData.festival.lastUpdated,
-      });
+      };
+      
+      console.log(`\n✅ Refresh complete in ${duration}s`);
+      console.log(`   📽️  Total: ${allFilms.length} films`);
+      console.log(`   🆕 New: ${newFilms.length} films`);
+      console.log(`   💾 Cached: ${existingFilms.length} films`);
+      
+      return NextResponse.json(summary);
     } else {
       throw new Error("Failed to save to Upstash");
     }
