@@ -11,6 +11,7 @@ export interface Film {
   language: string;
   synopsis: string;
   posterUrl: string;
+  posterUrlRemote?: string; // Remote fallback URL
   categoryId: string;
   subcategoryId?: string;
   isWorldPremiere?: boolean;

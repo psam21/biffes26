@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, Clock, Globe, Languages, Calendar, User } from "lucide-react";
@@ -13,6 +14,23 @@ interface FilmDrawerProps {
 }
 
 export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
+  const [imgSrc, setImgSrc] = useState(film?.posterUrl || "");
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    if (film) {
+      setImgSrc(film.posterUrl);
+      setHasError(false);
+    }
+  }, [film]);
+
+  const handleImageError = () => {
+    if (!hasError && film?.posterUrlRemote) {
+      setImgSrc(film.posterUrlRemote);
+      setHasError(true);
+    }
+  };
+
   if (!film) return null;
 
   return (
@@ -50,13 +68,14 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
 
             {/* Poster header */}
             <div className="relative aspect-video bg-zinc-800">
-              {film.posterUrl ? (
+              {imgSrc ? (
                 <Image
-                  src={film.posterUrl}
+                  src={imgSrc}
                   alt={film.title}
                   fill
                   className="object-cover"
                   priority
+                  onError={handleImageError}
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">

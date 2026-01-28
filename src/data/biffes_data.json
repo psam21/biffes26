@@ -147,8 +147,9 @@
       "duration": 0,
       "language": "Hindi",
       "synopsis": "In the flourishing yet caste laden farmlands of Haryana, India, a mute migrant farmworker is forced to embark on a harrowing journey for survival when his 10-year-old son is accused of a murder.",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/999202601212114206204.png",
-      "categoryId": "1"
+      "posterUrl": "/posters/285.png",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/999202601212114206204.png"
     },
     {
       "id": "277",
@@ -159,8 +160,9 @@
       "duration": 0,
       "language": "Farsi (Persian)",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/239202601212024496264.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/277.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/239202601212024496264.jpg"
     },
     {
       "id": "279",
@@ -171,8 +173,9 @@
       "duration": 0,
       "language": "Farsi (Persian)",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/441202601212035043194.png",
-      "categoryId": "1"
+      "posterUrl": "/posters/279.png",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/441202601212035043194.png"
     },
     {
       "id": "278",
@@ -183,8 +186,9 @@
       "duration": 0,
       "language": "Kyrgyz | Russian",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/727202601212030301454.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/278.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/727202601212030301454.jpg"
     },
     {
       "id": "270",
@@ -195,8 +199,9 @@
       "duration": 0,
       "language": "Rohingya",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/491202601211851356117.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/270.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/491202601211851356117.jpg"
     },
     {
       "id": "308",
@@ -207,8 +212,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/634202601212242138089.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/308.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/634202601212242138089.jpg"
     },
     {
       "id": "275",
@@ -219,8 +225,9 @@
       "duration": 0,
       "language": "Tagalog",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/130202601211956236828.png",
-      "categoryId": "1"
+      "posterUrl": "/posters/275.png",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/130202601211956236828.png"
     },
     {
       "id": "281",
@@ -231,8 +238,9 @@
       "duration": 0,
       "language": "Bengali",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/528202601212047044879.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/281.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/528202601212047044879.jpg"
     },
     {
       "id": "280",
@@ -243,8 +251,9 @@
       "duration": 0,
       "language": "Nepali",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/512202601212040212024.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/280.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/512202601212040212024.jpg"
     },
     {
       "id": "286",
@@ -255,8 +264,9 @@
       "duration": 0,
       "language": "Japanese",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/713202601212118153336.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/286.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/713202601212118153336.jpg"
     },
     {
       "id": "284",
@@ -267,8 +277,9 @@
       "duration": 0,
       "language": "Korean",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/723202601212110381485.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/284.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/723202601212110381485.jpg"
     },
     {
       "id": "276",
@@ -279,8 +290,9 @@
       "duration": 0,
       "language": "Mandarin Chinese",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/692202601212018449547.png",
-      "categoryId": "1"
+      "posterUrl": "/posters/276.png",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/692202601212018449547.png"
     },
     {
       "id": "282",
@@ -291,8 +303,9 @@
       "duration": 0,
       "language": "Tamil",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/142202601212101194271.jpg",
-      "categoryId": "1"
+      "posterUrl": "/posters/282.jpg",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/142202601212101194271.jpg"
     },
     {
       "id": "287",
@@ -303,8 +316,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/762202601212122363836.png",
-      "categoryId": "1"
+      "posterUrl": "/posters/287.png",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/762202601212122363836.png"
     },
     {
       "id": "274",
@@ -315,8 +329,9 @@
       "duration": 0,
       "language": "Japanese",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/328202601211948275807.png",
-      "categoryId": "1"
+      "posterUrl": "/posters/274.png",
+      "categoryId": "1",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/328202601211948275807.png"
     },
     {
       "id": "299",
@@ -327,8 +342,9 @@
       "duration": 0,
       "language": "Malayalam",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/280202601212215046278.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/299.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/280202601212215046278.jpg"
     },
     {
       "id": "311",
@@ -339,8 +355,9 @@
       "duration": 0,
       "language": "Malayalam",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/833202601212253149234.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/311.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/833202601212253149234.jpg"
     },
     {
       "id": "310",
@@ -351,8 +368,9 @@
       "duration": 0,
       "language": "Marathi",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/291202601212248517411.png",
-      "categoryId": "2"
+      "posterUrl": "/posters/310.png",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/291202601212248517411.png"
     },
     {
       "id": "307",
@@ -363,8 +381,9 @@
       "duration": 0,
       "language": "Malayalam",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/380202601212239295003.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/307.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/380202601212239295003.jpg"
     },
     {
       "id": "301",
@@ -375,8 +394,9 @@
       "duration": 0,
       "language": "Marathi",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/118202601212220174740.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/301.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/118202601212220174740.jpg"
     },
     {
       "id": "302",
@@ -387,8 +407,9 @@
       "duration": 0,
       "language": "Assamese",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/190202601212223006017.png",
-      "categoryId": "2"
+      "posterUrl": "/posters/302.png",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/190202601212223006017.png"
     },
     {
       "id": "303",
@@ -399,8 +420,9 @@
       "duration": 0,
       "language": "Marathi",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/959202601212225568309.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/303.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/959202601212225568309.jpg"
     },
     {
       "id": "300",
@@ -411,8 +433,9 @@
       "duration": 0,
       "language": "Malayalam",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/575202601212217472687.jpeg",
-      "categoryId": "2"
+      "posterUrl": "/posters/300.jpeg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/575202601212217472687.jpeg"
     },
     {
       "id": "304",
@@ -423,8 +446,9 @@
       "duration": 0,
       "language": "Malayalam",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/866202601212230057908.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/304.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/866202601212230057908.jpg"
     },
     {
       "id": "306",
@@ -435,8 +459,9 @@
       "duration": 0,
       "language": "Malayalam",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/894202601212235485439.jpeg",
-      "categoryId": "2"
+      "posterUrl": "/posters/306.jpeg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/894202601212235485439.jpeg"
     },
     {
       "id": "293",
@@ -447,8 +472,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/467202601212148517273.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/293.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/467202601212148517273.jpg"
     },
     {
       "id": "309",
@@ -459,8 +485,9 @@
       "duration": 0,
       "language": "Manipuri",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/433202601212245309856.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/309.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/433202601212245309856.jpg"
     },
     {
       "id": "351",
@@ -471,8 +498,9 @@
       "duration": 0,
       "language": "Marathi",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/107202601272356413393.jpeg",
-      "categoryId": "2"
+      "posterUrl": "/posters/351.jpeg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/107202601272356413393.jpeg"
     },
     {
       "id": "305",
@@ -483,8 +511,9 @@
       "duration": 0,
       "language": "Karbi",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/458202601212232582484.jpeg",
-      "categoryId": "2"
+      "posterUrl": "/posters/305.jpeg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/458202601212232582484.jpeg"
     },
     {
       "id": "352",
@@ -495,8 +524,9 @@
       "duration": 0,
       "language": "Urdu",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/638202601280017131021.jpg",
-      "categoryId": "2"
+      "posterUrl": "/posters/352.jpg",
+      "categoryId": "2",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/638202601280017131021.jpg"
     },
     {
       "id": "294",
@@ -507,8 +537,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/877202601212153026558.jpeg",
-      "categoryId": "3"
+      "posterUrl": "/posters/294.jpeg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/877202601212153026558.jpeg"
     },
     {
       "id": "290",
@@ -519,8 +550,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/675202601212136404292.jpg",
-      "categoryId": "3"
+      "posterUrl": "/posters/290.jpg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/675202601212136404292.jpg"
     },
     {
       "id": "297",
@@ -531,8 +563,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/608202601212203559317.jpeg",
-      "categoryId": "3"
+      "posterUrl": "/posters/297.jpeg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/608202601212203559317.jpeg"
     },
     {
       "id": "354",
@@ -543,8 +576,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/455202601280124141246.jpeg",
-      "categoryId": "3"
+      "posterUrl": "/posters/354.jpeg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/455202601280124141246.jpeg"
     },
     {
       "id": "288",
@@ -556,8 +590,9 @@
       "duration": 169,
       "language": "Kannada",
       "synopsis": "During the Kadamba reign, a fictional feudal land King Vijayendra ruler of Bangras, on his venture to kantara meets his final fate in the mystical forest. On witnessing this, his son Rajashekara seals the borders. Later Prince Kulashekara reopens by killing them. Protagonist Berme seeking prosperity, crosses the divide sparking a clash of faith, power, destiny between the Kingdom and Nature.",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/736202601212127494125.jpg",
-      "categoryId": "3"
+      "posterUrl": "/posters/288.jpg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/736202601212127494125.jpg"
     },
     {
       "id": "292",
@@ -568,8 +603,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/436202601212145485815.jpg",
-      "categoryId": "3"
+      "posterUrl": "/posters/292.jpg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/436202601212145485815.jpg"
     },
     {
       "id": "353",
@@ -580,8 +616,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/467202601212148517273.jpg",
-      "categoryId": "3"
+      "posterUrl": "/posters/353.jpg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/467202601212148517273.jpg"
     },
     {
       "id": "295",
@@ -592,8 +629,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/615202601212157015830.jpeg",
-      "categoryId": "3"
+      "posterUrl": "/posters/295.jpeg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/615202601212157015830.jpeg"
     },
     {
       "id": "289",
@@ -604,8 +642,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/296202601212133187044.png",
-      "categoryId": "3"
+      "posterUrl": "/posters/289.png",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/296202601212133187044.png"
     },
     {
       "id": "355",
@@ -616,8 +655,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/277202601280134598552.jpeg",
-      "categoryId": "3"
+      "posterUrl": "/posters/355.jpeg",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/277202601280134598552.jpeg"
     },
     {
       "id": "296",
@@ -628,8 +668,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/908202601212200567549.png",
-      "categoryId": "3"
+      "posterUrl": "/posters/296.png",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/908202601212200567549.png"
     },
     {
       "id": "298",
@@ -640,8 +681,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/684202601212208325851.png",
-      "categoryId": "3"
+      "posterUrl": "/posters/298.png",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/684202601212208325851.png"
     },
     {
       "id": "291",
@@ -652,8 +694,9 @@
       "duration": 0,
       "language": "Kannada",
       "synopsis": "",
-      "posterUrl": "https://biffes.org//public/uploads/stills_img/106202601212142062789.png",
-      "categoryId": "3"
+      "posterUrl": "/posters/291.png",
+      "categoryId": "3",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/106202601212142062789.png"
     }
   ]
 }

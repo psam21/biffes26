@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Film } from "@/types";
@@ -12,6 +13,16 @@ interface FilmCardProps {
 }
 
 export function FilmCard({ film, onClick, index }: FilmCardProps) {
+  const [imgSrc, setImgSrc] = useState(film.posterUrl);
+  const [hasError, setHasError] = useState(false);
+
+  const handleImageError = () => {
+    if (!hasError && film.posterUrlRemote) {
+      setImgSrc(film.posterUrlRemote);
+      setHasError(true);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -27,13 +38,14 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
     >
       {/* Poster */}
       <div className="relative aspect-[2/3] bg-zinc-800">
-        {film.posterUrl ? (
+        {imgSrc ? (
           <Image
-            src={film.posterUrl}
+            src={imgSrc}
             alt={film.title}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            onError={handleImageError}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
