@@ -81,14 +81,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-zinc-950">
-      {/* Festival Ticker */}
-      <FestivalTicker
-        totalFilms={festival.totalFilms}
-        totalCountries={festival.totalCountries}
-        edition={festival.edition}
-        dates={festival.dates}
-        venues={festival.venues}
-      />
+      {/* Header - Reserved for future use */}
 
       <AnimatePresence mode="wait">
         {selectedCategory ? (
@@ -121,8 +114,14 @@ export default function Home() {
                   </span>{" "}
                   2026
                 </h1>
-                <p className="text-sm text-zinc-500 mt-1">
-                  {festival.totalFilms}+ films • {festival.totalCountries} countries • {categories.length} categories
+                <p className="text-sm text-zinc-400 mt-1">
+                  January 29 – February 6, 2026
+                </p>
+                <p className="text-xs text-zinc-500 mt-1">
+                  LULU Mall • Dr. Rajkumar Bhavana • Suchitra Cinema
+                </p>
+                <p className="text-xs text-zinc-500 mt-1">
+                  200+ Films | 60+ Countries
                 </p>
               </motion.div>
             </header>
