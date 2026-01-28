@@ -19,9 +19,10 @@ export function FestivalTicker({
   dates,
   venues,
 }: FestivalTickerProps) {
+  // Use official festival stats: 200+ films from 60+ countries
   const stats = [
-    { icon: Film, label: "Films", value: totalFilms },
-    { icon: Globe, label: "Countries", value: totalCountries },
+    { icon: Film, label: "Films", value: "200+" },
+    { icon: Globe, label: "Countries", value: "60+" },
     { icon: Calendar, label: "Edition", value: `${edition}th` },
   ];
 

@@ -12,6 +12,13 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -20,12 +27,17 @@ export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
       whileHover={{ scale: 1.02, y: -2 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`View ${category.name} - ${category.filmCount} films`}
       className={cn(
         "relative cursor-pointer rounded-lg p-3 border overflow-hidden",
         "bg-gradient-to-br",
         getCategoryGradient(category.color),
         getCategoryBorderColor(category.color),
-        "hover:shadow-lg hover:shadow-black/30 transition-shadow duration-200"
+        "hover:shadow-lg hover:shadow-black/30 transition-shadow duration-200",
+        "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
       )}
     >
       {/* Film count badge */}

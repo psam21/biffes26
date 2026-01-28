@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, Clock, Globe, Languages, Calendar, User } from "lucide-react";
@@ -16,6 +16,7 @@ interface FilmDrawerProps {
 export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
   const [imgSrc, setImgSrc] = useState(film?.posterUrl || "");
   const [hasError, setHasError] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (film) {
@@ -23,6 +24,23 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
       setHasError(false);
     }
   }, [film]);
+
+  // Handle Escape key to close drawer
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      // Focus the drawer for accessibility
+      drawerRef.current?.focus();
+    }
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleImageError = () => {
     if (!hasError && film?.posterUrlRemote) {
@@ -44,24 +62,31 @@ export function FilmDrawer({ film, isOpen, onClose }: FilmDrawerProps) {
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
+            aria-hidden="true"
           />
 
           {/* Drawer */}
           <motion.div
+            ref={drawerRef}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Film details: ${film.title}`}
             className={cn(
               "fixed right-0 top-0 h-full w-full max-w-lg z-50",
               "bg-zinc-900 border-l border-zinc-800",
-              "overflow-y-auto"
+              "overflow-y-auto focus:outline-none"
             )}
           >
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors z-10"
+              aria-label="Close film details"
+              className="absolute top-4 right-4 p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             >
               <X className="w-5 h-5 text-white" />
             </button>

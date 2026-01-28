@@ -24,6 +24,13 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   // Get best available rating
   const rating = film.imdbRating || film.letterboxdRating;
 
@@ -34,10 +41,15 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
       transition={{ duration: 0.3, delay: index * 0.03 }}
       whileHover={{ y: -6 }}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`${film.title} by ${film.director || 'Unknown'} - ${film.country}, ${film.year}`}
       className={cn(
         "film-card cursor-pointer rounded-lg overflow-hidden",
         "bg-zinc-900 border border-zinc-800",
-        "hover:border-zinc-600 transition-colors duration-200"
+        "hover:border-zinc-600 transition-colors duration-200",
+        "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
       )}
     >
       {/* Poster */}
