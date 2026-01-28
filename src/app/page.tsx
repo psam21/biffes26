@@ -462,9 +462,6 @@ export default function Home() {
                     {" • "}
                     <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
                   </p>
-                  <p className="text-xs text-zinc-500 mt-1">
-                    126 festival favorites grouped by prestige, curated for this film festival
-                  </p>
                 </motion.div>
                 
                 {/* Watchlist Button */}
