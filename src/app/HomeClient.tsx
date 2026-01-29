@@ -12,6 +12,7 @@ import {
   VirtualizedFilmGrid,
 } from "@/components";
 import { AwardWinnersSection } from "@/components/AwardWinnersSection";
+import { WatchlistSchedule } from "@/components/WatchlistSchedule";
 import { Category, Film } from "@/types";
 import { useWatchlist } from "@/lib/watchlist-context";
 
@@ -41,11 +42,36 @@ interface FestivalData {
   films: Film[];
 }
 
-interface HomeClientProps {
-  data: FestivalData;
+interface ScheduleData {
+  days: Array<{
+    date: string;
+    dayNumber: number;
+    label: string;
+    screenings: Array<{
+      venue: string;
+      screen: string;
+      showings: Array<{
+        time: string;
+        film: string;
+        director: string;
+        country: string;
+        year: number;
+        language: string;
+        duration: number;
+      }>;
+    }>;
+  }>;
+  schedule: {
+    venues: Record<string, { name: string; location: string; screens?: number }>;
+  };
 }
 
-export default function HomeClient({ data }: HomeClientProps) {
+interface HomeClientProps {
+  data: FestivalData;
+  scheduleData: ScheduleData;
+}
+
+export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   const { festival, categories, films } = data;
   
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -246,27 +272,45 @@ export default function HomeClient({ data }: HomeClientProps) {
               </div>
             </div>
 
-            {/* Films Grid */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
+            {/* Watchlist Content */}
+            <div className="max-w-7xl mx-auto px-4 py-8 space-y-10">
               {watchlistLoading ? (
                 <div className="text-center py-16">
                   <div className="animate-spin w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full mx-auto mb-4"></div>
                   <p className="text-zinc-400">Loading your watchlist...</p>
                 </div>
+              ) : watchlistFilms.length > 0 ? (
+                <>
+                  {/* Schedule Section */}
+                  <WatchlistSchedule
+                    watchlistFilms={watchlistFilms}
+                    scheduleData={scheduleData}
+                    onFilmClick={(film) => handleFilmClick(film)}
+                  />
+
+                  {/* Divider */}
+                  <div className="border-t border-zinc-800" />
+
+                  {/* Films Grid */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-white flex items-center gap-2 mb-6">
+                      <span>🎬</span>
+                      All Watchlist Films
+                    </h3>
+                    <VirtualizedFilmGrid
+                      films={watchlistFilms}
+                      onFilmClick={handleFilmClick}
+                    />
+                  </div>
+                </>
               ) : (
-                <VirtualizedFilmGrid
-                  films={watchlistFilms}
-                  onFilmClick={handleFilmClick}
-                  emptyState={
-                    <div className="text-center py-16">
-                      <span className="text-6xl mb-4 block">📝</span>
-                      <p className="text-zinc-400 text-lg mb-2">Your watchlist is empty</p>
-                      <p className="text-zinc-500 text-sm">
-                        Click the <span className="inline-flex items-center justify-center w-5 h-5 bg-zinc-700 rounded-full text-xs">+</span> button on any film to add it
-                      </p>
-                    </div>
-                  }
-                />
+                <div className="text-center py-16">
+                  <span className="text-6xl mb-4 block">📝</span>
+                  <p className="text-zinc-400 text-lg mb-2">Your watchlist is empty</p>
+                  <p className="text-zinc-500 text-sm">
+                    Click the <span className="inline-flex items-center justify-center w-5 h-5 bg-zinc-700 rounded-full text-xs">+</span> button on any film to add it
+                  </p>
+                </div>
               )}
             </div>
           </motion.div>
