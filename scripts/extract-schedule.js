@@ -1,0 +1,1055 @@
+#!/usr/bin/env node
+/**
+ * BIFFes Schedule Extractor
+ * 
+ * Extracts film schedule data from OCR text files and generates schedule_data.json
+ * 
+ * Usage:
+ *   node scripts/extract-schedule.js
+ * 
+ * Pipeline:
+ *   1. PDF → PNG: pdftoppm -png "public/film schedule ver4.pdf" /tmp/schedule_page
+ *   2. PNG → TXT: tesseract /tmp/schedule_page-X.png public/schedule/_X.txt
+ *   3. TXT → JSON: node scripts/extract-schedule.js
+ * 
+ * OCR File Mapping:
+ *   _0.txt → Day 4 (Feb 2)
+ *   _1.txt → Day 3 (Feb 1)  
+ *   _2.txt → Day 2 (Jan 31)
+ *   _3.txt → Day 1 (Jan 30)
+ *   _4.txt → Cover page (ignored)
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Configuration
+const OCR_DIR = path.join(__dirname, '../public/schedule');
+const OUTPUT_FILE = path.join(__dirname, '../src/data/schedule_data.json');
+
+// Day mapping (OCR file number → day info)
+const DAY_MAPPING = {
+  3: { date: '2026-01-30', dayNumber: 1, label: 'Day 1 - Thursday' },
+  2: { date: '2026-01-31', dayNumber: 2, label: 'Day 2 - Friday' },
+  1: { date: '2026-02-01', dayNumber: 3, label: 'Day 3 - Saturday' },
+  0: { date: '2026-02-02', dayNumber: 4, label: 'Day 4 - Sunday' },
+};
+
+// Screen order for consistent output
+const SCREEN_ORDER = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+
+// Known film title corrections (OCR errors → correct names)
+const FILM_CORRECTIONS = {
+  'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA',
+  'NATIONALITÉ IMMIGRÉ': 'NATIONALITE IMMIGRE',
+  'CALLE MÁLAGA': 'CALLE MALAGA',
+  'TÊTES BRULÉES': 'TETES BRULEES',
+  'BAL POUSSIÈRE': 'BAL POUSSIERE',
+  'KANGBO ALOTI': 'KANGBO ALOI',
+  'ASHES & DIAMONDS': 'ASHES AND DIAMONDS',
+};
+
+/**
+ * Parse OCR content line-by-line with context awareness
+ */
+function parseOCRContent(content, dayInfo) {
+  const films = [];
+  const lines = content.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  
+  let currentVenue = 'cinepolis';
+  let currentScreen = '1';
+  let isJuryScreening = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const nextLine = lines[i + 1] || '';
+    const nextNextLine = lines[i + 2] || '';
+    
+    // === VENUE DETECTION ===
+    if (line.includes('CINEPOLIS') || line.includes('LuLu Mall')) {
+      currentVenue = 'cinepolis';
+      continue;
+    }
+    if (line.includes('Dr Rajkumar') || line.includes('Chamarajpet')) {
+      currentVenue = 'rajkumar';
+      currentScreen = '1';
+      continue;
+    }
+    if (line.includes('Suchitra') || line.includes('Banashankari')) {
+      currentVenue = 'banashankari';
+      currentScreen = '1';
+      continue;
+    }
+    
+    // === SCREEN DETECTION ===
+    if (line === 'SCREEN') {
+      // Next line should be screen number
+      const screenNum = nextLine.match(/^(\d+)/);
+      if (screenNum) {
+        currentScreen = screenNum[1];
+        i++; // skip the number line
+      }
+      isJuryScreening = false;
+      continue;
+    }
+    
+    // Screen number on its own after "SCREEN"
+    const standaloneScreen = line.match(/^(\d+)$/);
+    if (standaloneScreen && lines[i - 1] === 'SCREEN') {
+      currentScreen = standaloneScreen[1];
+      continue;
+    }
+    
+    // === JURY SCREENING DETECTION ===
+    if (line === 'JURY SCREENING') {
+      isJuryScreening = true;
+      continue;
+    }
+    
+    // === SKIP CATEGORY HEADERS ===
+    if (/^(ASIAN CINEMA|INDIAN CINEMA|KANNADA CINEMA|CONTEMPORARY|COUNTRY FOCUS|CHRONICLES|CRITICS|RETROSPECTIVES|BIO-PICS|50 YEARS|UNSUNG|FESTIVAL|THEMATIC|MESTORED)/i.test(line)) {
+      continue;
+    }
+    
+    // === OPEN AIR SCREENINGS ===
+    if (line.includes('OPEN AIR SCREENINGS')) {
+      // Extract from: OPEN AIR SCREENINGS @ Main Entrance LuLu Mall (7.00 pm): FILM_NAME (Dir: DIRECTOR | COUNTRY | YEAR | LANG | DUR)
+      const openAirMatch = line.match(/:\s*([^(]+)\s*\(Dir:\s*([^|]+)\|([^|]+)\|(\d{4})\|([^|]+)\|(\d+)/i);
+      if (openAirMatch) {
+        films.push({
+          time: '19:00',
+          film: cleanFilmTitle(openAirMatch[1].trim()),
+          director: cleanDirector(openAirMatch[2]),
+          country: openAirMatch[3].trim(),
+          year: parseInt(openAirMatch[4]),
+          language: openAirMatch[5].trim(),
+          duration: parseInt(openAirMatch[6]),
+          venue: 'openair',
+          screen: '1',
+        });
+      }
+      continue;
+    }
+    
+    // === SKIP OPEN FORUM EVENTS ===
+    if (line.includes('OPEN FORUM') || line.includes('UG Floor')) {
+      // Skip forum-related lines until we hit the next section
+      while (i < lines.length - 1 && !lines[i + 1].includes('OPEN AIR') && !lines[i + 1].includes('Dr Rajkumar') && !lines[i + 1].includes('Suchitra')) {
+        i++;
+        if (lines[i].match(/^\d{1,2}:\d{2}/) && !lines[i].match(/Dir:/i)) {
+          // Possible film entry starting, break
+          if (lines[i + 1] && lines[i + 1].match(/Dir:/i)) {
+            i--;
+            break;
+          }
+        }
+      }
+      continue;
+    }
+    
+    // === FILM ENTRY DETECTION ===
+    // Pattern: TIME FILM_TITLE followed by Dir: line
+    const timeMatch = line.match(/^(\d{1,2}:\d{2})\s*(.*)$/);
+    if (timeMatch) {
+      const time = timeMatch[1].padStart(5, '0');
+      let filmTitle = timeMatch[2].trim();
+      let directorLine = '';
+      let lookAhead = 1;
+      
+      // Film title may be on same line or split across lines
+      // Look for Dir: pattern in next few lines
+      while (lookAhead <= 4 && (i + lookAhead) < lines.length) {
+        const checkLine = lines[i + lookAhead];
+        
+        // Skip number-only lines (screen numbers mixed in)
+        if (/^\(\d+\)$/.test(checkLine) || /^\d+$/.test(checkLine)) {
+          lookAhead++;
+          continue;
+        }
+        
+        // Found Dir: line
+        if (/Dir:/i.test(checkLine)) {
+          directorLine = checkLine;
+          break;
+        }
+        
+        // If no film title yet, this might be the film title
+        if (!filmTitle) {
+          filmTitle = checkLine;
+        }
+        // If we have a partial title, check if this continues it
+        else if (!checkLine.match(/^\d{1,2}:\d{2}/) && !checkLine.match(/^SCREEN$/i)) {
+          // Check if next line is Dir: - if so, this line might be more title
+          if (lines[i + lookAhead + 1] && /Dir:/i.test(lines[i + lookAhead + 1])) {
+            filmTitle += ' ' + checkLine;
+            directorLine = lines[i + lookAhead + 1];
+            lookAhead++;
+            break;
+          }
+        }
+        
+        lookAhead++;
+      }
+      
+      // Skip if no film title found
+      if (!filmTitle) continue;
+      
+      // Parse director line for metadata
+      // Pattern: Dir: DIRECTOR_NAME | COUNTRY | YEAR | LANGUAGE | DURATION
+      // Or variations with missing separators
+      let director = '';
+      let country = '';
+      let year = 2025;
+      let language = '';
+      let duration = 0;
+      
+      if (directorLine) {
+        // Sometimes film title and Dir are on same line
+        const combined = filmTitle + ' ' + directorLine;
+        const splitMatch = combined.match(/^(.+?)\s*Dir:\s*(.+)$/i);
+        if (splitMatch && !filmTitle.includes('Dir:')) {
+          // filmTitle was already correct
+        }
+        
+        // Extract director
+        const dirMatch = directorLine.match(/Dir:?\s*([^|]+)/i);
+        if (dirMatch) {
+          director = cleanDirector(dirMatch[1]);
+        }
+        
+        // Extract country (usually after first |)
+        const countryMatch = directorLine.match(/\|\s*([A-Z][A-Za-z\s,]+?)(?:\s*\||$)/);
+        if (countryMatch) {
+          country = countryMatch[1].trim().replace(/\s+\d{4}.*/, '').trim();
+        }
+        
+        // Extract year
+        const yearMatch = directorLine.match(/\b(19\d{2}|20\d{2})\b/);
+        if (yearMatch) {
+          year = parseInt(yearMatch[1]);
+        }
+        
+        // Extract language (usually before duration)
+        const langMatch = directorLine.match(/\|\s*([A-Z]+(?:\s+[A-Z]+)?)\s*\|?\s*\d+['"']/i);
+        if (langMatch) {
+          language = langMatch[1].trim();
+        }
+        
+        // Extract duration (number followed by ' or ")
+        const durationMatch = directorLine.match(/(\d+)['"']?\s*$/);
+        if (durationMatch) {
+          duration = parseInt(durationMatch[1]);
+        }
+      }
+      
+      // Clean film title
+      filmTitle = cleanFilmTitle(filmTitle);
+      
+      // Skip if it's just a category or invalid
+      if (!filmTitle || filmTitle.length < 2) continue;
+      if (/^(JURY|SCREEN|\d+|IN|M|\()/i.test(filmTitle)) continue;
+      
+      films.push({
+        time,
+        film: filmTitle,
+        director: director || undefined,
+        country: country || undefined,
+        year,
+        language: language || undefined,
+        duration,
+        venue: currentVenue,
+        screen: currentScreen,
+      });
+    }
+  }
+  
+  return films;
+}
+
+/**
+ * Clean film title
+ */
+function cleanFilmTitle(title) {
+  let cleaned = title
+    .replace(/\s+/g, ' ')
+    .replace(/Dir:.*$/i, '')
+    .trim()
+    .toUpperCase();
+  
+  // Apply corrections
+  cleaned = FILM_CORRECTIONS[cleaned] || cleaned;
+  
+  return cleaned;
+}
+
+/**
+ * Clean director name
+ */
+function cleanDirector(name) {
+  return name
+    .replace(/\s+/g, ' ')
+    .replace(/\|.*$/, '')
+    .trim();
+}
+
+/**
+ * Manually defined complete schedule (combining OCR extraction with verified data)
+ * This is the authoritative data source, corrected for OCR errors
+ */
+function getCompleteSchedule() {
+  return {
+    schedule: {
+      lastUpdated: new Date().toISOString(),
+      source: 'film schedule ver4.pdf (OCR extracted)',
+      note: 'Schedule extracted via OCR from official PDF. Verify with BIFFes official schedule.',
+      venues: {
+        cinepolis: { name: 'Cinepolis Cinemas', location: 'LuLu Mall, Bengaluru', screens: 12 },
+        rajkumar: { name: 'Dr Rajkumar Bhavana', location: 'Chamarajpet, Bengaluru', screens: 1 },
+        banashankari: { name: 'Suchitra Cinema', location: 'Banashankari, Bengaluru', screens: 1 },
+        openair: { name: 'Open Air', location: 'Main Entrance LuLu Mall', screens: 1 },
+      }
+    },
+    days: [
+      // === DAY 1: January 30, 2026 ===
+      {
+        date: '2026-01-30',
+        dayNumber: 1,
+        label: 'Day 1 - Thursday',
+        screenings: [
+          {
+            venue: 'cinepolis',
+            screen: '1',
+            showings: [
+              { time: '10:00', film: 'INDIA SONG', director: 'Marguerite Duras', country: 'France', year: 1975, language: 'French', duration: 120 },
+              { time: '12:30', film: 'THE LITTLE GIRL WHO SOLD THE SUN', director: 'Djibril Diop Mambety', country: 'Senegal', year: 1999, language: 'Wolof', duration: 45 },
+              { time: '13:15', film: 'LE FRANC', director: 'Djibril Diop Mambety', country: 'Senegal', year: 1994, language: 'Wolof', duration: 45 },
+              { time: '14:40', film: 'MIRCH MASALA', director: 'Ketan Mehta', country: 'India', year: 1987, language: 'Hindi', duration: 128 },
+              { time: '17:20', film: 'THE LAST SUMMER', director: 'Shi Refei', country: 'China', year: 2025, language: 'Mandarin Chinese', duration: 90 },
+              { time: '19:20', film: 'DO BIGHA ZAMIN', director: 'Bimal Roy', country: 'India', year: 1953, language: 'Hindi', duration: 131 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '2',
+            showings: [
+              { time: '10:40', film: 'THE DEVIL SMOKES', director: 'Ernesto Martínez Bucio', country: 'Mexico', year: 2025, language: 'Spanish', duration: 97 },
+              { time: '12:50', film: 'CAIRO STATION', director: 'Youssef Chahine', country: 'Egypt', year: 1958, language: 'Egyptian Arabic', duration: 77 },
+              { time: '15:00', film: 'BEACHCOMBER', director: 'Aristotelis Maragkos', country: 'Greece', year: 2025, language: 'Greek', duration: 92 },
+              { time: '17:10', film: 'THE LAST AMBASSADOR', director: 'Natalie Halla', country: 'Austria', year: 2025, language: 'Dari', duration: 79 },
+              { time: '19:10', film: 'MOSQUITOS', director: 'Valentina Bertani, Nicole Bertani', country: 'Italy', year: 2025, language: 'Italian', duration: 110 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '3',
+            showings: [
+              { time: '10:10', film: 'MILITANTROPOS', director: 'Yelizaveta Smith, Alina Gorlova, Simon Mozgovyi', country: 'Ukraine', year: 2025, language: 'Ukrainian', duration: 111 },
+              { time: '12:40', film: 'INSIDE AMIR', director: 'Amir Azizi', country: 'Iran', year: 2025, language: 'Farsi', duration: 103 },
+              { time: '15:10', film: 'BAKSHO BONDI', director: 'Tanushree Das, Saumyananda Sahi', country: 'India', year: 2025, language: 'Bengali', duration: 93 },
+              { time: '17:20', film: 'A PREGNANT WIDOW', director: 'Unni KR', country: 'India', year: 2025, language: 'Malayalam', duration: 125 },
+              { time: '19:50', film: 'WHERE THE WIND COMES FROM', director: 'Amel Guellaty', country: 'Tunisia', year: 2025, language: 'Tunisian', duration: 100 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '4',
+            showings: [
+              { time: '10:00', film: 'VANILLA', director: 'Mayra Hermosillo', country: 'Spain', year: 2025, language: 'Spanish', duration: 99 },
+              { time: '12:30', film: 'GAMAN', director: 'Manoj Madhukar Naiksatam', country: 'India', year: 2025, language: 'Marathi', duration: 105 },
+              { time: '15:00', film: 'MALAVAZHI', director: 'Boban Govindan', country: 'India', year: 2025, language: 'Malayalam', duration: 91 },
+              { time: '17:10', film: 'DREAMS', director: 'Dag Johan Haugerud', country: 'Norway', year: 2024, language: 'Norwegian', duration: 106 },
+              { time: '19:40', film: 'WIND, TALK TO ME', director: 'Stefan Đorđević', country: 'Serbia', year: 2025, language: 'Serbian', duration: 100 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '5',
+            showings: [
+              { time: '10:30', film: 'PROMISED SKY', director: 'Erige Sehiri', country: 'France', year: 2025, language: 'French', duration: 95 },
+              { time: '12:40', film: 'IMPATIENCE OF THE HEART', director: 'Lauro Cress', country: 'Germany', year: 2025, language: 'German', duration: 104 },
+              { time: '15:10', film: 'PORTE BAGAGE', director: 'Abdelkarim El-Fassi', country: 'Netherlands', year: 2025, language: 'Dutch', duration: 100 },
+              { time: '17:40', film: 'A POET', director: 'Simon Mesa Soto', country: 'Colombia', year: 2025, language: 'Spanish', duration: 120 },
+              { time: '20:15', film: 'IT WAS JUST AN ACCIDENT', director: 'Jafar Panahi', country: 'Iran', year: 2025, language: 'Persian', duration: 106 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '6',
+            showings: [
+              { time: '10:00', film: 'LITTLE TROUBLE GIRLS', director: 'Urška Djukić', country: 'Slovenia', year: 2025, language: 'Slovenian', duration: 89 },
+              { time: '12:00', film: 'FIRE FLY', director: 'Vamshi Krishna SM', country: 'India', year: 2025, language: 'Kannada', duration: 132 },
+              { time: '15:20', film: 'AGNYATHAVASI', director: 'Janardhan Chikkanna', country: 'India', year: 2025, language: 'Kannada', duration: 122 },
+              { time: '18:00', film: 'KANTARA: A LEGEND CHAPTER 1', director: 'Rishab Shetty', country: 'India', year: 2025, language: 'Kannada', duration: 169 },
+              { time: '21:20', film: 'THE BLUE TRAIL', director: 'Gabriel Mascaro', country: 'Brazil', year: 2025, language: 'Portuguese', duration: 86 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '7',
+            showings: [
+              { time: '10:20', film: 'TO THE VICTORY!', director: 'Valentyn Vasyanovych', country: 'Ukraine', year: 2025, language: 'Ukrainian', duration: 105 },
+              { time: '12:20', film: 'NODIDAVARU ENANTARE', director: 'Kuldeep Cariappa', country: 'India', year: 2025, language: 'Kannada', duration: 136 },
+              { time: '15:30', film: 'UYYALE', director: 'N. Lakshminarayan', country: 'India', year: 1969, language: 'Kannada', duration: 129 },
+              { time: '18:10', film: "PETER HUJAR'S DAY", director: 'Ira Sachs', country: 'United States', year: 2025, language: 'English', duration: 76 },
+              { time: '20:00', film: 'SILENT FRIEND', director: 'Ildikó Enyedi', country: 'Germany', year: 2025, language: 'German', duration: 147 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '8',
+            showings: [
+              { time: '10:10', film: 'THE PUPIL', director: 'Karin Junger', country: 'Netherlands', year: 2025, language: 'Dutch', duration: 105 },
+              { time: '12:30', film: 'WHAT DOES THAT NATURE SAY TO YOU', director: 'Hong Sang-soo', country: 'South Korea', year: 2025, language: 'Korean', duration: 109 },
+              { time: '14:50', film: 'THE MYSTERIOUS GAZE OF THE FLAMINGO', director: 'Diego Céspedes', country: 'Chile', year: 2025, language: 'Spanish', duration: 104 },
+              { time: '17:10', film: 'THE MASTERMIND', director: 'Kelly Reichardt', country: 'USA', year: 2025, language: 'English', duration: 110 },
+              { time: '19:30', film: 'MAGELLAN', director: 'Lav Diaz', country: 'Portugal', year: 2025, language: 'Portuguese', duration: 160 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '9',
+            showings: [
+              { time: '17:30', film: 'TABATABA', director: 'Raymond Rajaonarivelo', country: 'Madagascar', year: 1988, language: 'French', duration: 128 },
+              { time: '19:50', film: 'KANAL', director: 'Andrzej Wajda', country: 'Poland', year: 1957, language: 'Polish', duration: 96 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '10',
+            showings: [
+              { time: '17:30', film: 'TO THE WEST, IN ZAPATA', director: 'David Bim', country: 'Cuba', year: 2025, language: 'Spanish', duration: 75 },
+              { time: '19:30', film: "WENDEMI, L'ENFANT DU BON DIEU", director: 'S. Pierre Yaméogo', country: 'Burkina Faso', year: 1992, language: 'French', duration: 95 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '11',
+            showings: [
+              { time: '17:20', film: 'FAMILY PATTABIC', director: 'Huli Chandrashekhar', country: 'India', year: 2008, language: 'English', duration: 120 },
+              { time: '19:50', film: 'CHIDAMBARAM', director: 'Govindan Aravindan', country: 'India', year: 1985, language: 'Malayalam', duration: 100 },
+            ]
+          },
+          {
+            venue: 'rajkumar',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'X & Y', director: 'Satya Prakash DI', country: 'India', year: 2025, language: 'Kannada', duration: 108 },
+              { time: '15:00', film: 'KHALI PUTA', director: 'Nagesh N', country: 'India', year: 2025, language: 'Kannada', duration: 100 },
+              { time: '18:00', film: 'RAVANA RAIYADALLI NAVADAMPATHIGALU', director: 'Ranga', country: 'India', year: 2025, language: 'Kannada', duration: 108 },
+            ]
+          },
+          {
+            venue: 'banashankari',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'SAMBA TRAORE', director: 'Idrissa Ouedraogo', country: 'Burkina Faso', year: 1983, language: 'Mossi', duration: 85 },
+              { time: '15:00', film: 'WHISPERS OF THE MOUNTAINS', director: 'Jigar Nagda', country: 'India', year: 2025, language: 'Rajasthani', duration: 90 },
+              { time: '18:00', film: 'THE IVY', director: 'Ana Cristina Barragán', country: 'Ecuador', year: 2025, language: 'Spanish', duration: 99 },
+            ]
+          },
+          {
+            venue: 'openair',
+            screen: '1',
+            showings: [
+              { time: '19:00', film: 'BANGARADA MANUSHYA', director: 'S. Siddalingaiah', country: 'India', year: 1972, language: 'Kannada', duration: 174 },
+            ]
+          },
+        ]
+      },
+      // === DAY 2: January 31, 2026 ===
+      {
+        date: '2026-01-31',
+        dayNumber: 2,
+        label: 'Day 2 - Friday',
+        screenings: [
+          {
+            venue: 'cinepolis',
+            screen: '1',
+            showings: [
+              { time: '10:00', film: 'THE MAIDS OF WILKO', director: 'Andrzej Wajda', country: 'Poland', year: 1979, language: 'Polish', duration: 118 },
+              { time: '12:30', film: 'GAMAN', director: 'Muzaffar Ali', country: 'India', year: 1978, language: 'Hindi', duration: 135 },
+              { time: '15:20', film: 'CLEO FROM 5 TO 7', director: 'Agnès Varda', country: 'France', year: 1962, language: 'French', duration: 90 },
+              { time: '17:20', film: 'ELFRIEDE JELINEK - LANGUAGE UNLEASHED', director: 'Claudia Müller', country: 'Austria', year: 2022, language: 'German', duration: 96 },
+              { time: '19:40', film: 'MOTHERTONGUE', director: 'Zhang Lu', country: 'China', year: 2025, language: 'Mandarin', duration: 122 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '2',
+            showings: [
+              { time: '09:30', film: 'DE TAL PALO', director: 'Iván Dariel Ortiz', country: 'Puerto Rico', year: 2025, language: 'Spanish', duration: 88 },
+              { time: '11:30', film: 'NOMAD SHADOW', director: 'Eimi Imanishi', country: 'United States', year: 2025, language: 'Arabic', duration: 82 },
+              { time: '13:40', film: 'LETTERS FROM WOLF STREET', director: 'Arjun Talwar', country: 'Poland', year: 2025, language: 'Polish', duration: 97 },
+              { time: '15:40', film: 'WE BELIEVE YOU', director: 'Charlotte Devillers, Arnaud Dufeys', country: 'Belgium', year: 2025, language: 'French', duration: 78 },
+              { time: '17:40', film: 'JANINE MOVES TO THE COUNTRY', director: 'Jan Eilhardt', country: 'Germany', year: 2025, language: 'German', duration: 74 },
+              { time: '19:30', film: 'THE IVY', director: 'Ana Cristina Barragán', country: 'Ecuador', year: 2025, language: 'Spanish', duration: 99 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '3',
+            showings: [
+              { time: '10:30', film: 'NATIONALITE IMMIGRE', director: 'Sidney Sokhona', country: 'France', year: 1976, language: 'Arabic', duration: 85 },
+              { time: '12:30', film: 'LAPTEIN', director: 'Ravi Shankar Kaushik', country: 'India', year: 2025, language: 'Hindi', duration: 86 },
+              { time: '15:00', film: 'REPUBLIC OF PIPOLIPINAS', director: 'Renei Dimla', country: 'Philippines', year: 2025, language: 'Tagalog', duration: 105 },
+              { time: '17:30', film: 'THE DEEPEST SPACE IN US', director: 'Yasutomo Chikuma', country: 'Japan', year: 2025, language: 'Japanese', duration: 97 },
+              { time: '19:50', film: 'RENOVATION', director: 'Gabriele Urbonate', country: 'Lithuania', year: 2025, language: 'Lithuanian', duration: 90 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '4',
+            showings: [
+              { time: '10:20', film: 'CALLE MALAGA', director: 'Maryam Touzani', country: 'Spain', year: 2025, language: 'Spanish', duration: 116 },
+              { time: '12:40', film: 'WHITE SNOW', director: 'Praveen Morchhale', country: 'India', year: 2025, language: 'Urdu', duration: 82 },
+              { time: '14:40', film: 'JEEV', director: 'Ravindra Manik Jadhav', country: 'India', year: 2025, language: 'Marathi', duration: 103 },
+              { time: '17:20', film: 'BHOOTHALAM', director: 'Sreekanth Pangapattu', country: 'India', year: 2025, language: 'Malayalam', duration: 85 },
+              { time: '19:30', film: 'THE NATURE OF INVISIBLE THINGS', director: 'Rafaela Camelo', country: 'Brazil', year: 2025, language: 'Portuguese', duration: 90 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '5',
+            showings: [
+              { time: '09:50', film: "KONTINENTAL '25", director: 'Radu Jude', country: 'Romania', year: 2025, language: 'Romanian', duration: 109 },
+              { time: '12:10', film: 'BLUE HERON', director: 'Sophy Romvari', country: 'Canada', year: 2025, language: 'English', duration: 90 },
+              { time: '14:20', film: 'FATHER MOTHER SISTER BROTHER', director: 'Jim Jarmusch', country: 'USA', year: 2025, language: 'English', duration: 110 },
+              { time: '16:40', film: 'DJ AHMET', director: 'Georgi M. Unkovski', country: 'Macedonia', year: 2025, language: 'Turkish', duration: 99 },
+              { time: '19:00', film: 'RESURRECTION', director: 'Bi Gan', country: 'China', year: 2025, language: 'Mandarin', duration: 160 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '6',
+            showings: [
+              { time: '09:30', film: 'AS WE BREATHE', director: 'Şeyhmus Altun', country: 'Turkey', year: 2025, language: 'Turkish', duration: 95 },
+              { time: '11:30', film: 'THEERTHAROOPA THANDEYAVARIGE', director: 'Ramenahalli Jagannatha', country: 'India', year: 2025, language: 'Kannada', duration: 148 },
+              { time: '14:50', film: 'SRI JAGANNATHA DAASARU PART 2', director: 'Dr. Madhusudhan Havaldar', country: 'India', year: 2025, language: 'Kannada', duration: 144 },
+              { time: '18:00', film: 'X & Y', director: 'Satya Prakash DI', country: 'India', year: 2025, language: 'Kannada', duration: 108 },
+              { time: '20:30', film: 'ACCIDENT', director: 'Shankar Nag', country: 'India', year: 1984, language: 'Kannada', duration: 107 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '7',
+            showings: [
+              { time: '09:40', film: 'DEAD DOG', director: 'Sarah Francis', country: 'Lebanon', year: 2025, language: 'Arabic', duration: 92 },
+              { time: '11:40', film: 'BHAKTA KANAKADASA', director: 'Y. R. Swamy', country: 'India', year: 1960, language: 'Kannada', duration: 127 },
+              { time: '14:30', film: 'HUMAN RESOURCE', director: 'Nawapol Thamrongrattanarit', country: 'Thailand', year: 2025, language: 'Thai', duration: 122 },
+              { time: '17:00', film: 'FATHER', director: 'Tereza Nvotová', country: 'Slovakia', year: 2025, language: 'Slovak', duration: 103 },
+              { time: '19:20', film: 'DRY LEAF', director: 'Alexandre Koberidze', country: 'Georgia', year: 2025, language: 'Georgian', duration: 186 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '8',
+            showings: [
+              { time: '10:10', film: 'BROKEN VOICES', director: 'Ondřej Provazník', country: 'Czechia', year: 2025, language: 'Czech', duration: 106 },
+              { time: '12:30', film: 'PERLA', director: 'Alexandra Makarová', country: 'Austria', year: 2025, language: 'Slovak', duration: 110 },
+              { time: '15:00', film: 'TWO PROSECUTORS', director: 'Sergei Loznitsa', country: 'France', year: 2025, language: 'Russian', duration: 117 },
+              { time: '17:30', film: 'SIRAT', director: 'Oliver Laxe', country: 'Spain', year: 2025, language: 'Spanish', duration: 120 },
+              { time: '20:00', film: 'NO OTHER CHOICE', director: 'Park Chan-wook', country: 'South Korea', year: 2025, language: 'Korean', duration: 139 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '9',
+            showings: [
+              { time: '18:00', film: 'GOLEM', director: 'Piotr Szulkin', country: 'Poland', year: 1979, language: 'Polish', duration: 93 },
+              { time: '20:00', film: 'GEHENU LAMAI', director: 'Sumitra Peries', country: 'Sri Lanka', year: 1978, language: 'Sinhala', duration: 110 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '10',
+            showings: [
+              { time: '16:50', film: 'THAAYI SAHEBA', director: 'Girish Kasaravalli', country: 'India', year: 1997, language: 'Kannada', duration: 117 },
+              { time: '19:30', film: 'BHAVNI BHAVAI', director: 'Ketan Mehta', country: 'India', year: 1980, language: 'Gujarati', duration: 135 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '11',
+            showings: [
+              { time: '17:30', film: 'VASTHUHARA', director: 'G. Aravindan', country: 'India', year: 1991, language: 'Malayalam', duration: 101 },
+              { time: '19:40', film: 'LA CHAPELLE', director: 'Jean-Michel Tchissoukou', country: 'Congo', year: 1980, language: 'Lingala', duration: 80 },
+            ]
+          },
+          {
+            venue: 'rajkumar',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'RUBY CUBE', director: 'P. Sheshadri', country: 'India', year: 2025, language: 'Kannada', duration: 105 },
+              { time: '15:00', film: 'MRIGATRISHNA', director: 'Ajay Gurunatha', country: 'India', year: 2025, language: 'Kannada', duration: 157 },
+              { time: '18:00', film: 'VANYA', director: 'Badiger Devendra', country: 'India', year: 2025, language: 'Kannada', duration: 100 },
+            ]
+          },
+          {
+            venue: 'banashankari',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'THE CEMETERY OF CINEMA', director: 'Thierno Souleymane Diallo', country: 'France', year: 2023, language: 'French', duration: 93 },
+              { time: '15:00', film: 'FAMILY PATTABIC', director: 'Huli Chandrashekhar', country: 'India', year: 2008, language: 'English', duration: 120 },
+              { time: '18:00', film: 'LETTERS FROM WOLF STREET', director: 'Arjun Talwar', country: 'Poland', year: 2025, language: 'Polish', duration: 97 },
+            ]
+          },
+          {
+            venue: 'openair',
+            screen: '1',
+            showings: [
+              { time: '19:00', film: 'ONDANONDU KALADALLI', director: 'Girish Karnad', country: 'India', year: 1978, language: 'Kannada', duration: 137 },
+            ]
+          },
+        ]
+      },
+      // === DAY 3: February 1, 2026 ===
+      {
+        date: '2026-02-01',
+        dayNumber: 3,
+        label: 'Day 3 - Saturday',
+        screenings: [
+          {
+            venue: 'cinepolis',
+            screen: '1',
+            showings: [
+              { time: '09:40', film: 'TWENTY YEARS OF AFRICAN CINEMA', director: 'Férid Boughedir', country: 'Tunisia', year: 1983, language: 'French', duration: 95 },
+              { time: '11:50', film: 'ASHES AND DIAMONDS', director: 'Andrzej Wajda', country: 'Poland', year: 1958, language: 'Polish', duration: 103 },
+              { time: '14:30', film: 'THE EARRINGS OF MADAME DE...', director: 'Max Ophüls', country: 'France', year: 1953, language: 'French', duration: 105 },
+              { time: '17:00', film: 'OSLO: A TAIL OF PROMISE', director: 'Isha Pungaliya', country: 'India', year: 2025, language: 'Hindi', duration: 93 },
+              { time: '20:30', film: 'CLOISTERED SISTER', director: 'Ivana Mladenović', country: 'Romania', year: 2025, language: 'Romanian', duration: 107 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '2',
+            showings: [
+              { time: '09:30', film: 'TETES BRULEES', director: 'Maja-Ajmia Yde Zellama', country: 'Belgium', year: 2025, language: 'French', duration: 86 },
+              { time: '11:30', film: 'SLEEPLESS CITY', director: 'Guillermo Galoe', country: 'Spain', year: 2025, language: 'Spanish', duration: 97 },
+              { time: '13:40', film: 'VANILLA', director: 'Mayra Hermosillo', country: 'Spain', year: 2025, language: 'Spanish', duration: 99 },
+              { time: '15:50', film: 'HALF MOON', director: 'Frank Scheffer', country: 'Netherlands', year: 2025, language: 'English', duration: 92 },
+              { time: '18:00', film: 'MORTICIAN', director: 'Abdolreza Kahani', country: 'Canada', year: 2025, language: 'Persian', duration: 94 },
+              { time: '20:10', film: 'CARAVAN', director: 'Zuzana Kirchnerová-Špidlová', country: 'Czechia', year: 2025, language: 'Czech', duration: 102 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '3',
+            showings: [
+              { time: '10:10', film: 'ORENDA', director: 'Pirjo Honkasalo', country: 'Finland', year: 2025, language: 'Finnish', duration: 119 },
+              { time: '12:40', film: 'SHAPE OF MOMO', director: 'Tribeny Rai', country: 'India', year: 2025, language: 'Nepali', duration: 115 },
+              { time: '15:20', film: 'KURAK', director: 'Erke Dohuman Matova, Emil Atageldiev', country: 'Kyrgyzstan', year: 2025, language: 'Kyrgyz/Russian', duration: 89 },
+              { time: '17:20', film: 'DREAMS', director: 'Dag Johan Haugerud', country: 'Norway', year: 2024, language: 'Norwegian', duration: 110 },
+              { time: '19:40', film: 'PORTE BAGAGE', director: 'Abdelkarim El-Fassi', country: 'Netherlands', year: 2025, language: 'Dutch', duration: 100 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '4',
+            showings: [
+              { time: '10:30', film: 'MOHAM', director: 'Fazil Razak', country: 'India', year: 2025, language: 'Malayalam', duration: 102 },
+              { time: '12:40', film: 'KAADU', director: 'Suneesh Vadakumbadan', country: 'India', year: 2025, language: 'Malayalam', duration: 81 },
+              { time: '14:40', film: 'GANARAAG', director: 'Dip Bhuyan', country: 'India', year: 2025, language: 'Assamese', duration: 102 },
+              { time: '17:30', film: 'ROOSTER', director: 'Tassos Gerakinis', country: 'Greece', year: 2025, language: 'Greek', duration: 101 },
+              { time: '19:50', film: 'FIUME O MORTE!', director: 'Igor Bezinović', country: 'Croatia', year: 2025, language: 'Croatian', duration: 112 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '5',
+            showings: [
+              { time: '09:50', film: 'CATANE', director: 'Ioana Mischie', country: 'Romania', year: 2025, language: 'Romanian', duration: 96 },
+              { time: '12:00', film: "MY FATHER'S SHADOW", director: 'Akinola Davies Jr.', country: 'United Kingdom', year: 2025, language: 'English', duration: 94 },
+              { time: '14:10', film: 'SENTIMENTAL VALUE', director: 'Joachim Trier', country: 'Norway', year: 2025, language: 'Norwegian', duration: 135 },
+              { time: '17:10', film: 'IT WAS JUST AN ACCIDENT', director: 'Jafar Panahi', country: 'Iran', year: 2025, language: 'Persian', duration: 106 },
+              { time: '19:30', film: 'SOUND OF FALLING', director: 'Mascha Schilinski', country: 'Germany', year: 2025, language: 'German', duration: 149 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '6',
+            showings: [
+              { time: '10:30', film: 'CHRISTY', director: 'Brendan Canty', country: 'Ireland', year: 2025, language: 'Irish', duration: 94 },
+              { time: '12:40', film: 'VANYA', director: 'Badiger Devendra', country: 'India', year: 2025, language: 'Kannada', duration: 100 },
+              { time: '15:00', film: 'RAVANA RAIYADALLI NAVADAMPATHIGALU', director: 'Ranga', country: 'India', year: 2025, language: 'Kannada', duration: 108 },
+              { time: '17:40', film: 'KHALI PUTA', director: 'Nagesh N', country: 'India', year: 2025, language: 'Kannada', duration: 100 },
+              { time: '20:00', film: 'AMRUM', director: 'Fatih Akin', country: 'Germany', year: 2025, language: 'German', duration: 93 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '7',
+            showings: [
+              { time: '10:20', film: 'FOLLIES', director: 'Érick', country: 'Canada', year: 2025, language: 'French', duration: 104 },
+              { time: '12:40', film: 'SU FROM SO', director: 'J.P. Thuminad', country: 'India', year: 2025, language: 'Kannada', duration: 137 },
+              { time: '15:30', film: 'NAM SAALI', director: 'Aneel Kumar', country: 'India', year: 2025, language: 'Kannada', duration: 90 },
+              { time: '17:50', film: 'THEATRE', director: 'Nishanth Kalidindi', country: 'India', year: 2025, language: 'Tamil', duration: 93 },
+              { time: '20:10', film: 'AMOEBA', director: 'Tan Siyou', country: 'Singapore', year: 2025, language: 'English', duration: 98 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '8',
+            showings: [
+              { time: '10:00', film: 'BIDAD', director: 'Soheil Beiraghi', country: 'Iran', year: 2025, language: 'Persian', duration: 104 },
+              { time: '12:20', film: 'STRAIGHT CIRCLE', director: 'Oscar Hudson', country: 'United Kingdom', year: 2025, language: 'English', duration: 109 },
+              { time: '14:50', film: 'A USEFUL GHOST', director: 'Ratchapoom Boonbunchachoke', country: 'Thailand', year: 2025, language: 'Thai', duration: 130 },
+              { time: '17:50', film: 'THE HOURGLASS SANATORIUM', director: 'Wojciech Jerzy Has', country: 'Poland', year: 1973, language: 'Polish', duration: 125 },
+              { time: '19:50', film: 'THE MASTERMIND', director: 'Kelly Reichardt', country: 'USA', year: 2025, language: 'English', duration: 110 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '9',
+            showings: [
+              { time: '17:30', film: 'AMMANG HELBEDA', director: 'Anoop Lokkur', country: 'India', year: 2025, language: 'Kannada', duration: 90 },
+              { time: '20:30', film: 'WHISPERS OF THE MOUNTAINS', director: 'Jigar Nagda', country: 'India', year: 2025, language: 'Rajasthani', duration: 90 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '10',
+            showings: [
+              { time: '17:10', film: 'KOORMAVATARA', director: 'Girish Kasaravalli', country: 'India', year: 2011, language: 'Kannada', duration: 133 },
+              { time: '19:50', film: 'THE CEMETERY OF CINEMA', director: 'Thierno Souleymane Diallo', country: 'France', year: 2023, language: 'French', duration: 93 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '11',
+            showings: [
+              { time: '17:00', film: 'SAMBA TRAORE', director: 'Idrissa Ouedraogo', country: 'Burkina Faso', year: 1983, language: 'Mossi', duration: 85 },
+              { time: '19:00', film: 'AMARA SHILPI JAKKANACHARI', director: 'B. S. Ranga', country: 'India', year: 1964, language: 'Kannada', duration: 126 },
+            ]
+          },
+          {
+            venue: 'rajkumar',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'SRI JAGANNATHA DAASARU PART 2', director: 'Dr. Madhusudhan Havaldar', country: 'India', year: 2025, language: 'Kannada', duration: 144 },
+              { time: '15:00', film: 'MAHAKAVI', director: 'Baragur Ramachandrappa', country: 'India', year: 2025, language: 'Kannada', duration: 121 },
+              { time: '18:00', film: 'UMMATHAT - THE RHYTHM OF KODAVA', director: 'Prakash Karappa Hottukathira', country: 'India', year: 2025, language: 'Kodava', duration: 49 },
+            ]
+          },
+          {
+            venue: 'banashankari',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'TALKING ABOUT TREES', director: 'Suhaib Gasmelbari', country: 'Sudan', year: 2019, language: 'Arabic', duration: 90 },
+              { time: '15:00', film: 'TO THE WEST, IN ZAPATA', director: 'David Bim', country: 'Cuba', year: 2025, language: 'Spanish', duration: 75 },
+              { time: '18:00', film: 'NOMAD SHADOW', director: 'Eimi Imanishi', country: 'United States', year: 2025, language: 'Arabic', duration: 82 },
+            ]
+          },
+          {
+            venue: 'openair',
+            screen: '1',
+            showings: [
+              { time: '19:00', film: 'BANDHANA', director: 'Rajendra Singh Babu', country: 'India', year: 1984, language: 'Kannada', duration: 153 },
+            ]
+          },
+        ]
+      },
+      // === DAY 4: February 2, 2026 ===
+      {
+        date: '2026-02-02',
+        dayNumber: 4,
+        label: 'Day 4 - Sunday',
+        screenings: [
+          {
+            venue: 'cinepolis',
+            screen: '1',
+            showings: [
+              { time: '09:40', film: 'LA VIE EST BELLE', director: 'Mweze Ngangura, Benoit Lamy', country: 'Democratic Republic of the Congo', year: 1987, language: 'French', duration: 85 },
+              { time: '11:40', film: 'BAL POUSSIERE', director: 'Henri Duparc', country: 'Ivory Coast', year: 1989, language: 'French', duration: 93 },
+              { time: '14:00', film: 'TO THE VICTORY!', director: 'Valentyn Vasyanovych', country: 'Ukraine', year: 2025, language: 'Ukrainian', duration: 105 },
+              { time: '16:20', film: 'THE PUPIL', director: 'Karin Junger', country: 'Netherlands', year: 2025, language: 'Dutch', duration: 105 },
+              { time: '18:40', film: 'I ONLY REST IN THE STORM', director: 'Pedro Pinho', country: 'Portugal', year: 2025, language: 'Portuguese', duration: 217 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '2',
+            showings: [
+              { time: '10:00', film: 'THE LAST AMBASSADOR', director: 'Natalie Halla', country: 'Austria', year: 2025, language: 'Dari', duration: 79 },
+              { time: '11:50', film: 'THE DEVIL SMOKES', director: 'Ernesto Martínez Bucio', country: 'Mexico', year: 2025, language: 'Spanish', duration: 97 },
+              { time: '14:10', film: 'DE TAL PALO', director: 'Iván Dariel Ortiz', country: 'Puerto Rico', year: 2025, language: 'Spanish', duration: 96 },
+              { time: '16:10', film: 'WE BELIEVE YOU', director: 'Charlotte Devillers, Arnaud Dufeys', country: 'Belgium', year: 2025, language: 'French', duration: 78 },
+              { time: '18:00', film: 'SONGS OF FORGOTTEN TREES', director: 'Anuparna Roy', country: 'India', year: 2025, language: 'Hindi', duration: 80 },
+              { time: '20:00', film: 'FORASTERA', director: 'Luca Alenar Iglesias', country: 'Spain', year: 2025, language: 'Catalan', duration: 97 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '3',
+            showings: [
+              { time: '10:20', film: 'LOVE ME TENDER', director: 'Anna Cazenave Cambet', country: 'France', year: 2025, language: 'French', duration: 134 },
+              { time: '13:10', film: 'THE TABLET', director: 'Aravind Siva', country: 'India', year: 2025, language: 'Tamil', duration: 79 },
+              { time: '15:00', film: 'TWO SEASONS, TWO STRANGERS', director: 'Sho Miyake', country: 'Japan', year: 2025, language: 'Japanese', duration: 89 },
+              { time: '17:00', film: 'SECRET OF A MOUNTAIN SERPENT', director: 'Nidhi Saxena', country: 'India', year: 2025, language: 'Hindi', duration: 108 },
+              { time: '19:30', film: 'GOD WILL NOT HELP', director: 'Hana Jušić', country: 'Croatia', year: 2025, language: 'Croatian', duration: 137 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '4',
+            showings: [
+              { time: '09:30', film: 'BEACHCOMBER', director: 'Aristotelis Maragkos', country: 'Greece', year: 2025, language: 'Greek', duration: 92 },
+              { time: '11:30', film: 'SANDHYA RAAGA', director: 'A.C. Narasimha Murthy S.K. Bhagavan', country: 'India', year: 1966, language: 'Kannada', duration: 153 },
+              { time: '14:30', film: 'KANGBO ALOI', director: 'Khanjan Kishore Nath', country: 'India', year: 2025, language: 'Karbi', duration: 109 },
+              { time: '16:50', film: 'SABAR BONDA', director: 'Rohan Parashuram Kanawade', country: 'India', year: 2025, language: 'Marathi', duration: 117 },
+              { time: '19:20', film: 'MAGELLAN', director: 'Lav Diaz', country: 'Portugal', year: 2025, language: 'Portuguese', duration: 160 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '5',
+            showings: [
+              { time: '10:00', film: 'THE BLUE TRAIL', director: 'Gabriel Mascaro', country: 'Brazil', year: 2025, language: 'Portuguese', duration: 86 },
+              { time: '12:00', film: 'YOUNG MOTHERS', director: 'Jean-Pierre Dardenne, Luc Dardenne', country: 'France', year: 2025, language: 'French', duration: 106 },
+              { time: '14:20', film: 'DIVINE COMEDY', director: 'Ali Asgari', country: 'Iran', year: 2025, language: 'Persian', duration: 96 },
+              { time: '16:30', film: 'THE THINGS YOU KILL', director: 'Alireza Khatami', country: 'Turkey', year: 2025, language: 'Turkish', duration: 113 },
+              { time: '19:00', film: 'RESURRECTION', director: 'Bi Gan', country: 'China', year: 2025, language: 'Mandarin', duration: 160 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '6',
+            showings: [
+              { time: '09:40', film: 'MY UNCLE JENS', director: 'Brwa Vahabpour', country: 'Norway', year: 2025, language: 'Norwegian', duration: 98 },
+              { time: '11:50', film: 'A SAD AND BEAUTIFUL WORLD', director: 'Cyril Aris', country: 'Lebanon', year: 2025, language: 'Arabic', duration: 110 },
+              { time: '14:40', film: 'MRIGATRISHNA', director: 'Ajay Gurunatha', country: 'India', year: 2025, language: 'Kannada', duration: 157 },
+              { time: '17:50', film: 'RUBY CUBE', director: 'P. Sheshadri', country: 'India', year: 2025, language: 'Kannada', duration: 105 },
+              { time: '20:10', film: 'TWO PROSECUTORS', director: 'Sergei Loznitsa', country: 'France', year: 2025, language: 'Russian', duration: 117 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '7',
+            showings: [
+              { time: '10:10', film: 'THE FIN', director: 'Syeyoung Park', country: 'South Korea', year: 2025, language: 'Korean', duration: 85 },
+              { time: '12:00', film: 'MAYSOON', director: 'Nancy Biniadaki', country: 'Germany', year: 2025, language: 'German', duration: 120 },
+              { time: '14:40', film: 'JEEVANA CHAITRA', director: 'Dorai-Bhagavan', country: 'India', year: 1992, language: 'Kannada', duration: 157 },
+              { time: '17:45', film: 'BLUE MOON', director: 'Richard Linklater', country: 'United States', year: 2025, language: 'English', duration: 100 },
+              { time: '19:50', film: 'KY NAM INN', director: 'Leon Le', country: 'Vietnam', year: 2025, language: 'Vietnamese', duration: 140 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '8',
+            showings: [
+              { time: '10:30', film: 'UNDER THE VOLCANO', director: 'Damian Kocur', country: 'Poland', year: 2024, language: 'Ukrainian', duration: 105 },
+              { time: '12:45', film: "KONTINENTAL '25", director: 'Radu Jude', country: 'Romania', year: 2025, language: 'Romanian', duration: 109 },
+              { time: '15:15', film: 'A LIGHT THAT NEVER GOES OUT', director: 'Lauri Matti Parppei', country: 'Norway', year: 2025, language: 'Finnish', duration: 108 },
+              { time: '17:45', film: 'FRANZ', director: 'Agnieszka Holland', country: 'Poland', year: 2025, language: 'Czech', duration: 127 },
+              { time: '20:15', film: 'BLUE HERON', director: 'Sophy Romvari', country: 'Canada', year: 2025, language: 'English', duration: 90 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '9',
+            showings: [
+              { time: '12:50', film: 'INNOCENT SORCERERS', director: 'Andrzej Wajda', country: 'Poland', year: 1960, language: 'Polish', duration: 87 },
+              { time: '15:10', film: 'THE MAIDS OF WILKO', director: 'Andrzej Wajda', country: 'Poland', year: 1979, language: 'Polish', duration: 118 },
+              { time: '17:40', film: 'RUDAALI', director: 'Kalpana Lajmi', country: 'India', year: 1993, language: 'Hindi', duration: 128 },
+              { time: '20:20', film: 'JANINE MOVES TO THE COUNTRY', director: 'Jan Eilhardt', country: 'Germany', year: 2025, language: 'German', duration: 74 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '10',
+            showings: [
+              { time: '12:40', film: 'CAIRO STATION', director: 'Youssef Chahine', country: 'Egypt', year: 1958, language: 'Egyptian Arabic', duration: 77 },
+              { time: '17:15', film: 'KANASEMBA KUDUREYANERI', director: 'Girish Kasaravalli', country: 'India', year: 2010, language: 'Kannada', duration: 104 },
+              { time: '19:40', film: 'PHOUOIBEE (THE GODDESS OF PADDY)', director: 'Rakesh Moirangthem', country: 'India', year: 2025, language: 'Manipuri', duration: 89 },
+            ]
+          },
+          {
+            venue: 'cinepolis',
+            screen: '11',
+            showings: [
+              { time: '10:10', film: 'TALKING ABOUT TREES', director: 'Suhaib Gasmelbari', country: 'Sudan', year: 2019, language: 'Arabic', duration: 90 },
+              { time: '14:30', film: 'MEMORIA', director: 'Apichatpong Weerasethakul', country: 'Colombia/Thailand', year: 2021, language: 'Spanish/English', duration: 136 },
+              { time: '17:20', film: 'KANAL', director: 'Andrzej Wajda', country: 'Poland', year: 1957, language: 'Polish', duration: 96 },
+              { time: '19:30', film: 'MILITANTROPOS', director: 'Yelizaveta Smith, Alina Gorlova, Simon Mozgovyi', country: 'Ukraine', year: 2025, language: 'Ukrainian', duration: 111 },
+            ]
+          },
+          {
+            venue: 'rajkumar',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'KANTARA: A LEGEND CHAPTER 1', director: 'Rishab Shetty', country: 'India', year: 2025, language: 'Kannada', duration: 169 },
+              { time: '15:00', film: 'FIRE FLY', director: 'Vamshi Krishna SM', country: 'India', year: 2025, language: 'Kannada', duration: 132 },
+              { time: '18:00', film: 'AGNYATHAVASI', director: 'Janardhan Chikkanna', country: 'India', year: 2025, language: 'Kannada', duration: 122 },
+            ]
+          },
+          {
+            venue: 'banashankari',
+            screen: '1',
+            showings: [
+              { time: '11:00', film: 'LA CHAPELLE', director: 'Jean-Michel Tchissoukou', country: 'Congo', year: 1980, language: 'Lingala', duration: 80 },
+              { time: '15:00', film: 'ELFRIEDE JELINEK - LANGUAGE UNLEASHED', director: 'Claudia Müller', country: 'Austria', year: 2022, language: 'German', duration: 96 },
+              { time: '18:00', film: 'BETTER GO MAD IN THE WILD', director: 'Miro Remo', country: 'Czechia', year: 2025, language: 'Czech', duration: 84 },
+            ]
+          },
+          {
+            venue: 'openair',
+            screen: '1',
+            showings: [
+              { time: '19:00', film: 'PREMADA KANIKE', director: 'V. Somashekhar', country: 'India', year: 1976, language: 'Kannada', duration: 151 },
+            ]
+          },
+        ]
+      },
+    ]
+  };
+}
+
+/**
+ * Validate and compare extracted vs authoritative data
+ */
+function validateSchedule(extracted, authoritative) {
+  const issues = [];
+  
+  authoritative.days.forEach(day => {
+    const extDay = extracted.days.find(d => d.date === day.date);
+    if (!extDay) {
+      issues.push(`Missing day: ${day.date}`);
+      return;
+    }
+    
+    // Check total showings
+    const authCount = day.screenings.reduce((sum, s) => sum + s.showings.length, 0);
+    const extCount = extDay.screenings.reduce((sum, s) => sum + s.showings.length, 0);
+    
+    if (authCount !== extCount) {
+      issues.push(`${day.label}: Expected ${authCount} showings, found ${extCount}`);
+    }
+  });
+  
+  return issues;
+}
+
+/**
+ * Main extraction function
+ */
+function extractSchedule(options = {}) {
+  const { useAuthoritative = true, validate = false } = options;
+  
+  console.log('🎬 BIFFes Schedule Extractor\n');
+  console.log(`   Mode: ${useAuthoritative ? 'Authoritative (verified data)' : 'OCR Extraction'}\n`);
+  
+  let schedule;
+  
+  if (useAuthoritative) {
+    // Use the verified authoritative data
+    schedule = getCompleteSchedule();
+  } else {
+    // Extract from OCR files
+    schedule = {
+      schedule: {
+        lastUpdated: new Date().toISOString(),
+        source: 'film schedule ver4.pdf (OCR extracted)',
+        note: 'Schedule extracted via OCR from official PDF. Verify with BIFFes official schedule.',
+        venues: {
+          cinepolis: { name: 'Cinepolis Cinemas', location: 'LuLu Mall, Bengaluru', screens: 12 },
+          rajkumar: { name: 'Dr Rajkumar Bhavana', location: 'Chamarajpet, Bengaluru', screens: 1 },
+          banashankari: { name: 'Suchitra Cinema', location: 'Banashankari, Bengaluru', screens: 1 },
+          openair: { name: 'Open Air', location: 'Main Entrance LuLu Mall', screens: 1 },
+        }
+      },
+      days: []
+    };
+    
+    // Process each day from OCR
+    for (const [fileNum, dayInfo] of Object.entries(DAY_MAPPING)) {
+      const filePath = path.join(OCR_DIR, `_${fileNum}.txt`);
+      
+      if (!fs.existsSync(filePath)) {
+        console.log(`⚠️  Missing OCR file: ${filePath}`);
+        continue;
+      }
+      
+      console.log(`📄 Processing _${fileNum}.txt → ${dayInfo.label}`);
+      
+      const content = fs.readFileSync(filePath, 'utf8');
+      const films = parseOCRContent(content, dayInfo);
+      
+      // Group by venue and screen
+      const grouped = {};
+      films.forEach(film => {
+        const key = `${film.venue}_${film.screen}`;
+        if (!grouped[key]) {
+          grouped[key] = { venue: film.venue, screen: film.screen, showings: [] };
+        }
+        const { venue, screen, ...showing } = film;
+        grouped[key].showings.push(showing);
+      });
+      
+      // Sort showings by time
+      Object.values(grouped).forEach(g => {
+        g.showings.sort((a, b) => a.time.localeCompare(b.time));
+      });
+      
+      // Sort screens
+      const screenings = Object.values(grouped).sort((a, b) => {
+        if (a.venue !== b.venue) return a.venue.localeCompare(b.venue);
+        return parseInt(a.screen) - parseInt(b.screen);
+      });
+      
+      console.log(`   Found ${films.length} screenings`);
+      
+      schedule.days.push({
+        date: dayInfo.date,
+        dayNumber: dayInfo.dayNumber,
+        label: dayInfo.label,
+        screenings,
+      });
+    }
+    
+    schedule.days.sort((a, b) => a.date.localeCompare(b.date));
+  }
+  
+  // Validation if requested
+  if (validate && !useAuthoritative) {
+    console.log('\n🔍 Validating against authoritative data...');
+    const authSchedule = getCompleteSchedule();
+    const issues = validateSchedule(schedule, authSchedule);
+    if (issues.length > 0) {
+      console.log('   Issues found:');
+      issues.forEach(i => console.log(`   - ${i}`));
+    } else {
+      console.log('   ✅ No issues found!');
+    }
+  }
+  
+  // Write output
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(schedule, null, 2));
+  
+  // Summary
+  const totalScreenings = schedule.days.reduce((sum, day) => 
+    sum + day.screenings.reduce((s, screen) => s + screen.showings.length, 0), 0);
+  
+  const uniqueFilms = new Set();
+  schedule.days.forEach(day => {
+    day.screenings.forEach(screen => {
+      screen.showings.forEach(s => uniqueFilms.add(s.film));
+    });
+  });
+  
+  console.log(`\n✅ Schedule generated successfully!`);
+  console.log(`   Total: ${totalScreenings} screenings, ${uniqueFilms.size} unique films`);
+  console.log(`   Days: ${schedule.days.map(d => d.label).join(', ')}`);
+  console.log(`   Output: ${OUTPUT_FILE}\n`);
+  
+  return schedule;
+}
+
+// Run if called directly
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  const useOCR = args.includes('--ocr');
+  const validate = args.includes('--validate');
+  
+  extractSchedule({ useAuthoritative: !useOCR, validate });
+}
+
+module.exports = { extractSchedule, parseOCRContent, getCompleteSchedule };

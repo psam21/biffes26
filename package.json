@@ -11,7 +11,11 @@
     "pipeline:full": "tsx scripts/pipeline.ts --full",
     "pipeline:quick": "tsx scripts/pipeline.ts --skip-scrape",
     "pipeline:ratings": "tsx scripts/pipeline.ts --skip-scrape --skip-posters",
-    "download-posters": "tsx scripts/download-posters.ts"
+    "download-posters": "tsx scripts/download-posters.ts",
+    "schedule:generate": "node scripts/extract-schedule.js",
+    "schedule:validate": "node scripts/extract-schedule.js --ocr --validate",
+    "schedule:from-ocr": "node scripts/extract-schedule.js --ocr",
+    "schedule:pipeline": "./scripts/pipeline.sh"
   },
   "dependencies": {
     "@upstash/redis": "^1.36.1",

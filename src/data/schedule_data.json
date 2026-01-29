@@ -1,13 +1,29 @@
 {
   "schedule": {
-    "lastUpdated": "2026-01-29T12:00:00.000Z",
+    "lastUpdated": "2026-01-29T07:28:53.849Z",
     "source": "film schedule ver4.pdf (OCR extracted)",
     "note": "Schedule extracted via OCR from official PDF. Verify with BIFFes official schedule.",
     "venues": {
-      "cinepolis": { "name": "Cinepolis Cinemas", "location": "LuLu Mall, Bengaluru", "screens": 12 },
-      "rajkumar": { "name": "Dr Rajkumar Bhavana", "location": "Bengaluru", "screens": 1 },
-      "banashankari": { "name": "Suchitra Cinema", "location": "Banashankari, Bengaluru", "screens": 1 },
-      "openair": { "name": "Open Air", "location": "Main Entrance LuLu Mall", "screens": 1 }
+      "cinepolis": {
+        "name": "Cinepolis Cinemas",
+        "location": "LuLu Mall, Bengaluru",
+        "screens": 12
+      },
+      "rajkumar": {
+        "name": "Dr Rajkumar Bhavana",
+        "location": "Chamarajpet, Bengaluru",
+        "screens": 1
+      },
+      "banashankari": {
+        "name": "Suchitra Cinema",
+        "location": "Banashankari, Bengaluru",
+        "screens": 1
+      },
+      "openair": {
+        "name": "Open Air",
+        "location": "Main Entrance LuLu Mall",
+        "screens": 1
+      }
     }
   },
   "days": [
@@ -16,82 +32,576 @@
       "dayNumber": 1,
       "label": "Day 1 - Thursday",
       "screenings": [
-        { "venue": "cinepolis", "screen": "1", "showings": [
-          { "time": "10:00", "film": "INDIA SONG", "director": "MARGUERITE DURAS", "country": "FRANCE", "year": 1975, "language": "FRENCH", "duration": 120 },
-          { "time": "14:00", "film": "THE LITTLE GIRL WHO SOLD THE SUN", "country": "SENEGAL", "year": 1999, "language": "FRENCH", "duration": 45 },
-          { "time": "17:20", "film": "MIRCH MASALA", "director": "KETAN MEHTA", "country": "INDIA", "year": 1987, "language": "HINDI", "duration": 128 },
-          { "time": "19:20", "film": "THE LAST SUMMER", "director": "SHI REFEI", "country": "CHINA", "year": 2025, "language": "MANDARIN", "duration": 130 }
-        ]},
-        { "venue": "cinepolis", "screen": "2", "showings": [
-          { "time": "10:40", "film": "THE DEVIL SMOKES", "director": "ERNESTO MARTINEZ BUCIO", "country": "MEXICO", "year": 2025, "language": "SPANISH", "duration": 97 },
-          { "time": "15:00", "film": "CAIRO STATION", "director": "YOUSSEF CHAHINE", "country": "EGYPT", "year": 1958, "language": "ARABIC", "duration": 77 },
-          { "time": "17:10", "film": "BEACHCOMBER", "director": "ARISTOTELIS MARAGKOS", "country": "GREECE", "year": 2025, "language": "GREEK", "duration": 92 },
-          { "time": "19:10", "film": "THE LAST AMBASSADOR", "director": "NATALIE HALLA", "country": "AUSTRIA", "year": 2025, "language": "DARI", "duration": 75 }
-        ]},
-        { "venue": "cinepolis", "screen": "3", "showings": [
-          { "time": "10:10", "film": "MILITANTROPOS", "country": "", "year": 2025, "duration": 0 },
-          { "time": "12:40", "film": "INSIDE AMIR", "director": "AMIR AZIZI", "country": "IRAN", "year": 2025, "language": "FARSI", "duration": 103 },
-          { "time": "15:10", "film": "BAKSHO BONDI", "country": "INDIA", "year": 2025, "language": "BENGALI", "duration": 93 },
-          { "time": "17:20", "film": "A PREGNANT WIDOW", "country": "INDIA", "year": 2025, "language": "MALAYALAM", "duration": 125 },
-          { "time": "19:50", "film": "WHERE THE WIND COMES FROM", "director": "AIMEL GUELLATY", "country": "TUNISIA", "year": 2025, "duration": 100 }
-        ]},
-        { "venue": "cinepolis", "screen": "4", "showings": [
-          { "time": "10:20", "film": "VANILLA", "director": "MAYRA HERMOSILO", "country": "SPAIN", "year": 2025, "language": "SPANISH", "duration": 82 },
-          { "time": "15:00", "film": "GAMAN", "country": "INDIA", "year": 2025, "language": "MARATHI", "duration": 105 },
-          { "time": "17:10", "film": "MALAVAZHI", "director": "BOBAN GOVINDAN", "country": "INDIA", "year": 2025, "language": "MALAYALAM", "duration": 91 },
-          { "time": "19:40", "film": "DREAMS", "director": "DAG JOHAN HAUGERUD", "country": "NORWAY", "year": 2024, "language": "NORWEGIAN", "duration": 110 }
-        ]},
-        { "venue": "cinepolis", "screen": "5", "showings": [
-          { "time": "10:30", "film": "PROMISED SKY", "director": "ERIGE SEHIRI", "country": "FRANCE", "year": 2025, "language": "FRENCH", "duration": 85 },
-          { "time": "15:10", "film": "IMPATIENCE OF THE HEART", "director": "LAURO CRESS", "country": "GERMANY", "year": 2025, "language": "GERMAN", "duration": 104 },
-          { "time": "17:40", "film": "PORTE BAGAGE", "director": "ABDELKARIM EL-FASSI", "country": "NETHERLANDS", "year": 2025, "language": "DUTCH", "duration": 100 },
-          { "time": "20:15", "film": "A POET", "director": "SIMON MESA SOTO", "country": "COLOMBIA", "year": 2025, "language": "SPANISH", "duration": 120 }
-        ]},
-        { "venue": "cinepolis", "screen": "6", "showings": [
-          { "time": "10:00", "film": "LITTLE TROUBLE GIRLS", "director": "URSKA DJUKIC", "country": "SLOVENIA", "year": 2025, "language": "SLOVENIAN", "duration": 89 },
-          { "time": "15:20", "film": "FIRE FLY", "director": "VAMSHI KRISHNA SM", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 132 },
-          { "time": "18:00", "film": "AGNYATHAVASI", "director": "JANARDHAN CHIKKANNA", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 122 },
-          { "time": "21:20", "film": "KANTARA A LEGEND CHAPTER-1", "director": "RISHAB SHETTY", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 169 }
-        ]},
-        { "venue": "cinepolis", "screen": "7", "showings": [
-          { "time": "10:20", "film": "TO THE VICTORY!", "country": "UKRAINE", "year": 2025, "language": "UKRAINIAN", "duration": 105 },
-          { "time": "15:30", "film": "NODIDAVARU ENANTARE", "director": "KULDEEP CARIAPPA", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 136 },
-          { "time": "18:10", "film": "UYYALE", "director": "LAKSHMINARAYAN", "country": "INDIA", "year": 1969, "language": "KANNADA", "duration": 125 },
-          { "time": "20:00", "film": "PETER HUJAR'S DAY", "director": "IRA SACHS", "country": "USA", "year": 2025, "language": "ENGLISH", "duration": 76 }
-        ]},
-        { "venue": "cinepolis", "screen": "8", "showings": [
-          { "time": "10:10", "film": "THE PUPIL", "director": "KARIN JUNGER", "country": "NETHERLANDS", "year": 2025, "language": "DUTCH", "duration": 105 },
-          { "time": "12:30", "film": "WHAT DOES THAT NATURE SAY TO YOU", "director": "HONG SANG-SOO", "country": "SOUTH KOREA", "year": 2025, "language": "KOREAN", "duration": 103 },
-          { "time": "14:50", "film": "THE MYSTERIOUS GAZE OF THE FLAMINGO", "director": "DIEGO CESPEDES", "country": "CHILE", "year": 2025, "language": "SPANISH", "duration": 104 },
-          { "time": "17:10", "film": "THE MASTERMIND", "director": "KELLY REICHARDT", "country": "USA", "year": 2025, "language": "ENGLISH", "duration": 110 },
-          { "time": "19:30", "film": "MAGELLAN", "director": "LAV DIAZ", "country": "PORTUGAL", "year": 2025, "language": "PORTUGUESE", "duration": 160 }
-        ]},
-        { "venue": "cinepolis", "screen": "9", "showings": [
-          { "time": "17:10", "film": "TABATABA", "director": "RAYMOND RAJAONARIVELO", "country": "MADAGASCAR", "year": 1988, "language": "FRENCH", "duration": 128 },
-          { "time": "19:50", "film": "KANAL", "director": "ANDRZEJ WAJDA", "country": "POLAND", "year": 1957, "language": "POLISH", "duration": 96 }
-        ]},
-        { "venue": "cinepolis", "screen": "10", "showings": [
-          { "time": "17:30", "film": "TO THE WEST, IN ZAPATA", "country": "CUBA", "year": 2025, "language": "SPANISH", "duration": 75 },
-          { "time": "19:30", "film": "WENDEMI, L'ENFANT DU BON DIEU", "director": "PIERRE YAMEOGO", "country": "BURKINA FASO", "year": 1992, "language": "FRENCH", "duration": 85 }
-        ]},
-        { "venue": "cinepolis", "screen": "11", "showings": [
-          { "time": "17:20", "film": "FAMILY PATTABIC", "country": "INDIA", "year": 2008, "language": "ENGLISH", "duration": 120 },
-          { "time": "19:50", "film": "CHIDAMBARAM", "director": "GOVINDAN ARAVINDAN", "country": "INDIA", "year": 1985, "language": "MALAYALAM", "duration": 100 }
-        ]},
-        { "venue": "rajkumar", "screen": "1", "showings": [
-          { "time": "11:00", "film": "X & Y", "director": "SATYA PRAKASH D", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 108 },
-          { "time": "18:00", "film": "KHALI PUTA", "director": "NAGESH N", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 100 }
-        ]},
-        { "venue": "banashankari", "screen": "1", "showings": [
-          { "time": "11:00", "film": "SAMBA TRAORE", "director": "IDRISSA OUEDRAOGO", "country": "BURKINA FASO", "year": 1992, "language": "FRENCH", "duration": 85 },
-          { "time": "18:00", "film": "WHISPERS OF THE MOUNTAINS", "director": "JIGAR NAGDA", "country": "INDIA", "year": 2025, "language": "RAJASTHANI", "duration": 90 }
-        ]},
-        { "venue": "openair", "screen": "1", "showings": [
-          { "time": "19:00", "film": "BANGARADA MANUSHYA", "director": "S SIDDALINGAIAH", "country": "INDIA", "year": 1972, "language": "KANNADA", "duration": 174 }
-        ]}
-      ],
-      "forum": [
-        { "time": "17:30", "title": "POLISH CINEMA AND THE ANDRZEJ WAJDA LEGACY", "type": "Panel Discussion" }
+        {
+          "venue": "cinepolis",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "INDIA SONG",
+              "director": "Marguerite Duras",
+              "country": "France",
+              "year": 1975,
+              "language": "French",
+              "duration": 120
+            },
+            {
+              "time": "12:30",
+              "film": "THE LITTLE GIRL WHO SOLD THE SUN",
+              "director": "Djibril Diop Mambety",
+              "country": "Senegal",
+              "year": 1999,
+              "language": "Wolof",
+              "duration": 45
+            },
+            {
+              "time": "13:15",
+              "film": "LE FRANC",
+              "director": "Djibril Diop Mambety",
+              "country": "Senegal",
+              "year": 1994,
+              "language": "Wolof",
+              "duration": 45
+            },
+            {
+              "time": "14:40",
+              "film": "MIRCH MASALA",
+              "director": "Ketan Mehta",
+              "country": "India",
+              "year": 1987,
+              "language": "Hindi",
+              "duration": 128
+            },
+            {
+              "time": "17:20",
+              "film": "THE LAST SUMMER",
+              "director": "Shi Refei",
+              "country": "China",
+              "year": 2025,
+              "language": "Mandarin Chinese",
+              "duration": 90
+            },
+            {
+              "time": "19:20",
+              "film": "DO BIGHA ZAMIN",
+              "director": "Bimal Roy",
+              "country": "India",
+              "year": 1953,
+              "language": "Hindi",
+              "duration": 131
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "2",
+          "showings": [
+            {
+              "time": "10:40",
+              "film": "THE DEVIL SMOKES",
+              "director": "Ernesto Martínez Bucio",
+              "country": "Mexico",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 97
+            },
+            {
+              "time": "12:50",
+              "film": "CAIRO STATION",
+              "director": "Youssef Chahine",
+              "country": "Egypt",
+              "year": 1958,
+              "language": "Egyptian Arabic",
+              "duration": 77
+            },
+            {
+              "time": "15:00",
+              "film": "BEACHCOMBER",
+              "director": "Aristotelis Maragkos",
+              "country": "Greece",
+              "year": 2025,
+              "language": "Greek",
+              "duration": 92
+            },
+            {
+              "time": "17:10",
+              "film": "THE LAST AMBASSADOR",
+              "director": "Natalie Halla",
+              "country": "Austria",
+              "year": 2025,
+              "language": "Dari",
+              "duration": 79
+            },
+            {
+              "time": "19:10",
+              "film": "MOSQUITOS",
+              "director": "Valentina Bertani, Nicole Bertani",
+              "country": "Italy",
+              "year": 2025,
+              "language": "Italian",
+              "duration": 110
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "3",
+          "showings": [
+            {
+              "time": "10:10",
+              "film": "MILITANTROPOS",
+              "director": "Yelizaveta Smith, Alina Gorlova, Simon Mozgovyi",
+              "country": "Ukraine",
+              "year": 2025,
+              "language": "Ukrainian",
+              "duration": 111
+            },
+            {
+              "time": "12:40",
+              "film": "INSIDE AMIR",
+              "director": "Amir Azizi",
+              "country": "Iran",
+              "year": 2025,
+              "language": "Farsi",
+              "duration": 103
+            },
+            {
+              "time": "15:10",
+              "film": "BAKSHO BONDI",
+              "director": "Tanushree Das, Saumyananda Sahi",
+              "country": "India",
+              "year": 2025,
+              "language": "Bengali",
+              "duration": 93
+            },
+            {
+              "time": "17:20",
+              "film": "A PREGNANT WIDOW",
+              "director": "Unni KR",
+              "country": "India",
+              "year": 2025,
+              "language": "Malayalam",
+              "duration": 125
+            },
+            {
+              "time": "19:50",
+              "film": "WHERE THE WIND COMES FROM",
+              "director": "Amel Guellaty",
+              "country": "Tunisia",
+              "year": 2025,
+              "language": "Tunisian",
+              "duration": 100
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "4",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "VANILLA",
+              "director": "Mayra Hermosillo",
+              "country": "Spain",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 99
+            },
+            {
+              "time": "12:30",
+              "film": "GAMAN",
+              "director": "Manoj Madhukar Naiksatam",
+              "country": "India",
+              "year": 2025,
+              "language": "Marathi",
+              "duration": 105
+            },
+            {
+              "time": "15:00",
+              "film": "MALAVAZHI",
+              "director": "Boban Govindan",
+              "country": "India",
+              "year": 2025,
+              "language": "Malayalam",
+              "duration": 91
+            },
+            {
+              "time": "17:10",
+              "film": "DREAMS",
+              "director": "Dag Johan Haugerud",
+              "country": "Norway",
+              "year": 2024,
+              "language": "Norwegian",
+              "duration": 106
+            },
+            {
+              "time": "19:40",
+              "film": "WIND, TALK TO ME",
+              "director": "Stefan Đorđević",
+              "country": "Serbia",
+              "year": 2025,
+              "language": "Serbian",
+              "duration": 100
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "5",
+          "showings": [
+            {
+              "time": "10:30",
+              "film": "PROMISED SKY",
+              "director": "Erige Sehiri",
+              "country": "France",
+              "year": 2025,
+              "language": "French",
+              "duration": 95
+            },
+            {
+              "time": "12:40",
+              "film": "IMPATIENCE OF THE HEART",
+              "director": "Lauro Cress",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 104
+            },
+            {
+              "time": "15:10",
+              "film": "PORTE BAGAGE",
+              "director": "Abdelkarim El-Fassi",
+              "country": "Netherlands",
+              "year": 2025,
+              "language": "Dutch",
+              "duration": 100
+            },
+            {
+              "time": "17:40",
+              "film": "A POET",
+              "director": "Simon Mesa Soto",
+              "country": "Colombia",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 120
+            },
+            {
+              "time": "20:15",
+              "film": "IT WAS JUST AN ACCIDENT",
+              "director": "Jafar Panahi",
+              "country": "Iran",
+              "year": 2025,
+              "language": "Persian",
+              "duration": 106
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "6",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "LITTLE TROUBLE GIRLS",
+              "director": "Urška Djukić",
+              "country": "Slovenia",
+              "year": 2025,
+              "language": "Slovenian",
+              "duration": 89
+            },
+            {
+              "time": "12:00",
+              "film": "FIRE FLY",
+              "director": "Vamshi Krishna SM",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 132
+            },
+            {
+              "time": "15:20",
+              "film": "AGNYATHAVASI",
+              "director": "Janardhan Chikkanna",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 122
+            },
+            {
+              "time": "18:00",
+              "film": "KANTARA: A LEGEND CHAPTER 1",
+              "director": "Rishab Shetty",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 169
+            },
+            {
+              "time": "21:20",
+              "film": "THE BLUE TRAIL",
+              "director": "Gabriel Mascaro",
+              "country": "Brazil",
+              "year": 2025,
+              "language": "Portuguese",
+              "duration": 86
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "7",
+          "showings": [
+            {
+              "time": "10:20",
+              "film": "TO THE VICTORY!",
+              "director": "Valentyn Vasyanovych",
+              "country": "Ukraine",
+              "year": 2025,
+              "language": "Ukrainian",
+              "duration": 105
+            },
+            {
+              "time": "12:20",
+              "film": "NODIDAVARU ENANTARE",
+              "director": "Kuldeep Cariappa",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 136
+            },
+            {
+              "time": "15:30",
+              "film": "UYYALE",
+              "director": "N. Lakshminarayan",
+              "country": "India",
+              "year": 1969,
+              "language": "Kannada",
+              "duration": 129
+            },
+            {
+              "time": "18:10",
+              "film": "PETER HUJAR'S DAY",
+              "director": "Ira Sachs",
+              "country": "United States",
+              "year": 2025,
+              "language": "English",
+              "duration": 76
+            },
+            {
+              "time": "20:00",
+              "film": "SILENT FRIEND",
+              "director": "Ildikó Enyedi",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 147
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "8",
+          "showings": [
+            {
+              "time": "10:10",
+              "film": "THE PUPIL",
+              "director": "Karin Junger",
+              "country": "Netherlands",
+              "year": 2025,
+              "language": "Dutch",
+              "duration": 105
+            },
+            {
+              "time": "12:30",
+              "film": "WHAT DOES THAT NATURE SAY TO YOU",
+              "director": "Hong Sang-soo",
+              "country": "South Korea",
+              "year": 2025,
+              "language": "Korean",
+              "duration": 109
+            },
+            {
+              "time": "14:50",
+              "film": "THE MYSTERIOUS GAZE OF THE FLAMINGO",
+              "director": "Diego Céspedes",
+              "country": "Chile",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 104
+            },
+            {
+              "time": "17:10",
+              "film": "THE MASTERMIND",
+              "director": "Kelly Reichardt",
+              "country": "USA",
+              "year": 2025,
+              "language": "English",
+              "duration": 110
+            },
+            {
+              "time": "19:30",
+              "film": "MAGELLAN",
+              "director": "Lav Diaz",
+              "country": "Portugal",
+              "year": 2025,
+              "language": "Portuguese",
+              "duration": 160
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "9",
+          "showings": [
+            {
+              "time": "17:30",
+              "film": "TABATABA",
+              "director": "Raymond Rajaonarivelo",
+              "country": "Madagascar",
+              "year": 1988,
+              "language": "French",
+              "duration": 128
+            },
+            {
+              "time": "19:50",
+              "film": "KANAL",
+              "director": "Andrzej Wajda",
+              "country": "Poland",
+              "year": 1957,
+              "language": "Polish",
+              "duration": 96
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "10",
+          "showings": [
+            {
+              "time": "17:30",
+              "film": "TO THE WEST, IN ZAPATA",
+              "director": "David Bim",
+              "country": "Cuba",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 75
+            },
+            {
+              "time": "19:30",
+              "film": "WENDEMI, L'ENFANT DU BON DIEU",
+              "director": "S. Pierre Yaméogo",
+              "country": "Burkina Faso",
+              "year": 1992,
+              "language": "French",
+              "duration": 95
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "11",
+          "showings": [
+            {
+              "time": "17:20",
+              "film": "FAMILY PATTABIC",
+              "director": "Huli Chandrashekhar",
+              "country": "India",
+              "year": 2008,
+              "language": "English",
+              "duration": 120
+            },
+            {
+              "time": "19:50",
+              "film": "CHIDAMBARAM",
+              "director": "Govindan Aravindan",
+              "country": "India",
+              "year": 1985,
+              "language": "Malayalam",
+              "duration": 100
+            }
+          ]
+        },
+        {
+          "venue": "rajkumar",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "X & Y",
+              "director": "Satya Prakash DI",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 108
+            },
+            {
+              "time": "15:00",
+              "film": "KHALI PUTA",
+              "director": "Nagesh N",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 100
+            },
+            {
+              "time": "18:00",
+              "film": "RAVANA RAIYADALLI NAVADAMPATHIGALU",
+              "director": "Ranga",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 108
+            }
+          ]
+        },
+        {
+          "venue": "banashankari",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "SAMBA TRAORE",
+              "director": "Idrissa Ouedraogo",
+              "country": "Burkina Faso",
+              "year": 1983,
+              "language": "Mossi",
+              "duration": 85
+            },
+            {
+              "time": "15:00",
+              "film": "WHISPERS OF THE MOUNTAINS",
+              "director": "Jigar Nagda",
+              "country": "India",
+              "year": 2025,
+              "language": "Rajasthani",
+              "duration": 90
+            },
+            {
+              "time": "18:00",
+              "film": "THE IVY",
+              "director": "Ana Cristina Barragán",
+              "country": "Ecuador",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 99
+            }
+          ]
+        },
+        {
+          "venue": "openair",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "19:00",
+              "film": "BANGARADA MANUSHYA",
+              "director": "S. Siddalingaiah",
+              "country": "India",
+              "year": 1972,
+              "language": "Kannada",
+              "duration": 174
+            }
+          ]
+        }
       ]
     },
     {
@@ -99,86 +609,576 @@
       "dayNumber": 2,
       "label": "Day 2 - Friday",
       "screenings": [
-        { "venue": "cinepolis", "screen": "1", "showings": [
-          { "time": "10:00", "film": "THE MAIDS OF WILKO", "director": "ANDRZEJ WAJDA", "country": "POLAND", "year": 1979, "language": "POLISH", "duration": 118 },
-          { "time": "12:30", "film": "GAMAN", "director": "MUZAFFAR ALI", "country": "INDIA", "year": 1978, "language": "HINDI", "duration": 135 },
-          { "time": "15:20", "film": "CLEO FROM 5 TO 7", "director": "AGNES VARDA", "country": "FRANCE", "year": 1962, "language": "FRENCH", "duration": 90 },
-          { "time": "17:20", "film": "ELFRIEDE JELINEK: LANGUAGE UNLEASHED", "director": "CLAUDIA MULLER", "country": "AUSTRIA", "year": 2022, "language": "GERMAN", "duration": 96 },
-          { "time": "19:40", "film": "MOTHERTONGUE", "director": "ZHANG LU", "country": "CHINA", "year": 2025, "language": "MANDARIN", "duration": 122 }
-        ]},
-        { "venue": "cinepolis", "screen": "2", "showings": [
-          { "time": "09:30", "film": "DE TAL PALO", "country": "PUERTO RICO", "year": 2025, "language": "SPANISH", "duration": 88 },
-          { "time": "14:30", "film": "NOMAD SHADOW", "year": 2025, "duration": 0 },
-          { "time": "15:40", "film": "LETTERS FROM WOLF STREET", "director": "ARUN TALWAR", "country": "POLAND", "year": 2025, "language": "POLISH", "duration": 97 },
-          { "time": "17:40", "film": "WE BELIEVE YOU", "director": "ZHANG LU", "country": "CHINA", "year": 2025, "language": "MANDARIN", "duration": 122 },
-          { "time": "19:30", "film": "JANINE MOVES TO THE COUNTRY", "country": "ECUADOR", "year": 2025, "language": "SPANISH", "duration": 99 }
-        ]},
-        { "venue": "cinepolis", "screen": "3", "showings": [
-          { "time": "10:30", "film": "NATIONALITE IMMIGRE", "director": "SIDNEY SOKHONA", "country": "FRANCE", "year": 1976, "language": "ARABIC", "duration": 85 },
-          { "time": "12:50", "film": "LAPTEIN", "director": "RAVI SHANKAR KAUSHIK", "country": "INDIA", "year": 2025, "language": "HINDI", "duration": 86 },
-          { "time": "15:00", "film": "REPUBLIC OF PIPOLIPINAS", "director": "RENE IDIMLA", "country": "PHILIPPINES", "year": 2025, "language": "TAGALOG", "duration": 108 },
-          { "time": "17:20", "film": "THE DEEPEST SPACE IN US", "director": "YASUTOMO CHIKUMA", "country": "JAPAN", "year": 2025, "language": "JAPANESE", "duration": 97 },
-          { "time": "19:50", "film": "RENOVATION", "director": "GABRIELE URBONATE", "country": "LITHUANIA", "year": 2025, "language": "LITHUANIAN", "duration": 80 }
-        ]},
-        { "venue": "cinepolis", "screen": "4", "showings": [
-          { "time": "10:20", "film": "CALLE MALAGA", "director": "MARYAM TOUZANI", "country": "SPAIN", "year": 2025, "language": "SPANISH", "duration": 116 },
-          { "time": "14:40", "film": "WHITE SNOW", "director": "PRAVEEN MORCHHALE", "country": "INDIA", "year": 2025, "language": "URDU", "duration": 92 },
-          { "time": "17:20", "film": "JEEV BHOOTHALAM", "director": "RAVINDRA MANIK JADHAV", "country": "INDIA", "year": 2025, "language": "MARATHI", "duration": 103 },
-          { "time": "19:30", "film": "THE NATURE OF INVISIBLE THINGS", "director": "SREEKANTH PANGAPATTU", "country": "INDIA", "year": 2025, "language": "MALAYALAM", "duration": 85 }
-        ]},
-        { "venue": "cinepolis", "screen": "5", "showings": [
-          { "time": "09:50", "film": "KONTINENTAL '25", "director": "RADU JUDE", "country": "ROMANIA", "year": 2025, "language": "ROMANIAN", "duration": 108 },
-          { "time": "14:20", "film": "BLUE HERON", "director": "SOPHY ROMVARI", "country": "CANADA", "year": 2025, "language": "ENGLISH", "duration": 80 },
-          { "time": "16:40", "film": "FATHER MOTHER SISTER BROTHER", "director": "JIM JARMUSCH", "country": "USA", "year": 2025, "language": "ENGLISH", "duration": 110 },
-          { "time": "19:00", "film": "DJ AHMET", "country": "MACEDONIA", "year": 2025, "language": "TURKISH", "duration": 98 }
-        ]},
-        { "venue": "cinepolis", "screen": "6", "showings": [
-          { "time": "09:30", "film": "AS WE BREATHE", "director": "SEYHMUS ALTUN", "country": "TURKEY", "year": 2025, "language": "TURKISH", "duration": 85 },
-          { "time": "11:30", "film": "THEERTHAROOPA THANDEYAVARIGE", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 148 },
-          { "time": "14:50", "film": "SRI JAGANNATHA DAASARU PART 2", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 0 },
-          { "time": "18:00", "film": "X & Y", "director": "SATYA PRAKASH D", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 108 },
-          { "time": "20:30", "film": "ACCIDENT", "director": "SHANKAR NAG", "country": "INDIA", "year": 1984, "language": "KANNADA", "duration": 107 }
-        ]},
-        { "venue": "cinepolis", "screen": "7", "showings": [
-          { "time": "09:40", "film": "DEAD DOG", "director": "SARAH FRANCIS", "country": "LEBANON", "year": 2025, "language": "ARABIC", "duration": 92 },
-          { "time": "14:30", "film": "BHAKTA KANAKADASA", "director": "Y.R. SWAMY", "country": "INDIA", "year": 1960, "language": "KANNADA", "duration": 127 },
-          { "time": "17:00", "film": "HUMAN RESOURCE", "country": "THAILAND", "year": 2025, "language": "THAI", "duration": 122 },
-          { "time": "19:20", "film": "FATHER", "director": "TEREZA NVOTOVA", "country": "SLOVAKIA", "year": 2025, "language": "SLOVAK", "duration": 103 }
-        ]},
-        { "venue": "cinepolis", "screen": "8", "showings": [
-          { "time": "10:10", "film": "BROKEN VOICES", "director": "ONDREJ PROVAZNIK", "country": "CZECHIA", "year": 2025, "language": "CZECH", "duration": 106 },
-          { "time": "12:30", "film": "PERLA", "director": "ALEXANDRA MAKAROVA", "country": "AUSTRIA", "year": 2025, "language": "SLOVAKIAN", "duration": 110 },
-          { "time": "15:00", "film": "TWO PROSECUTORS", "director": "SERGEI LOZNITSA", "country": "FRANCE", "year": 2025, "language": "RUSSIAN", "duration": 117 },
-          { "time": "17:30", "film": "SIRAT", "director": "OLIVER LAXE", "country": "SPAIN", "year": 2025, "language": "SPANISH", "duration": 120 },
-          { "time": "20:00", "film": "NO OTHER CHOICE", "director": "PARK CHAN-WOOK", "country": "SOUTH KOREA", "year": 2025, "language": "KOREAN", "duration": 139 }
-        ]},
-        { "venue": "cinepolis", "screen": "9", "showings": [
-          { "time": "18:00", "film": "GOLEM", "director": "PIOTR SZULKIN", "country": "POLAND", "year": 1973, "language": "POLISH", "duration": 93 },
-          { "time": "20:00", "film": "GEHENU LAMAI", "director": "SUMITRA PERIES", "country": "SRI LANKA", "year": 1978, "language": "SINHALA", "duration": 110 }
-        ]},
-        { "venue": "cinepolis", "screen": "10", "showings": [
-          { "time": "16:50", "film": "THAAYI SAHEBA", "director": "GIRISH KASARAVALLI", "country": "INDIA", "year": 1997, "language": "KANNADA", "duration": 117 },
-          { "time": "19:30", "film": "BHAVNI BHAVAI", "director": "KETAN MEHTA", "country": "INDIA", "year": 1980, "language": "GUJARATI", "duration": 135 }
-        ]},
-        { "venue": "cinepolis", "screen": "11", "showings": [
-          { "time": "17:30", "film": "VASTHUHARA", "director": "G. ARAVINDAN", "country": "INDIA", "year": 1991, "language": "MALAYALAM", "duration": 101 },
-          { "time": "19:40", "film": "LA CHAPELLE", "director": "JEAN-MICHEL TCHISSOUKOU", "country": "CONGO", "year": 1980, "language": "LINGALA", "duration": 80 }
-        ]},
-        { "venue": "rajkumar", "screen": "1", "showings": [
-          { "time": "11:00", "film": "RUBY CUBE", "director": "P SHESHADRI", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 105 },
-          { "time": "18:00", "film": "MRIGATRISHNA", "director": "AJAY GURUNATHA", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 157 }
-        ]},
-        { "venue": "banashankari", "screen": "1", "showings": [
-          { "time": "11:00", "film": "THE CEMETERY OF CINEMA", "director": "THIERNO SOULEYMANE DIALLO", "country": "FRANCE", "year": 2023, "language": "FRENCH", "duration": 93 },
-          { "time": "18:00", "film": "FAMILY PATTABIC", "country": "INDIA", "year": 2008, "language": "ENGLISH", "duration": 120 }
-        ]},
-        { "venue": "openair", "screen": "1", "showings": [
-          { "time": "19:00", "film": "ONDANONDU KALADALLI", "director": "GIRISH KARNAD", "country": "INDIA", "year": 1978, "language": "KANNADA", "duration": 0 }
-        ]}
-      ],
-      "forum": [
-        { "time": "14:30", "title": "THE INVISIBLE ART OF EDITING - Sreekar Prasad", "type": "Conversation" },
-        { "time": "17:00", "title": "FEARLESS FILMMAKING - Anurag Kashyap", "type": "Session" }
+        {
+          "venue": "cinepolis",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "THE MAIDS OF WILKO",
+              "director": "Andrzej Wajda",
+              "country": "Poland",
+              "year": 1979,
+              "language": "Polish",
+              "duration": 118
+            },
+            {
+              "time": "12:30",
+              "film": "GAMAN",
+              "director": "Muzaffar Ali",
+              "country": "India",
+              "year": 1978,
+              "language": "Hindi",
+              "duration": 135
+            },
+            {
+              "time": "15:20",
+              "film": "CLEO FROM 5 TO 7",
+              "director": "Agnès Varda",
+              "country": "France",
+              "year": 1962,
+              "language": "French",
+              "duration": 90
+            },
+            {
+              "time": "17:20",
+              "film": "ELFRIEDE JELINEK - LANGUAGE UNLEASHED",
+              "director": "Claudia Müller",
+              "country": "Austria",
+              "year": 2022,
+              "language": "German",
+              "duration": 96
+            },
+            {
+              "time": "19:40",
+              "film": "MOTHERTONGUE",
+              "director": "Zhang Lu",
+              "country": "China",
+              "year": 2025,
+              "language": "Mandarin",
+              "duration": 122
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "2",
+          "showings": [
+            {
+              "time": "09:30",
+              "film": "DE TAL PALO",
+              "director": "Iván Dariel Ortiz",
+              "country": "Puerto Rico",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 88
+            },
+            {
+              "time": "11:30",
+              "film": "NOMAD SHADOW",
+              "director": "Eimi Imanishi",
+              "country": "United States",
+              "year": 2025,
+              "language": "Arabic",
+              "duration": 82
+            },
+            {
+              "time": "13:40",
+              "film": "LETTERS FROM WOLF STREET",
+              "director": "Arjun Talwar",
+              "country": "Poland",
+              "year": 2025,
+              "language": "Polish",
+              "duration": 97
+            },
+            {
+              "time": "15:40",
+              "film": "WE BELIEVE YOU",
+              "director": "Charlotte Devillers, Arnaud Dufeys",
+              "country": "Belgium",
+              "year": 2025,
+              "language": "French",
+              "duration": 78
+            },
+            {
+              "time": "17:40",
+              "film": "JANINE MOVES TO THE COUNTRY",
+              "director": "Jan Eilhardt",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 74
+            },
+            {
+              "time": "19:30",
+              "film": "THE IVY",
+              "director": "Ana Cristina Barragán",
+              "country": "Ecuador",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 99
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "3",
+          "showings": [
+            {
+              "time": "10:30",
+              "film": "NATIONALITE IMMIGRE",
+              "director": "Sidney Sokhona",
+              "country": "France",
+              "year": 1976,
+              "language": "Arabic",
+              "duration": 85
+            },
+            {
+              "time": "12:30",
+              "film": "LAPTEIN",
+              "director": "Ravi Shankar Kaushik",
+              "country": "India",
+              "year": 2025,
+              "language": "Hindi",
+              "duration": 86
+            },
+            {
+              "time": "15:00",
+              "film": "REPUBLIC OF PIPOLIPINAS",
+              "director": "Renei Dimla",
+              "country": "Philippines",
+              "year": 2025,
+              "language": "Tagalog",
+              "duration": 105
+            },
+            {
+              "time": "17:30",
+              "film": "THE DEEPEST SPACE IN US",
+              "director": "Yasutomo Chikuma",
+              "country": "Japan",
+              "year": 2025,
+              "language": "Japanese",
+              "duration": 97
+            },
+            {
+              "time": "19:50",
+              "film": "RENOVATION",
+              "director": "Gabriele Urbonate",
+              "country": "Lithuania",
+              "year": 2025,
+              "language": "Lithuanian",
+              "duration": 90
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "4",
+          "showings": [
+            {
+              "time": "10:20",
+              "film": "CALLE MALAGA",
+              "director": "Maryam Touzani",
+              "country": "Spain",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 116
+            },
+            {
+              "time": "12:40",
+              "film": "WHITE SNOW",
+              "director": "Praveen Morchhale",
+              "country": "India",
+              "year": 2025,
+              "language": "Urdu",
+              "duration": 82
+            },
+            {
+              "time": "14:40",
+              "film": "JEEV",
+              "director": "Ravindra Manik Jadhav",
+              "country": "India",
+              "year": 2025,
+              "language": "Marathi",
+              "duration": 103
+            },
+            {
+              "time": "17:20",
+              "film": "BHOOTHALAM",
+              "director": "Sreekanth Pangapattu",
+              "country": "India",
+              "year": 2025,
+              "language": "Malayalam",
+              "duration": 85
+            },
+            {
+              "time": "19:30",
+              "film": "THE NATURE OF INVISIBLE THINGS",
+              "director": "Rafaela Camelo",
+              "country": "Brazil",
+              "year": 2025,
+              "language": "Portuguese",
+              "duration": 90
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "5",
+          "showings": [
+            {
+              "time": "09:50",
+              "film": "KONTINENTAL '25",
+              "director": "Radu Jude",
+              "country": "Romania",
+              "year": 2025,
+              "language": "Romanian",
+              "duration": 109
+            },
+            {
+              "time": "12:10",
+              "film": "BLUE HERON",
+              "director": "Sophy Romvari",
+              "country": "Canada",
+              "year": 2025,
+              "language": "English",
+              "duration": 90
+            },
+            {
+              "time": "14:20",
+              "film": "FATHER MOTHER SISTER BROTHER",
+              "director": "Jim Jarmusch",
+              "country": "USA",
+              "year": 2025,
+              "language": "English",
+              "duration": 110
+            },
+            {
+              "time": "16:40",
+              "film": "DJ AHMET",
+              "director": "Georgi M. Unkovski",
+              "country": "Macedonia",
+              "year": 2025,
+              "language": "Turkish",
+              "duration": 99
+            },
+            {
+              "time": "19:00",
+              "film": "RESURRECTION",
+              "director": "Bi Gan",
+              "country": "China",
+              "year": 2025,
+              "language": "Mandarin",
+              "duration": 160
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "6",
+          "showings": [
+            {
+              "time": "09:30",
+              "film": "AS WE BREATHE",
+              "director": "Şeyhmus Altun",
+              "country": "Turkey",
+              "year": 2025,
+              "language": "Turkish",
+              "duration": 95
+            },
+            {
+              "time": "11:30",
+              "film": "THEERTHAROOPA THANDEYAVARIGE",
+              "director": "Ramenahalli Jagannatha",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 148
+            },
+            {
+              "time": "14:50",
+              "film": "SRI JAGANNATHA DAASARU PART 2",
+              "director": "Dr. Madhusudhan Havaldar",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 144
+            },
+            {
+              "time": "18:00",
+              "film": "X & Y",
+              "director": "Satya Prakash DI",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 108
+            },
+            {
+              "time": "20:30",
+              "film": "ACCIDENT",
+              "director": "Shankar Nag",
+              "country": "India",
+              "year": 1984,
+              "language": "Kannada",
+              "duration": 107
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "7",
+          "showings": [
+            {
+              "time": "09:40",
+              "film": "DEAD DOG",
+              "director": "Sarah Francis",
+              "country": "Lebanon",
+              "year": 2025,
+              "language": "Arabic",
+              "duration": 92
+            },
+            {
+              "time": "11:40",
+              "film": "BHAKTA KANAKADASA",
+              "director": "Y. R. Swamy",
+              "country": "India",
+              "year": 1960,
+              "language": "Kannada",
+              "duration": 127
+            },
+            {
+              "time": "14:30",
+              "film": "HUMAN RESOURCE",
+              "director": "Nawapol Thamrongrattanarit",
+              "country": "Thailand",
+              "year": 2025,
+              "language": "Thai",
+              "duration": 122
+            },
+            {
+              "time": "17:00",
+              "film": "FATHER",
+              "director": "Tereza Nvotová",
+              "country": "Slovakia",
+              "year": 2025,
+              "language": "Slovak",
+              "duration": 103
+            },
+            {
+              "time": "19:20",
+              "film": "DRY LEAF",
+              "director": "Alexandre Koberidze",
+              "country": "Georgia",
+              "year": 2025,
+              "language": "Georgian",
+              "duration": 186
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "8",
+          "showings": [
+            {
+              "time": "10:10",
+              "film": "BROKEN VOICES",
+              "director": "Ondřej Provazník",
+              "country": "Czechia",
+              "year": 2025,
+              "language": "Czech",
+              "duration": 106
+            },
+            {
+              "time": "12:30",
+              "film": "PERLA",
+              "director": "Alexandra Makarová",
+              "country": "Austria",
+              "year": 2025,
+              "language": "Slovak",
+              "duration": 110
+            },
+            {
+              "time": "15:00",
+              "film": "TWO PROSECUTORS",
+              "director": "Sergei Loznitsa",
+              "country": "France",
+              "year": 2025,
+              "language": "Russian",
+              "duration": 117
+            },
+            {
+              "time": "17:30",
+              "film": "SIRAT",
+              "director": "Oliver Laxe",
+              "country": "Spain",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 120
+            },
+            {
+              "time": "20:00",
+              "film": "NO OTHER CHOICE",
+              "director": "Park Chan-wook",
+              "country": "South Korea",
+              "year": 2025,
+              "language": "Korean",
+              "duration": 139
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "9",
+          "showings": [
+            {
+              "time": "18:00",
+              "film": "GOLEM",
+              "director": "Piotr Szulkin",
+              "country": "Poland",
+              "year": 1979,
+              "language": "Polish",
+              "duration": 93
+            },
+            {
+              "time": "20:00",
+              "film": "GEHENU LAMAI",
+              "director": "Sumitra Peries",
+              "country": "Sri Lanka",
+              "year": 1978,
+              "language": "Sinhala",
+              "duration": 110
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "10",
+          "showings": [
+            {
+              "time": "16:50",
+              "film": "THAAYI SAHEBA",
+              "director": "Girish Kasaravalli",
+              "country": "India",
+              "year": 1997,
+              "language": "Kannada",
+              "duration": 117
+            },
+            {
+              "time": "19:30",
+              "film": "BHAVNI BHAVAI",
+              "director": "Ketan Mehta",
+              "country": "India",
+              "year": 1980,
+              "language": "Gujarati",
+              "duration": 135
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "11",
+          "showings": [
+            {
+              "time": "17:30",
+              "film": "VASTHUHARA",
+              "director": "G. Aravindan",
+              "country": "India",
+              "year": 1991,
+              "language": "Malayalam",
+              "duration": 101
+            },
+            {
+              "time": "19:40",
+              "film": "LA CHAPELLE",
+              "director": "Jean-Michel Tchissoukou",
+              "country": "Congo",
+              "year": 1980,
+              "language": "Lingala",
+              "duration": 80
+            }
+          ]
+        },
+        {
+          "venue": "rajkumar",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "RUBY CUBE",
+              "director": "P. Sheshadri",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 105
+            },
+            {
+              "time": "15:00",
+              "film": "MRIGATRISHNA",
+              "director": "Ajay Gurunatha",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 157
+            },
+            {
+              "time": "18:00",
+              "film": "VANYA",
+              "director": "Badiger Devendra",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 100
+            }
+          ]
+        },
+        {
+          "venue": "banashankari",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "THE CEMETERY OF CINEMA",
+              "director": "Thierno Souleymane Diallo",
+              "country": "France",
+              "year": 2023,
+              "language": "French",
+              "duration": 93
+            },
+            {
+              "time": "15:00",
+              "film": "FAMILY PATTABIC",
+              "director": "Huli Chandrashekhar",
+              "country": "India",
+              "year": 2008,
+              "language": "English",
+              "duration": 120
+            },
+            {
+              "time": "18:00",
+              "film": "LETTERS FROM WOLF STREET",
+              "director": "Arjun Talwar",
+              "country": "Poland",
+              "year": 2025,
+              "language": "Polish",
+              "duration": 97
+            }
+          ]
+        },
+        {
+          "venue": "openair",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "19:00",
+              "film": "ONDANONDU KALADALLI",
+              "director": "Girish Karnad",
+              "country": "India",
+              "year": 1978,
+              "language": "Kannada",
+              "duration": 137
+            }
+          ]
+        }
       ]
     },
     {
@@ -186,81 +1186,576 @@
       "dayNumber": 3,
       "label": "Day 3 - Saturday",
       "screenings": [
-        { "venue": "cinepolis", "screen": "1", "showings": [
-          { "time": "09:40", "film": "TWENTY YEARS OF AFRICAN CINEMA", "director": "FERID BOUGHEDIR", "country": "TUNISIA", "year": 1983, "language": "FRENCH", "duration": 95 },
-          { "time": "14:30", "film": "ASHES AND DIAMONDS", "director": "ANDRZEJ WAJDA", "country": "POLAND", "year": 1958, "language": "POLISH", "duration": 103 },
-          { "time": "17:00", "film": "THE EARRINGS OF MADAME DE...", "director": "MAX OPHULS", "country": "FRANCE", "year": 1953, "language": "FRENCH", "duration": 105 },
-          { "time": "20:30", "film": "OSLO: A TAIL OF PROMISE", "director": "ISHA PUNGALIYA", "country": "INDIA", "year": 2025, "language": "HINDI", "duration": 93 }
-        ]},
-        { "venue": "cinepolis", "screen": "2", "showings": [
-          { "time": "08:30", "film": "TETES BRULEES", "country": "BELGIUM", "year": 2025, "language": "FRENCH", "duration": 86 },
-          { "time": "11:30", "film": "SLEEPLESS CITY", "director": "GUILLERMO GALOE", "country": "SPAIN", "year": 2025, "language": "SPANISH", "duration": 87 },
-          { "time": "13:40", "film": "VANILLA", "director": "MAYRA HERMOSILLO", "country": "SPAIN", "year": 2025, "language": "SPANISH", "duration": 99 },
-          { "time": "18:00", "film": "HALF MOON", "director": "FRANK SCHEFFER", "country": "NETHERLANDS", "year": 2025, "language": "ENGLISH", "duration": 87 },
-          { "time": "20:10", "film": "MORTICIAN", "director": "ABDOLREZA KAHANI", "country": "CANADA", "year": 2025, "language": "PERSIAN", "duration": 85 }
-        ]},
-        { "venue": "cinepolis", "screen": "3", "showings": [
-          { "time": "10:10", "film": "ORENDA", "director": "PIRJO HONKASALO", "country": "FINLAND", "year": 2025, "language": "FINNISH", "duration": 119 },
-          { "time": "12:40", "film": "SHAPE OF MOMO", "country": "INDIA", "year": 2025, "language": "NEPALI", "duration": 115 },
-          { "time": "17:20", "film": "DREAMS", "director": "DAG JOHAN HAUGERUD", "country": "NORWAY", "year": 2024, "language": "NORWEGIAN", "duration": 110 }
-        ]},
-        { "venue": "cinepolis", "screen": "4", "showings": [
-          { "time": "10:30", "film": "MOHAM", "director": "FAZIL RAZAK", "country": "INDIA", "year": 2025, "language": "MALAYALAM", "duration": 102 },
-          { "time": "17:30", "film": "KAADU", "director": "SUNEESH VADAKUMBADAN", "country": "INDIA", "year": 2025, "language": "MALAYALAM", "duration": 81 },
-          { "time": "19:50", "film": "GANARAAG", "director": "DIP BHUYAN", "country": "INDIA", "year": 2025, "language": "ASSAMESE", "duration": 102 }
-        ]},
-        { "venue": "cinepolis", "screen": "5", "showings": [
-          { "time": "09:50", "film": "CATANE", "director": "OANA MISCHIE", "country": "ROMANIA", "year": 2025, "language": "ROMANIAN", "duration": 96 },
-          { "time": "14:10", "film": "MY FATHER'S SHADOW", "country": "UK", "year": 2025, "language": "ENGLISH", "duration": 0 },
-          { "time": "17:10", "film": "SENTIMENTAL VALUE", "director": "JOACHIM TRIER", "country": "NORWAY", "year": 2025, "language": "NORWEGIAN", "duration": 135 },
-          { "time": "19:30", "film": "IT WAS JUST AN ACCIDENT", "director": "JAFAR PANAHI", "country": "IRAN", "year": 2025, "language": "IRANIAN", "duration": 106 }
-        ]},
-        { "venue": "cinepolis", "screen": "6", "showings": [
-          { "time": "10:30", "film": "CHRISTY", "director": "BRENDAN CANTY", "country": "IRELAND", "year": 2025, "language": "IRISH", "duration": 94 },
-          { "time": "15:00", "film": "VANYA", "director": "BADIGER DEVENDRA", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 100 },
-          { "time": "17:40", "film": "RAVANA RAJYADALLI NAVADAMPATHIGALU", "director": "RANGA", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 108 },
-          { "time": "20:00", "film": "AMRUM", "director": "FATIH AKIN", "country": "GERMANY", "year": 2025, "language": "GERMAN", "duration": 93 }
-        ]},
-        { "venue": "cinepolis", "screen": "7", "showings": [
-          { "time": "10:20", "film": "FOLLIES", "country": "CANADA", "year": 2025, "language": "FRENCH", "duration": 104 },
-          { "time": "15:30", "film": "SU FROM SO", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 137 },
-          { "time": "17:50", "film": "NAM SAALI", "director": "ANEEL KUMAR", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 90 },
-          { "time": "20:10", "film": "THEATRE AMOEBA", "director": "NISHANTH KALIDINO", "country": "INDIA", "year": 2025, "language": "TAMIL", "duration": 93 }
-        ]},
-        { "venue": "cinepolis", "screen": "8", "showings": [
-          { "time": "10:00", "film": "BIDAD", "director": "SOHEIL BEIRAGHI", "country": "IRAN", "year": 2025, "language": "IRANIAN", "duration": 104 },
-          { "time": "12:20", "film": "STRAIGHT CIRCLE", "director": "OSCAR HUDSON", "country": "UK", "year": 2025, "language": "ENGLISH", "duration": 0 },
-          { "time": "14:50", "film": "A USEFUL GHOST", "country": "THAILAND", "year": 2025, "language": "THAI", "duration": 130 },
-          { "time": "17:30", "film": "AMMANG HELBEDA", "director": "ANOOP LOKKUR", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 90 }
-        ]},
-        { "venue": "cinepolis", "screen": "9", "showings": [
-          { "time": "17:50", "film": "THE HOURGLASS SANATORIUM", "director": "WOJCIECH JERZY HAS", "country": "POLAND", "year": 1973, "language": "POLISH", "duration": 125 },
-          { "time": "20:30", "film": "WHISPERS OF THE MOUNTAINS", "director": "JIGAR NAGDA", "country": "INDIA", "year": 2025, "language": "RAJASTHANI", "duration": 90 }
-        ]},
-        { "venue": "cinepolis", "screen": "10", "showings": [
-          { "time": "17:10", "film": "KOORMAVATARA", "director": "GIRISH KASARAVALLI", "country": "INDIA", "year": 2011, "language": "KANNADA", "duration": 133 },
-          { "time": "19:50", "film": "THE CEMETERY OF CINEMA", "director": "THIERNO SOULEYMANE DIALLO", "country": "FRANCE", "year": 2023, "language": "FRENCH", "duration": 93 }
-        ]},
-        { "venue": "cinepolis", "screen": "11", "showings": [
-          { "time": "17:00", "film": "SAMBA TRAORE", "director": "IDRISSA OUEDRAOGO", "country": "BURKINA FASO", "year": 1992, "language": "FRENCH", "duration": 85 },
-          { "time": "19:00", "film": "AMARA SHILPI JAKKANACHARI", "director": "S. RANGA", "country": "INDIA", "year": 1964, "language": "KANNADA", "duration": 126 }
-        ]},
-        { "venue": "rajkumar", "screen": "1", "showings": [
-          { "time": "11:00", "film": "SRI JAGANNATHA DAASARU PART 2", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 0 },
-          { "time": "18:00", "film": "MAHAKAVI LUMMATTHAT", "director": "BARAGUR RAMACHANDRAN", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 121 }
-        ]},
-        { "venue": "banashankari", "screen": "1", "showings": [
-          { "time": "11:00", "film": "TALKING ABOUT TREES", "director": "SUHAIB GASMELBARI", "country": "SUDAN", "year": 2019, "language": "SUDANESE", "duration": 94 },
-          { "time": "18:00", "film": "TO THE WEST, IN ZAPATA", "director": "DAVID BIM", "country": "CUBA", "year": 2025, "language": "SPANISH", "duration": 75 }
-        ]},
-        { "venue": "openair", "screen": "1", "showings": [
-          { "time": "19:00", "film": "BANDHANA", "director": "RAJENDRA SINGH BABU", "country": "INDIA", "year": 1984, "language": "KANNADA", "duration": 153 }
-        ]}
-      ],
-      "forum": [
-        { "time": "11:00", "title": "Masterclass", "type": "Masterclass" },
-        { "time": "14:30", "title": "Rethinking Narrative", "type": "Discussion" },
-        { "time": "17:30", "title": "Conversation with Rahul Ravindran", "type": "Conversation" }
+        {
+          "venue": "cinepolis",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "09:40",
+              "film": "TWENTY YEARS OF AFRICAN CINEMA",
+              "director": "Férid Boughedir",
+              "country": "Tunisia",
+              "year": 1983,
+              "language": "French",
+              "duration": 95
+            },
+            {
+              "time": "11:50",
+              "film": "ASHES AND DIAMONDS",
+              "director": "Andrzej Wajda",
+              "country": "Poland",
+              "year": 1958,
+              "language": "Polish",
+              "duration": 103
+            },
+            {
+              "time": "14:30",
+              "film": "THE EARRINGS OF MADAME DE...",
+              "director": "Max Ophüls",
+              "country": "France",
+              "year": 1953,
+              "language": "French",
+              "duration": 105
+            },
+            {
+              "time": "17:00",
+              "film": "OSLO: A TAIL OF PROMISE",
+              "director": "Isha Pungaliya",
+              "country": "India",
+              "year": 2025,
+              "language": "Hindi",
+              "duration": 93
+            },
+            {
+              "time": "20:30",
+              "film": "CLOISTERED SISTER",
+              "director": "Ivana Mladenović",
+              "country": "Romania",
+              "year": 2025,
+              "language": "Romanian",
+              "duration": 107
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "2",
+          "showings": [
+            {
+              "time": "09:30",
+              "film": "TETES BRULEES",
+              "director": "Maja-Ajmia Yde Zellama",
+              "country": "Belgium",
+              "year": 2025,
+              "language": "French",
+              "duration": 86
+            },
+            {
+              "time": "11:30",
+              "film": "SLEEPLESS CITY",
+              "director": "Guillermo Galoe",
+              "country": "Spain",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 97
+            },
+            {
+              "time": "13:40",
+              "film": "VANILLA",
+              "director": "Mayra Hermosillo",
+              "country": "Spain",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 99
+            },
+            {
+              "time": "15:50",
+              "film": "HALF MOON",
+              "director": "Frank Scheffer",
+              "country": "Netherlands",
+              "year": 2025,
+              "language": "English",
+              "duration": 92
+            },
+            {
+              "time": "18:00",
+              "film": "MORTICIAN",
+              "director": "Abdolreza Kahani",
+              "country": "Canada",
+              "year": 2025,
+              "language": "Persian",
+              "duration": 94
+            },
+            {
+              "time": "20:10",
+              "film": "CARAVAN",
+              "director": "Zuzana Kirchnerová-Špidlová",
+              "country": "Czechia",
+              "year": 2025,
+              "language": "Czech",
+              "duration": 102
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "3",
+          "showings": [
+            {
+              "time": "10:10",
+              "film": "ORENDA",
+              "director": "Pirjo Honkasalo",
+              "country": "Finland",
+              "year": 2025,
+              "language": "Finnish",
+              "duration": 119
+            },
+            {
+              "time": "12:40",
+              "film": "SHAPE OF MOMO",
+              "director": "Tribeny Rai",
+              "country": "India",
+              "year": 2025,
+              "language": "Nepali",
+              "duration": 115
+            },
+            {
+              "time": "15:20",
+              "film": "KURAK",
+              "director": "Erke Dohuman Matova, Emil Atageldiev",
+              "country": "Kyrgyzstan",
+              "year": 2025,
+              "language": "Kyrgyz/Russian",
+              "duration": 89
+            },
+            {
+              "time": "17:20",
+              "film": "DREAMS",
+              "director": "Dag Johan Haugerud",
+              "country": "Norway",
+              "year": 2024,
+              "language": "Norwegian",
+              "duration": 110
+            },
+            {
+              "time": "19:40",
+              "film": "PORTE BAGAGE",
+              "director": "Abdelkarim El-Fassi",
+              "country": "Netherlands",
+              "year": 2025,
+              "language": "Dutch",
+              "duration": 100
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "4",
+          "showings": [
+            {
+              "time": "10:30",
+              "film": "MOHAM",
+              "director": "Fazil Razak",
+              "country": "India",
+              "year": 2025,
+              "language": "Malayalam",
+              "duration": 102
+            },
+            {
+              "time": "12:40",
+              "film": "KAADU",
+              "director": "Suneesh Vadakumbadan",
+              "country": "India",
+              "year": 2025,
+              "language": "Malayalam",
+              "duration": 81
+            },
+            {
+              "time": "14:40",
+              "film": "GANARAAG",
+              "director": "Dip Bhuyan",
+              "country": "India",
+              "year": 2025,
+              "language": "Assamese",
+              "duration": 102
+            },
+            {
+              "time": "17:30",
+              "film": "ROOSTER",
+              "director": "Tassos Gerakinis",
+              "country": "Greece",
+              "year": 2025,
+              "language": "Greek",
+              "duration": 101
+            },
+            {
+              "time": "19:50",
+              "film": "FIUME O MORTE!",
+              "director": "Igor Bezinović",
+              "country": "Croatia",
+              "year": 2025,
+              "language": "Croatian",
+              "duration": 112
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "5",
+          "showings": [
+            {
+              "time": "09:50",
+              "film": "CATANE",
+              "director": "Ioana Mischie",
+              "country": "Romania",
+              "year": 2025,
+              "language": "Romanian",
+              "duration": 96
+            },
+            {
+              "time": "12:00",
+              "film": "MY FATHER'S SHADOW",
+              "director": "Akinola Davies Jr.",
+              "country": "United Kingdom",
+              "year": 2025,
+              "language": "English",
+              "duration": 94
+            },
+            {
+              "time": "14:10",
+              "film": "SENTIMENTAL VALUE",
+              "director": "Joachim Trier",
+              "country": "Norway",
+              "year": 2025,
+              "language": "Norwegian",
+              "duration": 135
+            },
+            {
+              "time": "17:10",
+              "film": "IT WAS JUST AN ACCIDENT",
+              "director": "Jafar Panahi",
+              "country": "Iran",
+              "year": 2025,
+              "language": "Persian",
+              "duration": 106
+            },
+            {
+              "time": "19:30",
+              "film": "SOUND OF FALLING",
+              "director": "Mascha Schilinski",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 149
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "6",
+          "showings": [
+            {
+              "time": "10:30",
+              "film": "CHRISTY",
+              "director": "Brendan Canty",
+              "country": "Ireland",
+              "year": 2025,
+              "language": "Irish",
+              "duration": 94
+            },
+            {
+              "time": "12:40",
+              "film": "VANYA",
+              "director": "Badiger Devendra",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 100
+            },
+            {
+              "time": "15:00",
+              "film": "RAVANA RAIYADALLI NAVADAMPATHIGALU",
+              "director": "Ranga",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 108
+            },
+            {
+              "time": "17:40",
+              "film": "KHALI PUTA",
+              "director": "Nagesh N",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 100
+            },
+            {
+              "time": "20:00",
+              "film": "AMRUM",
+              "director": "Fatih Akin",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 93
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "7",
+          "showings": [
+            {
+              "time": "10:20",
+              "film": "FOLLIES",
+              "director": "Érick",
+              "country": "Canada",
+              "year": 2025,
+              "language": "French",
+              "duration": 104
+            },
+            {
+              "time": "12:40",
+              "film": "SU FROM SO",
+              "director": "J.P. Thuminad",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 137
+            },
+            {
+              "time": "15:30",
+              "film": "NAM SAALI",
+              "director": "Aneel Kumar",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 90
+            },
+            {
+              "time": "17:50",
+              "film": "THEATRE",
+              "director": "Nishanth Kalidindi",
+              "country": "India",
+              "year": 2025,
+              "language": "Tamil",
+              "duration": 93
+            },
+            {
+              "time": "20:10",
+              "film": "AMOEBA",
+              "director": "Tan Siyou",
+              "country": "Singapore",
+              "year": 2025,
+              "language": "English",
+              "duration": 98
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "8",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "BIDAD",
+              "director": "Soheil Beiraghi",
+              "country": "Iran",
+              "year": 2025,
+              "language": "Persian",
+              "duration": 104
+            },
+            {
+              "time": "12:20",
+              "film": "STRAIGHT CIRCLE",
+              "director": "Oscar Hudson",
+              "country": "United Kingdom",
+              "year": 2025,
+              "language": "English",
+              "duration": 109
+            },
+            {
+              "time": "14:50",
+              "film": "A USEFUL GHOST",
+              "director": "Ratchapoom Boonbunchachoke",
+              "country": "Thailand",
+              "year": 2025,
+              "language": "Thai",
+              "duration": 130
+            },
+            {
+              "time": "17:50",
+              "film": "THE HOURGLASS SANATORIUM",
+              "director": "Wojciech Jerzy Has",
+              "country": "Poland",
+              "year": 1973,
+              "language": "Polish",
+              "duration": 125
+            },
+            {
+              "time": "19:50",
+              "film": "THE MASTERMIND",
+              "director": "Kelly Reichardt",
+              "country": "USA",
+              "year": 2025,
+              "language": "English",
+              "duration": 110
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "9",
+          "showings": [
+            {
+              "time": "17:30",
+              "film": "AMMANG HELBEDA",
+              "director": "Anoop Lokkur",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 90
+            },
+            {
+              "time": "20:30",
+              "film": "WHISPERS OF THE MOUNTAINS",
+              "director": "Jigar Nagda",
+              "country": "India",
+              "year": 2025,
+              "language": "Rajasthani",
+              "duration": 90
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "10",
+          "showings": [
+            {
+              "time": "17:10",
+              "film": "KOORMAVATARA",
+              "director": "Girish Kasaravalli",
+              "country": "India",
+              "year": 2011,
+              "language": "Kannada",
+              "duration": 133
+            },
+            {
+              "time": "19:50",
+              "film": "THE CEMETERY OF CINEMA",
+              "director": "Thierno Souleymane Diallo",
+              "country": "France",
+              "year": 2023,
+              "language": "French",
+              "duration": 93
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "11",
+          "showings": [
+            {
+              "time": "17:00",
+              "film": "SAMBA TRAORE",
+              "director": "Idrissa Ouedraogo",
+              "country": "Burkina Faso",
+              "year": 1983,
+              "language": "Mossi",
+              "duration": 85
+            },
+            {
+              "time": "19:00",
+              "film": "AMARA SHILPI JAKKANACHARI",
+              "director": "B. S. Ranga",
+              "country": "India",
+              "year": 1964,
+              "language": "Kannada",
+              "duration": 126
+            }
+          ]
+        },
+        {
+          "venue": "rajkumar",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "SRI JAGANNATHA DAASARU PART 2",
+              "director": "Dr. Madhusudhan Havaldar",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 144
+            },
+            {
+              "time": "15:00",
+              "film": "MAHAKAVI",
+              "director": "Baragur Ramachandrappa",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 121
+            },
+            {
+              "time": "18:00",
+              "film": "UMMATHAT - THE RHYTHM OF KODAVA",
+              "director": "Prakash Karappa Hottukathira",
+              "country": "India",
+              "year": 2025,
+              "language": "Kodava",
+              "duration": 49
+            }
+          ]
+        },
+        {
+          "venue": "banashankari",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "TALKING ABOUT TREES",
+              "director": "Suhaib Gasmelbari",
+              "country": "Sudan",
+              "year": 2019,
+              "language": "Arabic",
+              "duration": 90
+            },
+            {
+              "time": "15:00",
+              "film": "TO THE WEST, IN ZAPATA",
+              "director": "David Bim",
+              "country": "Cuba",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 75
+            },
+            {
+              "time": "18:00",
+              "film": "NOMAD SHADOW",
+              "director": "Eimi Imanishi",
+              "country": "United States",
+              "year": 2025,
+              "language": "Arabic",
+              "duration": 82
+            }
+          ]
+        },
+        {
+          "venue": "openair",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "19:00",
+              "film": "BANDHANA",
+              "director": "Rajendra Singh Babu",
+              "country": "India",
+              "year": 1984,
+              "language": "Kannada",
+              "duration": 153
+            }
+          ]
+        }
       ]
     },
     {
@@ -268,80 +1763,621 @@
       "dayNumber": 4,
       "label": "Day 4 - Sunday",
       "screenings": [
-        { "venue": "cinepolis", "screen": "1", "showings": [
-          { "time": "14:00", "film": "LA VIE EST BELLE", "director": "MWEZE NGANGURA, BENOIT LAMY", "country": "CONGO", "year": 1987, "language": "FRENCH", "duration": 85 },
-          { "time": "16:20", "film": "BAL POUSSIERE", "director": "HENRI DUPARC", "country": "IVORY COAST", "year": 1989, "language": "FRENCH", "duration": 93 },
-          { "time": "18:40", "film": "TO THE VICTORY!", "country": "UKRAINE", "year": 2025, "language": "UKRAINIAN", "duration": 105 }
-        ]},
-        { "venue": "cinepolis", "screen": "2", "showings": [
-          { "time": "11:50", "film": "THE LAST AMBASSADOR", "director": "NATALIE HALLA", "country": "AUSTRIA", "year": 2025, "language": "DARI", "duration": 73 },
-          { "time": "18:00", "film": "THE DEVIL SMOKES", "director": "ERNESTO MARTINEZ BUCIO", "country": "MEXICO", "year": 2025, "language": "SPANISH", "duration": 97 },
-          { "time": "20:00", "film": "WE BELIEVE YOU", "country": "INDIA", "year": 2025, "language": "HINDI", "duration": 90 }
-        ]},
-        { "venue": "cinepolis", "screen": "3", "showings": [
-          { "time": "10:20", "film": "LOVE ME TENDER", "director": "ANNA CAZENAVE CAMBET", "country": "FRANCE", "year": 2025, "language": "FRENCH", "duration": 134 },
-          { "time": "19:30", "film": "THE TABLET", "director": "ARAVIND SIVA", "country": "INDIA", "year": 2025, "language": "TAMIL", "duration": 78 }
-        ]},
-        { "venue": "cinepolis", "screen": "4", "showings": [
-          { "time": "14:30", "film": "BEACHCOMBER", "director": "ARISTOTELIS MARAGKOS", "country": "GREECE", "year": 2025, "language": "GREEK", "duration": 92 },
-          { "time": "16:50", "film": "SANDHYA RAAGA", "country": "INDIA", "year": 1965, "language": "KANNADA", "duration": 153 },
-          { "time": "19:20", "film": "KANGBO ALOI", "director": "KHANJAN KISHORE NATH", "country": "INDIA", "year": 2025, "language": "KARBI", "duration": 108 }
-        ]},
-        { "venue": "cinepolis", "screen": "5", "showings": [
-          { "time": "10:00", "film": "THE BLUE TRAIL", "director": "GABRIEL MASCARO", "country": "BRAZIL", "year": 2025, "language": "PORTUGUESE", "duration": 86 },
-          { "time": "14:20", "film": "YOUNG MOTHERS", "director": "JEAN-PIERRE DARDENNE, LUC DARDENNE", "country": "BELGIUM", "year": 2025, "language": "FRENCH", "duration": 0 },
-          { "time": "16:30", "film": "DIVINE COMEDY", "director": "ALI ASGARI", "country": "IRAN", "year": 2025, "language": "PERSIAN", "duration": 95 },
-          { "time": "19:00", "film": "THE THINGS YOU KILL", "director": "ALIREZA KHATAMI", "country": "TURKEY", "year": 2025, "language": "TURKISH", "duration": 113 }
-        ]},
-        { "venue": "cinepolis", "screen": "6", "showings": [
-          { "time": "09:40", "film": "MY UNCLE JENS", "country": "NORWAY", "year": 2025, "language": "NORWEGIAN", "duration": 98 },
-          { "time": "14:40", "film": "A SAD AND BEAUTIFUL WORLD", "director": "CYRIL ARIS", "country": "LEBANON", "year": 2025, "language": "ARABIC", "duration": 110 },
-          { "time": "17:50", "film": "MRIGATRISHNA", "director": "AJAY GURUNATHA", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 157 },
-          { "time": "20:10", "film": "RUBY CUBE", "director": "P SHESHADRI", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 105 }
-        ]},
-        { "venue": "cinepolis", "screen": "7", "showings": [
-          { "time": "10:10", "film": "THE FIN", "director": "SEYOUNG PARK", "country": "SOUTH KOREA", "year": 2025, "language": "KOREAN", "duration": 95 },
-          { "time": "14:00", "film": "MAYSOON", "director": "NANCY BINIADAKI", "country": "GERMANY", "year": 2025, "language": "GERMAN", "duration": 120 },
-          { "time": "17:15", "film": "JEEVANA CHAITRA", "director": "DORAI-BHAGAVAN", "country": "INDIA", "year": 1982, "language": "KANNADA", "duration": 157 },
-          { "time": "19:50", "film": "BLUE MOON", "director": "RICHARD LINKLATER", "country": "USA", "year": 2025, "language": "ENGLISH", "duration": 100 }
-        ]},
-        { "venue": "cinepolis", "screen": "8", "showings": [
-          { "time": "10:30", "film": "UNDER THE VOLCANO", "director": "DAMIAN KOCUR", "country": "POLAND", "year": 2024, "language": "UKRAINIAN", "duration": 105 },
-          { "time": "12:45", "film": "KONTINENTAL '25", "director": "RADU JUDE", "country": "ROMANIA", "year": 2025, "language": "ROMANIAN", "duration": 109 },
-          { "time": "15:15", "film": "A LIGHT THAT NEVER GOES OUT", "director": "LAL MATTIPARPPEN", "country": "NORWAY", "year": 2025, "language": "FINNISH", "duration": 108 },
-          { "time": "17:45", "film": "FRANZ", "director": "AGNIESZKA HOLLAND", "country": "POLAND", "year": 2025, "language": "CZECH", "duration": 127 }
-        ]},
-        { "venue": "cinepolis", "screen": "9", "showings": [
-          { "time": "12:50", "film": "INNOCENT SORCERERS", "director": "ANDRZEJ WAJDA", "country": "POLAND", "year": 1960, "language": "POLISH", "duration": 87 },
-          { "time": "17:40", "film": "THE MAIDS OF WILKO", "director": "ANDRZEJ WAJDA", "country": "POLAND", "year": 1978, "language": "POLISH", "duration": 118 },
-          { "time": "20:20", "film": "RUDAALI", "director": "KALPANA LAJMI", "country": "INDIA", "year": 1993, "language": "HINDI", "duration": 128 }
-        ]},
-        { "venue": "cinepolis", "screen": "10", "showings": [
-          { "time": "12:40", "film": "CAIRO STATION", "director": "YOUSSEF CHAHINE", "country": "EGYPT", "year": 1958, "language": "ARABIC", "duration": 77 },
-          { "time": "17:15", "film": "KANASEMBA KUDUREYANERI", "director": "GIRISH KASARAVALLI", "country": "INDIA", "year": 2010, "language": "KANNADA", "duration": 104 },
-          { "time": "19:40", "film": "PHOUOIBEE (THE GODDESS OF PADDY)", "director": "RAKESH MOIRANGTHEM", "country": "INDIA", "year": 2025, "language": "MANIPURI", "duration": 89 }
-        ]},
-        { "venue": "cinepolis", "screen": "11", "showings": [
-          { "time": "10:10", "film": "TALKING ABOUT TREES", "director": "SUHAIB GASMELBARI", "country": "SUDAN", "year": 2019, "language": "SUDANESE", "duration": 94 },
-          { "time": "14:30", "film": "MEMORIA", "director": "APICHATPONG WEERASETHAKUL", "country": "THAILAND", "year": 2021, "language": "SPANISH", "duration": 136 },
-          { "time": "19:30", "film": "KANAL", "director": "ANDRZEJ WAJDA", "country": "POLAND", "year": 1957, "language": "POLISH", "duration": 96 }
-        ]},
-        { "venue": "rajkumar", "screen": "1", "showings": [
-          { "time": "11:00", "film": "KANTARA A LEGEND CHAPTER-1", "director": "RISHAB SHETTY", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 169 },
-          { "time": "18:00", "film": "FIRE FLY", "director": "VAMSHI KRISHNA SM", "country": "INDIA", "year": 2025, "language": "KANNADA", "duration": 132 }
-        ]},
-        { "venue": "banashankari", "screen": "1", "showings": [
-          { "time": "11:00", "film": "LA CHAPELLE", "director": "JEAN-MICHEL TCHISSOUKOU", "country": "CONGO", "year": 1980, "language": "LINGALA", "duration": 80 },
-          { "time": "18:00", "film": "ELFRIEDE JELINEK: LANGUAGE UNLEASHED", "director": "CLAUDIA MULLER", "country": "AUSTRIA", "year": 2022, "language": "GERMAN", "duration": 96 }
-        ]},
-        { "venue": "openair", "screen": "1", "showings": [
-          { "time": "19:00", "film": "PREM", "country": "INDIA", "year": 0, "duration": 0 }
-        ]}
-      ],
-      "forum": [
-        { "time": "11:30", "title": "WHEN LIGHT BECOMES LANGUAGE", "type": "Conversation" },
-        { "time": "14:30", "title": "THE DOCUMENTARY DIALOGUE: EMPHASISING ENGAGEMENT WITH DOCUMENTARIES", "type": "Discussion" },
-        { "time": "17:30", "title": "CINEMA AS A WAY OF LISTENING - Masterclass with Bishwadeep Chatterjee", "type": "Masterclass" }
+        {
+          "venue": "cinepolis",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "09:40",
+              "film": "LA VIE EST BELLE",
+              "director": "Mweze Ngangura, Benoit Lamy",
+              "country": "Democratic Republic of the Congo",
+              "year": 1987,
+              "language": "French",
+              "duration": 85
+            },
+            {
+              "time": "11:40",
+              "film": "BAL POUSSIERE",
+              "director": "Henri Duparc",
+              "country": "Ivory Coast",
+              "year": 1989,
+              "language": "French",
+              "duration": 93
+            },
+            {
+              "time": "14:00",
+              "film": "TO THE VICTORY!",
+              "director": "Valentyn Vasyanovych",
+              "country": "Ukraine",
+              "year": 2025,
+              "language": "Ukrainian",
+              "duration": 105
+            },
+            {
+              "time": "16:20",
+              "film": "THE PUPIL",
+              "director": "Karin Junger",
+              "country": "Netherlands",
+              "year": 2025,
+              "language": "Dutch",
+              "duration": 105
+            },
+            {
+              "time": "18:40",
+              "film": "I ONLY REST IN THE STORM",
+              "director": "Pedro Pinho",
+              "country": "Portugal",
+              "year": 2025,
+              "language": "Portuguese",
+              "duration": 217
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "2",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "THE LAST AMBASSADOR",
+              "director": "Natalie Halla",
+              "country": "Austria",
+              "year": 2025,
+              "language": "Dari",
+              "duration": 79
+            },
+            {
+              "time": "11:50",
+              "film": "THE DEVIL SMOKES",
+              "director": "Ernesto Martínez Bucio",
+              "country": "Mexico",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 97
+            },
+            {
+              "time": "14:10",
+              "film": "DE TAL PALO",
+              "director": "Iván Dariel Ortiz",
+              "country": "Puerto Rico",
+              "year": 2025,
+              "language": "Spanish",
+              "duration": 96
+            },
+            {
+              "time": "16:10",
+              "film": "WE BELIEVE YOU",
+              "director": "Charlotte Devillers, Arnaud Dufeys",
+              "country": "Belgium",
+              "year": 2025,
+              "language": "French",
+              "duration": 78
+            },
+            {
+              "time": "18:00",
+              "film": "SONGS OF FORGOTTEN TREES",
+              "director": "Anuparna Roy",
+              "country": "India",
+              "year": 2025,
+              "language": "Hindi",
+              "duration": 80
+            },
+            {
+              "time": "20:00",
+              "film": "FORASTERA",
+              "director": "Luca Alenar Iglesias",
+              "country": "Spain",
+              "year": 2025,
+              "language": "Catalan",
+              "duration": 97
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "3",
+          "showings": [
+            {
+              "time": "10:20",
+              "film": "LOVE ME TENDER",
+              "director": "Anna Cazenave Cambet",
+              "country": "France",
+              "year": 2025,
+              "language": "French",
+              "duration": 134
+            },
+            {
+              "time": "13:10",
+              "film": "THE TABLET",
+              "director": "Aravind Siva",
+              "country": "India",
+              "year": 2025,
+              "language": "Tamil",
+              "duration": 79
+            },
+            {
+              "time": "15:00",
+              "film": "TWO SEASONS, TWO STRANGERS",
+              "director": "Sho Miyake",
+              "country": "Japan",
+              "year": 2025,
+              "language": "Japanese",
+              "duration": 89
+            },
+            {
+              "time": "17:00",
+              "film": "SECRET OF A MOUNTAIN SERPENT",
+              "director": "Nidhi Saxena",
+              "country": "India",
+              "year": 2025,
+              "language": "Hindi",
+              "duration": 108
+            },
+            {
+              "time": "19:30",
+              "film": "GOD WILL NOT HELP",
+              "director": "Hana Jušić",
+              "country": "Croatia",
+              "year": 2025,
+              "language": "Croatian",
+              "duration": 137
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "4",
+          "showings": [
+            {
+              "time": "09:30",
+              "film": "BEACHCOMBER",
+              "director": "Aristotelis Maragkos",
+              "country": "Greece",
+              "year": 2025,
+              "language": "Greek",
+              "duration": 92
+            },
+            {
+              "time": "11:30",
+              "film": "SANDHYA RAAGA",
+              "director": "A.C. Narasimha Murthy S.K. Bhagavan",
+              "country": "India",
+              "year": 1966,
+              "language": "Kannada",
+              "duration": 153
+            },
+            {
+              "time": "14:30",
+              "film": "KANGBO ALOI",
+              "director": "Khanjan Kishore Nath",
+              "country": "India",
+              "year": 2025,
+              "language": "Karbi",
+              "duration": 109
+            },
+            {
+              "time": "16:50",
+              "film": "SABAR BONDA",
+              "director": "Rohan Parashuram Kanawade",
+              "country": "India",
+              "year": 2025,
+              "language": "Marathi",
+              "duration": 117
+            },
+            {
+              "time": "19:20",
+              "film": "MAGELLAN",
+              "director": "Lav Diaz",
+              "country": "Portugal",
+              "year": 2025,
+              "language": "Portuguese",
+              "duration": 160
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "5",
+          "showings": [
+            {
+              "time": "10:00",
+              "film": "THE BLUE TRAIL",
+              "director": "Gabriel Mascaro",
+              "country": "Brazil",
+              "year": 2025,
+              "language": "Portuguese",
+              "duration": 86
+            },
+            {
+              "time": "12:00",
+              "film": "YOUNG MOTHERS",
+              "director": "Jean-Pierre Dardenne, Luc Dardenne",
+              "country": "France",
+              "year": 2025,
+              "language": "French",
+              "duration": 106
+            },
+            {
+              "time": "14:20",
+              "film": "DIVINE COMEDY",
+              "director": "Ali Asgari",
+              "country": "Iran",
+              "year": 2025,
+              "language": "Persian",
+              "duration": 96
+            },
+            {
+              "time": "16:30",
+              "film": "THE THINGS YOU KILL",
+              "director": "Alireza Khatami",
+              "country": "Turkey",
+              "year": 2025,
+              "language": "Turkish",
+              "duration": 113
+            },
+            {
+              "time": "19:00",
+              "film": "RESURRECTION",
+              "director": "Bi Gan",
+              "country": "China",
+              "year": 2025,
+              "language": "Mandarin",
+              "duration": 160
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "6",
+          "showings": [
+            {
+              "time": "09:40",
+              "film": "MY UNCLE JENS",
+              "director": "Brwa Vahabpour",
+              "country": "Norway",
+              "year": 2025,
+              "language": "Norwegian",
+              "duration": 98
+            },
+            {
+              "time": "11:50",
+              "film": "A SAD AND BEAUTIFUL WORLD",
+              "director": "Cyril Aris",
+              "country": "Lebanon",
+              "year": 2025,
+              "language": "Arabic",
+              "duration": 110
+            },
+            {
+              "time": "14:40",
+              "film": "MRIGATRISHNA",
+              "director": "Ajay Gurunatha",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 157
+            },
+            {
+              "time": "17:50",
+              "film": "RUBY CUBE",
+              "director": "P. Sheshadri",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 105
+            },
+            {
+              "time": "20:10",
+              "film": "TWO PROSECUTORS",
+              "director": "Sergei Loznitsa",
+              "country": "France",
+              "year": 2025,
+              "language": "Russian",
+              "duration": 117
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "7",
+          "showings": [
+            {
+              "time": "10:10",
+              "film": "THE FIN",
+              "director": "Syeyoung Park",
+              "country": "South Korea",
+              "year": 2025,
+              "language": "Korean",
+              "duration": 85
+            },
+            {
+              "time": "12:00",
+              "film": "MAYSOON",
+              "director": "Nancy Biniadaki",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 120
+            },
+            {
+              "time": "14:40",
+              "film": "JEEVANA CHAITRA",
+              "director": "Dorai-Bhagavan",
+              "country": "India",
+              "year": 1992,
+              "language": "Kannada",
+              "duration": 157
+            },
+            {
+              "time": "17:45",
+              "film": "BLUE MOON",
+              "director": "Richard Linklater",
+              "country": "United States",
+              "year": 2025,
+              "language": "English",
+              "duration": 100
+            },
+            {
+              "time": "19:50",
+              "film": "KY NAM INN",
+              "director": "Leon Le",
+              "country": "Vietnam",
+              "year": 2025,
+              "language": "Vietnamese",
+              "duration": 140
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "8",
+          "showings": [
+            {
+              "time": "10:30",
+              "film": "UNDER THE VOLCANO",
+              "director": "Damian Kocur",
+              "country": "Poland",
+              "year": 2024,
+              "language": "Ukrainian",
+              "duration": 105
+            },
+            {
+              "time": "12:45",
+              "film": "KONTINENTAL '25",
+              "director": "Radu Jude",
+              "country": "Romania",
+              "year": 2025,
+              "language": "Romanian",
+              "duration": 109
+            },
+            {
+              "time": "15:15",
+              "film": "A LIGHT THAT NEVER GOES OUT",
+              "director": "Lauri Matti Parppei",
+              "country": "Norway",
+              "year": 2025,
+              "language": "Finnish",
+              "duration": 108
+            },
+            {
+              "time": "17:45",
+              "film": "FRANZ",
+              "director": "Agnieszka Holland",
+              "country": "Poland",
+              "year": 2025,
+              "language": "Czech",
+              "duration": 127
+            },
+            {
+              "time": "20:15",
+              "film": "BLUE HERON",
+              "director": "Sophy Romvari",
+              "country": "Canada",
+              "year": 2025,
+              "language": "English",
+              "duration": 90
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "9",
+          "showings": [
+            {
+              "time": "12:50",
+              "film": "INNOCENT SORCERERS",
+              "director": "Andrzej Wajda",
+              "country": "Poland",
+              "year": 1960,
+              "language": "Polish",
+              "duration": 87
+            },
+            {
+              "time": "15:10",
+              "film": "THE MAIDS OF WILKO",
+              "director": "Andrzej Wajda",
+              "country": "Poland",
+              "year": 1979,
+              "language": "Polish",
+              "duration": 118
+            },
+            {
+              "time": "17:40",
+              "film": "RUDAALI",
+              "director": "Kalpana Lajmi",
+              "country": "India",
+              "year": 1993,
+              "language": "Hindi",
+              "duration": 128
+            },
+            {
+              "time": "20:20",
+              "film": "JANINE MOVES TO THE COUNTRY",
+              "director": "Jan Eilhardt",
+              "country": "Germany",
+              "year": 2025,
+              "language": "German",
+              "duration": 74
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "10",
+          "showings": [
+            {
+              "time": "12:40",
+              "film": "CAIRO STATION",
+              "director": "Youssef Chahine",
+              "country": "Egypt",
+              "year": 1958,
+              "language": "Egyptian Arabic",
+              "duration": 77
+            },
+            {
+              "time": "17:15",
+              "film": "KANASEMBA KUDUREYANERI",
+              "director": "Girish Kasaravalli",
+              "country": "India",
+              "year": 2010,
+              "language": "Kannada",
+              "duration": 104
+            },
+            {
+              "time": "19:40",
+              "film": "PHOUOIBEE (THE GODDESS OF PADDY)",
+              "director": "Rakesh Moirangthem",
+              "country": "India",
+              "year": 2025,
+              "language": "Manipuri",
+              "duration": 89
+            }
+          ]
+        },
+        {
+          "venue": "cinepolis",
+          "screen": "11",
+          "showings": [
+            {
+              "time": "10:10",
+              "film": "TALKING ABOUT TREES",
+              "director": "Suhaib Gasmelbari",
+              "country": "Sudan",
+              "year": 2019,
+              "language": "Arabic",
+              "duration": 90
+            },
+            {
+              "time": "14:30",
+              "film": "MEMORIA",
+              "director": "Apichatpong Weerasethakul",
+              "country": "Colombia/Thailand",
+              "year": 2021,
+              "language": "Spanish/English",
+              "duration": 136
+            },
+            {
+              "time": "17:20",
+              "film": "KANAL",
+              "director": "Andrzej Wajda",
+              "country": "Poland",
+              "year": 1957,
+              "language": "Polish",
+              "duration": 96
+            },
+            {
+              "time": "19:30",
+              "film": "MILITANTROPOS",
+              "director": "Yelizaveta Smith, Alina Gorlova, Simon Mozgovyi",
+              "country": "Ukraine",
+              "year": 2025,
+              "language": "Ukrainian",
+              "duration": 111
+            }
+          ]
+        },
+        {
+          "venue": "rajkumar",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "KANTARA: A LEGEND CHAPTER 1",
+              "director": "Rishab Shetty",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 169
+            },
+            {
+              "time": "15:00",
+              "film": "FIRE FLY",
+              "director": "Vamshi Krishna SM",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 132
+            },
+            {
+              "time": "18:00",
+              "film": "AGNYATHAVASI",
+              "director": "Janardhan Chikkanna",
+              "country": "India",
+              "year": 2025,
+              "language": "Kannada",
+              "duration": 122
+            }
+          ]
+        },
+        {
+          "venue": "banashankari",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "11:00",
+              "film": "LA CHAPELLE",
+              "director": "Jean-Michel Tchissoukou",
+              "country": "Congo",
+              "year": 1980,
+              "language": "Lingala",
+              "duration": 80
+            },
+            {
+              "time": "15:00",
+              "film": "ELFRIEDE JELINEK - LANGUAGE UNLEASHED",
+              "director": "Claudia Müller",
+              "country": "Austria",
+              "year": 2022,
+              "language": "German",
+              "duration": 96
+            },
+            {
+              "time": "18:00",
+              "film": "BETTER GO MAD IN THE WILD",
+              "director": "Miro Remo",
+              "country": "Czechia",
+              "year": 2025,
+              "language": "Czech",
+              "duration": 84
+            }
+          ]
+        },
+        {
+          "venue": "openair",
+          "screen": "1",
+          "showings": [
+            {
+              "time": "19:00",
+              "film": "PREMADA KANIKE",
+              "director": "V. Somashekhar",
+              "country": "India",
+              "year": 1976,
+              "language": "Kannada",
+              "duration": 151
+            }
+          ]
+        }
       ]
     }
   ]
