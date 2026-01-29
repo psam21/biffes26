@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import {
   CategoryCard,
   FilmDrawer,
@@ -475,25 +476,38 @@ export default function Home() {
                   </p>
                 </motion.div>
                 
-                {/* Watchlist Button */}
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  onClick={handleWatchlistClick}
-                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${
-                    watchlist.length > 0
-                      ? "bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
-                      : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
-                  }`}
-                >
-                  <WatchlistIcon filled={watchlist.length > 0} size={16} className={watchlist.length > 0 ? "text-amber-400" : "text-zinc-400"} />
-                  <span className={`text-xs hidden sm:inline ${watchlist.length > 0 ? "text-white" : "text-zinc-300"}`}>
-                    {watchlist.length > 0 ? "My Watchlist" : "Watchlist"}
-                  </span>
-                  <span className={`text-[10px] font-bold px-1 py-0.5 rounded-full ${watchlist.length > 0 ? "bg-amber-500 text-black" : "bg-zinc-600 text-zinc-300"}`}>
-                    {watchlist.length}
-                  </span>
-                </motion.button>
+                {/* Schedule & Watchlist Buttons */}
+                <div className="flex items-center gap-2">
+                  <Link href="/schedule">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30"
+                    >
+                      <span className="text-blue-400 text-sm">📅</span>
+                      <span className="text-xs text-white hidden sm:inline">Schedule</span>
+                    </motion.div>
+                  </Link>
+                  
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    onClick={handleWatchlistClick}
+                    className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${
+                      watchlist.length > 0
+                        ? "bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
+                        : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
+                    }`}
+                  >
+                    <WatchlistIcon filled={watchlist.length > 0} size={16} className={watchlist.length > 0 ? "text-amber-400" : "text-zinc-400"} />
+                    <span className={`text-xs hidden sm:inline ${watchlist.length > 0 ? "text-white" : "text-zinc-300"}`}>
+                      {watchlist.length > 0 ? "My Watchlist" : "Watchlist"}
+                    </span>
+                    <span className={`text-[10px] font-bold px-1 py-0.5 rounded-full ${watchlist.length > 0 ? "bg-amber-500 text-black" : "bg-zinc-600 text-zinc-300"}`}>
+                      {watchlist.length}
+                    </span>
+                  </motion.button>
+                </div>
               </div>
             </header>
 
