@@ -76,7 +76,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   const [selectedDay, setSelectedDay] = useState(0);
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"compact" | "cards">("compact");
+  const [viewMode, setViewMode] = useState<"compact" | "cards">("cards");
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -350,49 +350,66 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                     </div>
                     
                     {/* Compact List by Time */}
-                    <div className="divide-y divide-white/5">
+                    <div className="divide-y divide-white/10">
                       {Object.entries(showingsByTime).map(([time, showings]) => (
-                        <div key={time} className="flex">
+                        <div key={time} className="flex flex-col sm:flex-row">
                           {/* Time Column */}
-                          <div className="w-16 flex-shrink-0 py-2 px-3 bg-black/20 border-r border-white/10">
-                            <span className="font-mono font-bold text-yellow-400 text-sm">{time}</span>
+                          <div className="w-full sm:w-20 flex-shrink-0 py-3 px-4 bg-black/30 sm:border-r border-b sm:border-b-0 border-white/10">
+                            <span className="font-mono font-bold text-yellow-400 text-base">{time}</span>
                           </div>
-                          {/* Films at this time */}
-                          <div className="flex-1 py-2 px-3 flex flex-wrap gap-x-6 gap-y-1">
+                          {/* Films at this time - now as mini cards */}
+                          <div className="flex-1 p-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                             {showings.map((showing, idx) => {
                               const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
                               const filmData = filmsByTitle.get(showing.film.toUpperCase());
                               return (
                                 <div 
                                   key={idx}
-                                  className={`flex items-baseline gap-2 ${hasFilmData ? "cursor-pointer hover:text-yellow-400" : ""}`}
+                                  className={`${colors.bg} ${colors.border} border rounded-lg p-3 ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : ""}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
                                   role={hasFilmData ? "button" : undefined}
                                   tabIndex={hasFilmData ? 0 : undefined}
                                   onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
-                                  <span className={`text-xs ${colors.text} font-medium`}>
-                                    {venueKey === "openair" ? "" : `Scr ${showing.screen}`}
-                                  </span>
-                                  <span className="font-medium text-white text-sm">
-                                    {showing.film}
-                                  </span>
-                                  {filmData && (filmData.imdbRating || filmData.rottenTomatoes || filmData.letterboxdRating) && (
-                                    <span className="flex gap-1">
-                                      {filmData.imdbRating && <span className="text-[9px] bg-yellow-500/80 text-black px-1 rounded font-bold">IMDb {filmData.imdbRating}</span>}
-                                      {filmData.rottenTomatoes && <span className="text-[9px] bg-red-500/80 text-white px-1 rounded">🍅 {filmData.rottenTomatoes}</span>}
-                                      {filmData.letterboxdRating && <span className="text-[9px] bg-green-500/80 text-black px-1 rounded font-bold">LB {filmData.letterboxdRating}</span>}
+                                  {/* Screen badge */}
+                                  {venueKey !== "openair" && (
+                                    <span className={`text-[10px] ${colors.text} font-bold uppercase tracking-wide`}>
+                                      Screen {showing.screen}
                                     </span>
                                   )}
-                                  <span className="text-xs text-white/40">
-                                    {showing.country} | {showing.language} | {showing.duration}&apos;
-                                  </span>
+                                  {/* Film title */}
+                                  <h4 className="font-semibold text-white text-sm mt-1 leading-tight">
+                                    {showing.film}
+                                  </h4>
+                                  {/* Director */}
+                                  {showing.director && (
+                                    <p className="text-xs text-white/60 mt-1 truncate">
+                                      Dir: {showing.director}
+                                    </p>
+                                  )}
+                                  {/* Ratings */}
+                                  {filmData && (filmData.imdbRating || filmData.rottenTomatoes || filmData.letterboxdRating) && (
+                                    <div className="flex flex-wrap gap-1 mt-2">
+                                      {filmData.imdbRating && <span className="text-[9px] bg-yellow-500/80 text-black px-1.5 py-0.5 rounded font-bold">IMDb {filmData.imdbRating}</span>}
+                                      {filmData.rottenTomatoes && <span className="text-[9px] bg-red-500/80 text-white px-1.5 py-0.5 rounded">🍅 {filmData.rottenTomatoes}</span>}
+                                      {filmData.letterboxdRating && <span className="text-[9px] bg-green-500/80 text-black px-1.5 py-0.5 rounded font-bold">LB {filmData.letterboxdRating}</span>}
+                                    </div>
+                                  )}
+                                  {/* Meta info */}
+                                  <div className="flex flex-wrap gap-x-2 mt-2 text-[10px] text-white/50">
+                                    <span>{showing.country}</span>
+                                    <span>•</span>
+                                    <span>{showing.language}</span>
+                                    <span>•</span>
+                                    <span>{showing.duration}&apos;</span>
+                                  </div>
                                 </div>
                               );
                             })}
                           </div>
                         </div>
                       ))}
+                    </div>
                     </div>
                   </div>
                 );
