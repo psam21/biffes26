@@ -6,13 +6,13 @@ import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";
 
 interface CategoryCardProps {
   category: Category;
-  onClick: () => void;
+  onClick?: () => void;
   index: number;
 }
 
 export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
+    if ((e.key === "Enter" || e.key === " ") && onClick) {
       e.preventDefault();
       onClick();
     }

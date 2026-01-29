@@ -1,9 +1,9 @@
 // Server Component - data is loaded at build time / server-side
 import festivalData from "@/data/biffes_data.json";
+import scheduleData from "@/data/schedule_data.json";
 import { Category, Film } from "@/types";
-import HomeClient from "./HomeClient";
+import WatchlistClient from "./WatchlistClient";
 
-// Type the imported JSON data to match actual structure
 const typedData = {
   festival: festivalData.festival as {
     name: string;
@@ -19,8 +19,6 @@ const typedData = {
   films: festivalData.films as Film[],
 };
 
-export default function Home() {
-  // Data is fetched server-side and passed to client component
-  // This avoids shipping 268KB of JSON in the JS bundle
-  return <HomeClient data={typedData} />;
+export default function WatchlistPage() {
+  return <WatchlistClient films={typedData.films} scheduleData={scheduleData} />;
 }
