@@ -67,7 +67,7 @@ function AwardWinnersSectionComponent({
                   {/* Rating badges */}
                   <RatingBadges film={film} size="xs" className="absolute top-1 left-1" />
                 </div>
-                <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
+                <p className="mt-1.5 text-xs text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
                   {film.title}
                 </p>
               </button>

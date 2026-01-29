@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://biffes26.vercel.app"),
   title: "17th BIFFes 2026 | Bengaluru International Film Festival",
   description:
     "Explore films from the 17th Bengaluru International Film Festival - Asian Cinema, Indian Cinema, Kannada Cinema, World Cinema and more.",

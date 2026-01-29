@@ -28,10 +28,10 @@ function getColumnCount(width: number): number {
   return 2;
 }
 
-// Card dimensions (aspect-[2/3] poster + ~80px info section)
+// Card dimensions (aspect-[2/3] poster + ~100px info section)
 const GAP = 16; // gap-4 = 1rem = 16px
 const CARD_ASPECT_RATIO = 2 / 3;
-const INFO_HEIGHT = 80;
+const INFO_HEIGHT = 100;
 
 export function VirtualizedFilmGrid({ 
   films, 
@@ -100,11 +100,11 @@ export function VirtualizedFilmGrid({
                 top: 0,
                 left: 0,
                 width: '100%',
-                height: `${virtualRow.size}px`,
+                minHeight: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start}px)`,
               }}
             >
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 h-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {rowFilms.map((film, colIndex) => {
                   const filmIndex = startIndex + colIndex;
                   return (
