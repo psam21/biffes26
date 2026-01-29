@@ -129,7 +129,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
           <div className="text-center">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
               <span>✨</span>
-              Today&apos;s Best Films
+              Best Films
             </h1>
             <p className="text-xs sm:text-sm text-amber-200/70 mt-1">
               Optimized schedule based on ratings
