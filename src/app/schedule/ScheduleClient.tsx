@@ -309,21 +309,31 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="space-y-6"
+              className="space-y-4"
             >
               {Object.entries(screeningsByVenue).map(([venueKey, screens]) => {
-                // Collect all unique times for this venue
-                const allTimes = new Set<string>();
-                screens.forEach(s => s.showings.forEach(sh => allTimes.add(sh.time)));
-                const sortedTimes = Array.from(allTimes).sort();
-                
                 // Get venue colors
                 const colors = venueColors[venueKey] || { bg: "bg-gray-500/10", border: "border-gray-500/30", text: "text-gray-400" };
+                
+                // Flatten all showings with screen info and sort by time
+                const allShowings = screens.flatMap(screen => 
+                  screen.showings.map(showing => ({
+                    ...showing,
+                    screen: screen.screen,
+                  }))
+                ).sort((a, b) => a.time.localeCompare(b.time));
+                
+                // Group by time slot
+                const showingsByTime = allShowings.reduce((acc, showing) => {
+                  if (!acc[showing.time]) acc[showing.time] = [];
+                  acc[showing.time].push(showing);
+                  return acc;
+                }, {} as Record<string, typeof allShowings>);
                 
                 return (
                   <div key={venueKey} className="rounded-xl overflow-hidden border border-white/10">
                     {/* Venue Header */}
-                    <div className={`px-4 py-3 ${colors.bg} border-b ${colors.border} flex items-center justify-between`}>
+                    <div className={`px-4 py-2 ${colors.bg} border-b ${colors.border} flex items-center justify-between`}>
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{venueIcons[venueKey]}</span>
                         <span className={`font-bold ${colors.text}`}>
@@ -335,71 +345,50 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                       </span>
                     </div>
                     
-                    {/* Schedule Grid */}
-                    <div className="overflow-x-auto">
-                      <table className="w-full border-collapse text-xs">
-                        <thead>
-                          <tr className="bg-black/40">
-                            <th className={`text-left py-2 px-3 font-bold ${colors.text} sticky left-0 bg-gray-900 z-10 min-w-[80px] border-r border-white/10`}>
-                              SCREEN
-                            </th>
-                            {sortedTimes.map(time => (
-                              <th key={time} className="text-center py-2 px-2 font-mono text-yellow-400 min-w-[140px] border-l border-white/5">
-                                {time}
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {screens.map((screen, screenIdx) => (
-                            <tr key={`${venueKey}-${screen.screen}`} className={screenIdx % 2 === 0 ? "bg-white/[0.02]" : ""}>
-                              <td className={`py-1.5 px-3 font-bold ${colors.text} sticky left-0 bg-gray-900 z-10 border-r border-white/10`}>
-                                {venueKey === "openair" ? "Open Air" : screen.screen}
-                              </td>
-                              {sortedTimes.map(time => {
-                                const showing = getShowingAtTime(screen, time);
-                                
-                                if (showing) {
-                                  const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
-                                  const filmData = filmsByTitle.get(showing.film.toUpperCase());
-                                  return (
-                                    <td key={time} className="p-1 border-l border-white/5 align-top">
-                                      <div 
-                                        className={`p-2 rounded ${colors.bg} ${colors.border} border hover:bg-white/10 transition-colors ${hasFilmData ? "cursor-pointer" : ""}`}
-                                        onClick={() => hasFilmData && handleFilmClick(showing.film)}
-                                        role={hasFilmData ? "button" : undefined}
-                                        tabIndex={hasFilmData ? 0 : undefined}
-                                        onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
-                                      >
-                                        <div className={`font-bold text-white leading-tight ${hasFilmData ? "hover:text-yellow-400" : ""}`}>
-                                          {showing.film.length > 25 ? showing.film.slice(0, 25) + "…" : showing.film}
-                                        </div>
-                                        {showing.director && (
-                                          <div className="text-[10px] text-white/60 mt-0.5">
-                                            Dir: {showing.director.length > 20 ? showing.director.slice(0, 20) + "…" : showing.director}
-                                          </div>
-                                        )}
-                                        {filmData && <RatingBadges film={filmData} size="xs" className="mt-1" />}
-                                        <div className="flex gap-1 mt-1 text-[9px] text-white/40 flex-wrap">
-                                          {showing.country && <span>{showing.country}</span>}
-                                          {showing.year > 0 && <span>| {showing.year}</span>}
-                                          {showing.language && <span>| {showing.language}</span>}
-                                          {showing.duration > 0 && <span>| {showing.duration}&apos;</span>}
-                                        </div>
-                                      </div>
-                                    </td>
-                                  );
-                                }
-                                return (
-                                  <td key={time} className="p-1 border-l border-white/5">
-                                    <div className="h-full min-h-[60px]"></div>
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    {/* Compact List by Time */}
+                    <div className="divide-y divide-white/5">
+                      {Object.entries(showingsByTime).map(([time, showings]) => (
+                        <div key={time} className="flex">
+                          {/* Time Column */}
+                          <div className="w-16 flex-shrink-0 py-2 px-3 bg-black/20 border-r border-white/10">
+                            <span className="font-mono font-bold text-yellow-400 text-sm">{time}</span>
+                          </div>
+                          {/* Films at this time */}
+                          <div className="flex-1 py-2 px-3 flex flex-wrap gap-x-6 gap-y-1">
+                            {showings.map((showing, idx) => {
+                              const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
+                              const filmData = filmsByTitle.get(showing.film.toUpperCase());
+                              return (
+                                <div 
+                                  key={idx}
+                                  className={`flex items-baseline gap-2 ${hasFilmData ? "cursor-pointer hover:text-yellow-400" : ""}`}
+                                  onClick={() => hasFilmData && handleFilmClick(showing.film)}
+                                  role={hasFilmData ? "button" : undefined}
+                                  tabIndex={hasFilmData ? 0 : undefined}
+                                  onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
+                                >
+                                  <span className={`text-xs ${colors.text} font-medium`}>
+                                    {venueKey === "openair" ? "" : `Scr ${showing.screen}`}
+                                  </span>
+                                  <span className="font-medium text-white text-sm">
+                                    {showing.film}
+                                  </span>
+                                  {filmData && (filmData.imdbRating || filmData.rottenTomatoes || filmData.letterboxdRating) && (
+                                    <span className="flex gap-1">
+                                      {filmData.imdbRating && <span className="text-[9px] bg-yellow-500/80 text-black px-1 rounded font-bold">IMDb {filmData.imdbRating}</span>}
+                                      {filmData.rottenTomatoes && <span className="text-[9px] bg-red-500/80 text-white px-1 rounded">🍅 {filmData.rottenTomatoes}</span>}
+                                      {filmData.letterboxdRating && <span className="text-[9px] bg-green-500/80 text-black px-1 rounded font-bold">LB {filmData.letterboxdRating}</span>}
+                                    </span>
+                                  )}
+                                  <span className="text-xs text-white/40">
+                                    {showing.country} | {showing.language} | {showing.duration}&apos;
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 );
