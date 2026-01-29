@@ -88,7 +88,7 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
                 <span className="text-[10px] font-semibold text-white">{film.rottenTomatoes}</span>
               </div>
             )}
-            {film.letterboxdRating && !film.imdbRating && (
+            {film.letterboxdRating && (
               <div className="flex items-center gap-1 bg-orange-500/90 backdrop-blur-sm rounded px-1.5 py-0.5">
                 <span className="text-[10px] font-bold text-white">LB</span>
                 <span className="text-[10px] font-semibold text-white">{film.letterboxdRating}</span>
