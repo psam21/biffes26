@@ -1,6 +1,7 @@
 "use client";
 
-import { useWatchlist } from "@/lib/watchlist-context";
+import { memo, useCallback } from "react";
+import { useWatchlistItem } from "@/lib/watchlist-context";
 import { WatchlistIcon } from "./WatchlistIcon";
 import { cn } from "@/lib/utils";
 
@@ -10,15 +11,14 @@ interface WatchlistButtonProps {
   className?: string;
 }
 
-export function WatchlistButton({ filmId, variant = "icon", className }: WatchlistButtonProps) {
-  const { isInWatchlist, toggleWatchlist, isLoading } = useWatchlist();
-  
-  const inWatchlist = isInWatchlist(filmId);
+function WatchlistButtonComponent({ filmId, variant = "icon", className }: WatchlistButtonProps) {
+  // Use optimized hook that only triggers re-render when THIS film's status changes
+  const { inWatchlist, toggle, isLoading } = useWatchlistItem(filmId);
 
-  const handleClick = async (e: React.MouseEvent) => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent triggering parent click handlers
-    await toggleWatchlist(filmId);
-  };
+    toggle();
+  }, [toggle]);
 
   if (isLoading) {
     return (
@@ -68,3 +68,6 @@ export function WatchlistButton({ filmId, variant = "icon", className }: Watchli
     </button>
   );
 }
+
+// Memoize component - re-renders only when filmId or variant changes
+export const WatchlistButton = memo(WatchlistButtonComponent);

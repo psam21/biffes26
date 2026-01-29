@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef, ReactNode } from "react";
 
 interface WatchlistContextType {
   watchlist: string[];
@@ -315,4 +315,25 @@ export function useWatchlist() {
     throw new Error("useWatchlist must be used within a WatchlistProvider");
   }
   return context;
+}
+
+/**
+ * Optimized hook for WatchlistButton - only re-renders when this specific film's
+ * watchlist status changes, not when ANY film is added/removed.
+ */
+export function useWatchlistItem(filmId: string) {
+  const context = useContext(WatchlistContext);
+  if (!context) {
+    throw new Error("useWatchlistItem must be used within a WatchlistProvider");
+  }
+  
+  const { watchlist, toggleWatchlist, isLoading } = context;
+  
+  // Memoize the inWatchlist value for this specific film
+  const inWatchlist = useMemo(() => watchlist.includes(filmId), [watchlist, filmId]);
+  
+  // Memoize the toggle function for this film
+  const toggle = useCallback(() => toggleWatchlist(filmId), [toggleWatchlist, filmId]);
+  
+  return { inWatchlist, toggle, isLoading };
 }
