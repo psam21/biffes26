@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Film } from "lucide-react";
 import { Category } from "@/types";
 import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";
@@ -20,23 +19,26 @@ export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.03 }}
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.98 }}
+    <div
       onClick={onClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
       aria-label={`View ${category.name} - ${category.filmCount} films`}
+      style={{
+        animationDelay: `${Math.min(index * 30, 300)}ms`,
+      }}
       className={cn(
         "relative cursor-pointer rounded-lg p-3 border overflow-hidden",
         "bg-gradient-to-br",
         getCategoryGradient(category.color),
         getCategoryBorderColor(category.color),
-        "hover:shadow-lg hover:shadow-black/30 transition-shadow duration-200",
+        // CSS animation for entrance
+        "animate-fade-in-up opacity-0",
+        // CSS transitions for hover/active
+        "transition-all duration-200 ease-out",
+        "hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30",
+        "active:scale-[0.98]",
         "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
       )}
     >
@@ -62,6 +64,6 @@ export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
           background: "radial-gradient(circle, white 0%, transparent 70%)",
         }}
       />
-    </motion.div>
+    </div>
   );
 }

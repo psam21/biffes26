@@ -1,7 +1,6 @@
 "use client";
 
 import { memo, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
@@ -12,13 +11,6 @@ interface FilmCardProps {
   onClick: () => void;
   index: number;
 }
-
-// Extract animation variants outside component to prevent recreation
-const cardVariants = {
-  initial: { opacity: 0, scale: 0.95 },
-  animate: { opacity: 1, scale: 1 },
-  hover: { y: -6 }
-};
 
 function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
   // Use ref instead of state to track error without re-render
@@ -40,24 +32,26 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
   };
 
   // Limit stagger delay to prevent excessive animation times
-  const staggerDelay = Math.min(index * 0.02, 0.5);
+  const staggerDelay = Math.min(index * 20, 500);
 
   return (
-    <motion.div
-      variants={cardVariants}
-      initial="initial"
-      animate="animate"
-      whileHover="hover"
-      transition={{ duration: 0.2, delay: staggerDelay }}
+    <div
       onClick={onClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
       aria-label={`${film.title} by ${film.director || 'Unknown'} - ${film.country}, ${film.year}`}
+      style={{
+        animationDelay: `${staggerDelay}ms`,
+      }}
       className={cn(
         "film-card cursor-pointer rounded-lg overflow-hidden group",
         "bg-zinc-900 border border-zinc-800",
-        "hover:border-zinc-600 transition-colors duration-200",
+        // CSS animation for entrance
+        "animate-fade-in-scale opacity-0",
+        // CSS transitions for hover
+        "transition-all duration-200 ease-out",
+        "hover:-translate-y-1.5 hover:border-zinc-600",
         "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
       )}
     >
@@ -137,7 +131,7 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
           <span>{film.year}</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
