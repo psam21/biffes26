@@ -1,19 +1,28 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   CategoryCard,
-  FilmDrawer,
   CategoryView,
   WatchlistIcon,
-  ShareWatchlist,
   VirtualizedFilmGrid,
 } from "@/components";
 import { Category, Film } from "@/types";
 import { useWatchlist } from "@/lib/watchlist-context";
+
+// Lazy load heavy modal components - only loaded when needed
+const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
+  ssr: false,
+  loading: () => null,
+});
+const ShareWatchlist = dynamic(() => import("@/components/ShareWatchlist").then(m => ({ default: m.ShareWatchlist })), {
+  ssr: false,
+  loading: () => <div className="w-8 h-8 bg-zinc-700 rounded-lg animate-pulse" />,
+});
 
 // Types for the data passed from server
 interface FestivalData {

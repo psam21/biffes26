@@ -3,8 +3,14 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { FilmDrawer } from "@/components/FilmDrawer";
+import dynamic from "next/dynamic";
 import { Film } from "@/types";
+
+// Lazy load FilmDrawer - only loaded when user clicks a film
+const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
+  ssr: false,
+  loading: () => null,
+});
 
 interface Showing {
   time: string;
