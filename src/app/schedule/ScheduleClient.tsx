@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Film } from "@/types";
 import { RatingBadges } from "@/components/RatingBadges";
+import { WatchlistButton } from "@/components/WatchlistButton";
 
 // Lazy load FilmDrawer - only loaded when user clicks a film
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
@@ -365,12 +366,21 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               return (
                                 <div 
                                   key={idx}
-                                  className={`${colors.bg} ${colors.border} border rounded-lg p-3 ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : ""}`}
+                                  className={`${colors.bg} ${colors.border} border rounded-lg p-3 relative group ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : ""}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
                                   role={hasFilmData ? "button" : undefined}
                                   tabIndex={hasFilmData ? 0 : undefined}
                                   onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
+                                  {/* Watchlist button */}
+                                  {filmData && (
+                                    <div 
+                                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <WatchlistButton filmId={filmData.id} />
+                                    </div>
+                                  )}
                                   {/* Screen badge */}
                                   {venueKey !== "openair" && (
                                     <span className={`text-[10px] ${colors.text} font-bold uppercase tracking-wide`}>
@@ -458,7 +468,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               return (
                                 <div
                                   key={idx}
-                                  className={`p-3 transition-colors ${
+                                  className={`p-3 transition-colors relative group ${
                                     showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
                                   } ${hasFilmData ? "hover:bg-white/10 cursor-pointer" : "hover:bg-white/5"}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
@@ -466,6 +476,15 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                   tabIndex={hasFilmData ? 0 : undefined}
                                   onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
+                                  {/* Watchlist button */}
+                                  {filmData && (
+                                    <div 
+                                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <WatchlistButton filmId={filmData.id} />
+                                    </div>
+                                  )}
                                   <div className="flex items-start gap-3">
                                     <div className="text-sm font-mono font-bold text-yellow-400 w-14 flex-shrink-0">
                                       {showing.time}
