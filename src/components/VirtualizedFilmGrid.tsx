@@ -56,7 +56,7 @@ export function VirtualizedFilmGrid({
   
   // Estimate row height based on container width
   const estimateRowHeight = useCallback(() => {
-    if (!parentRef.current) return 300;
+    if (!parentRef.current) return 400;
     const containerW = parentRef.current.offsetWidth;
     containerWidth.current = containerW;
     const cardWidth = (containerW - (columns - 1) * GAP) / columns;
@@ -73,6 +73,23 @@ export function VirtualizedFilmGrid({
 
   if (films.length === 0 && emptyState) {
     return <>{emptyState}</>;
+  }
+
+  // For small film counts, use simple grid without virtualization
+  // Virtualization causes layout issues with absolute positioning
+  if (films.length <= 30) {
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {films.map((film, index) => (
+          <FilmCard
+            key={film.id}
+            film={film}
+            onClick={() => onFilmClick(film, films, index)}
+            index={index}
+          />
+        ))}
+      </div>
+    );
   }
 
   return (
