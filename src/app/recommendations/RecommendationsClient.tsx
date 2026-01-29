@@ -133,7 +133,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
               Today&apos;s Best Films
             </h1>
             <p className="text-sm text-amber-200/70 mt-2">
-              Optimized schedule based on ratings • 5-min breaks between films
+              Optimized schedule based on ratings
             </p>
           </div>
 

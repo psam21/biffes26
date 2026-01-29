@@ -119,11 +119,11 @@ function minutesToTime(minutes: number): string {
   return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
 }
 
-// Check if two showings conflict (with travel buffer)
+// Check if two showings conflict (no buffer needed)
 function hasConflict(
   showing1: RecommendedShowing,
   showing2: RecommendedShowing,
-  bufferMinutes: number = 5
+  bufferMinutes: number = 0
 ): boolean {
   const start1 = timeToMinutes(showing1.time);
   const end1 = timeToMinutes(showing1.endTime) + bufferMinutes;
