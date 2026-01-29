@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, memo } from "react";
+import { memo, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Film } from "@/types";
@@ -21,15 +21,16 @@ const cardVariants = {
 };
 
 function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
-  const [imgSrc, setImgSrc] = useState(film.posterUrl);
-  const [hasError, setHasError] = useState(false);
+  // Use ref instead of state to track error without re-render
+  const hasTriedFallback = useRef(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  const handleImageError = () => {
-    if (!hasError && film.posterUrlRemote) {
-      setImgSrc(film.posterUrlRemote);
-      setHasError(true);
+  const handleImageError = useCallback(() => {
+    if (!hasTriedFallback.current && film.posterUrlRemote && imgRef.current) {
+      hasTriedFallback.current = true;
+      imgRef.current.src = film.posterUrlRemote;
     }
-  };
+  }, [film.posterUrlRemote]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -62,9 +63,10 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
     >
       {/* Poster */}
       <div className="relative aspect-[2/3] bg-zinc-800">
-        {imgSrc ? (
+        {film.posterUrl ? (
           <Image
-            src={imgSrc}
+            ref={imgRef}
+            src={film.posterUrl}
             alt={film.title}
             fill
             className="object-cover"
