@@ -75,7 +75,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   const [selectedDay, setSelectedDay] = useState(0);
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"table" | "list">("table");
+  const [viewMode, setViewMode] = useState<"compact" | "cards">("compact");
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -189,21 +189,21 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
             </h1>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setViewMode("table")}
-                className={`p-2 rounded-lg transition-colors ${viewMode === "table" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
-                title="Table View"
+                onClick={() => setViewMode("compact")}
+                className={`p-2 rounded-lg transition-colors ${viewMode === "compact" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
+                title="Compact View"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               </button>
               <button
-                onClick={() => setViewMode("list")}
-                className={`p-2 rounded-lg transition-colors ${viewMode === "list" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
-                title="List View"
+                onClick={() => setViewMode("cards")}
+                className={`p-2 rounded-lg transition-colors ${viewMode === "cards" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
+                title="Cards View"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
               </button>
             </div>
@@ -302,93 +302,94 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
         )}
 
         <AnimatePresence mode="wait">
-          {viewMode === "table" ? (
+          {viewMode === "compact" ? (
             <motion.div
-              key="table-view"
+              key="compact-view"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="space-y-8"
+              className="space-y-6"
             >
               {Object.entries(screeningsByVenue).map(([venueKey, screens]) => {
-                const venueTimes = new Set<string>();
-                screens.forEach(s => s.showings.forEach(sh => venueTimes.add(sh.time)));
-                const sortedTimes = Array.from(venueTimes).sort();
+                // Collect all unique times for this venue
+                const allTimes = new Set<string>();
+                screens.forEach(s => s.showings.forEach(sh => allTimes.add(sh.time)));
+                const sortedTimes = Array.from(allTimes).sort();
+                
+                // Get venue colors
+                const colors = venueColors[venueKey] || { bg: "bg-gray-500/10", border: "border-gray-500/30", text: "text-gray-400" };
                 
                 return (
-                  <div key={venueKey} className="space-y-4">
-                    <h2 className="text-lg font-semibold flex items-center gap-2 sticky top-[180px] bg-gray-900/95 py-2 z-30">
-                      <span>{venueIcons[venueKey]}</span>
-                      {venues[venueKey as keyof typeof venues]?.name || venueKey}
-                      <span className="text-xs text-white/40 font-normal">
-                        ({venues[venueKey as keyof typeof venues]?.location || ""})
+                  <div key={venueKey} className="rounded-xl overflow-hidden border border-white/10">
+                    {/* Venue Header */}
+                    <div className={`px-4 py-3 ${colors.bg} border-b ${colors.border} flex items-center justify-between`}>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{venueIcons[venueKey]}</span>
+                        <span className={`font-bold ${colors.text}`}>
+                          {venues[venueKey as keyof typeof venues]?.name || venueKey}
+                        </span>
+                      </div>
+                      <span className="text-xs text-white/50">
+                        {venues[venueKey as keyof typeof venues]?.location || ""}
                       </span>
-                    </h2>
+                    </div>
                     
-                    <div className="overflow-x-auto -mx-4 px-4 pb-4">
-                      <table className="w-full border-collapse min-w-[800px]">
+                    {/* Schedule Grid */}
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse text-xs">
                         <thead>
-                          <tr className="border-b border-white/10">
-                            <th className={`text-left py-2 px-3 text-sm font-semibold ${venueColors[venueKey]?.text || "text-white"} bg-gray-800/80 sticky left-0 z-10 min-w-[100px]`}>
-                              Screen
+                          <tr className="bg-black/40">
+                            <th className={`text-left py-2 px-3 font-bold ${colors.text} sticky left-0 bg-gray-900 z-10 min-w-[80px] border-r border-white/10`}>
+                              SCREEN
                             </th>
                             {sortedTimes.map(time => (
-                              <th key={time} className="text-center py-2 px-2 text-xs font-mono text-yellow-400/80 bg-gray-800/80 min-w-[150px]">
+                              <th key={time} className="text-center py-2 px-2 font-mono text-yellow-400 min-w-[140px] border-l border-white/5">
                                 {time}
                               </th>
                             ))}
                           </tr>
                         </thead>
                         <tbody>
-                          {screens.map((screen) => (
-                            <tr key={`${venueKey}-${screen.screen}`} className="border-b border-white/5">
-                              <td className={`py-2 px-3 font-semibold ${venueColors[venueKey]?.text || "text-white"} ${venueColors[venueKey]?.bg || ""} sticky left-0 z-10 bg-gray-900`}>
-                                {venueKey === "openair" ? "Open Air" : `Screen ${screen.screen}`}
+                          {screens.map((screen, screenIdx) => (
+                            <tr key={`${venueKey}-${screen.screen}`} className={screenIdx % 2 === 0 ? "bg-white/[0.02]" : ""}>
+                              <td className={`py-1.5 px-3 font-bold ${colors.text} sticky left-0 bg-gray-900 z-10 border-r border-white/10`}>
+                                {venueKey === "openair" ? "Open Air" : screen.screen}
                               </td>
                               {sortedTimes.map(time => {
                                 const showing = getShowingAtTime(screen, time);
-                                const occupied = isTimeOccupied(screen, time);
                                 
                                 if (showing) {
                                   const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
                                   return (
-                                    <td key={time} className="py-2 px-2 align-top">
+                                    <td key={time} className="p-1 border-l border-white/5 align-top">
                                       <div 
-                                        className={`${venueColors[venueKey]?.bg || "bg-white/5"} ${venueColors[venueKey]?.border || "border-white/10"} border rounded-lg p-2 transition-colors ${hasFilmData ? "hover:bg-white/20 cursor-pointer hover:scale-[1.02] transform" : "cursor-default hover:bg-white/10"}`}
+                                        className={`p-2 rounded ${colors.bg} ${colors.border} border hover:bg-white/10 transition-colors ${hasFilmData ? "cursor-pointer" : ""}`}
                                         onClick={() => hasFilmData && handleFilmClick(showing.film)}
                                         role={hasFilmData ? "button" : undefined}
                                         tabIndex={hasFilmData ? 0 : undefined}
                                         onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
                                       >
-                                        <div className={`font-medium text-white text-xs leading-tight mb-1 ${hasFilmData ? "hover:text-yellow-400" : ""}`} title={showing.film}>
-                                          {showing.film.length > 28 ? showing.film.slice(0, 28) + "…" : showing.film}
-                                          {hasFilmData && <span className="ml-1 text-yellow-400/60">↗</span>}
+                                        <div className={`font-bold text-white leading-tight ${hasFilmData ? "hover:text-yellow-400" : ""}`}>
+                                          {showing.film.length > 25 ? showing.film.slice(0, 25) + "…" : showing.film}
                                         </div>
                                         {showing.director && (
-                                          <div className="text-[10px] text-white/50 mb-1 truncate" title={showing.director}>
-                                            {showing.director}
+                                          <div className="text-[10px] text-white/60 mt-0.5">
+                                            Dir: {showing.director.length > 20 ? showing.director.slice(0, 20) + "…" : showing.director}
                                           </div>
                                         )}
-                                        <div className="flex flex-wrap gap-1 text-[9px] text-white/40">
-                                          {showing.language && <span className="bg-white/10 px-1 rounded">{showing.language}</span>}
-                                          {showing.duration > 0 && <span className="bg-white/10 px-1 rounded">{formatDuration(showing.duration)}</span>}
-                                          {showing.year > 0 && <span className="bg-white/10 px-1 rounded">{showing.year}</span>}
+                                        <div className="flex gap-1 mt-1 text-[9px] text-white/40 flex-wrap">
+                                          {showing.country && <span>{showing.country}</span>}
+                                          {showing.year > 0 && <span>| {showing.year}</span>}
+                                          {showing.language && <span>| {showing.language}</span>}
+                                          {showing.duration > 0 && <span>| {showing.duration}&apos;</span>}
                                         </div>
-                                      </div>
-                                    </td>
-                                  );
-                                } else if (occupied.occupied) {
-                                  return (
-                                    <td key={time} className="py-2 px-2">
-                                      <div className="h-full min-h-[70px] bg-white/5 rounded-lg border border-dashed border-white/10 flex items-center justify-center">
-                                        <span className="text-[10px] text-white/20 italic">↑ ongoing</span>
                                       </div>
                                     </td>
                                   );
                                 }
                                 return (
-                                  <td key={time} className="py-2 px-2">
-                                    <div className="h-full min-h-[70px]"></div>
+                                  <td key={time} className="p-1 border-l border-white/5">
+                                    <div className="h-full min-h-[60px]"></div>
                                   </td>
                                 );
                               })}
@@ -403,7 +404,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
             </motion.div>
           ) : (
             <motion.div
-              key="list-view"
+              key="cards-view"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

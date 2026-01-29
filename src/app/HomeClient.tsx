@@ -11,7 +11,6 @@ import {
   WatchlistIcon,
   VirtualizedFilmGrid,
 } from "@/components";
-import { RatingFilterPills } from "@/components/RatingFilterPills";
 import { AwardWinnersSection } from "@/components/AwardWinnersSection";
 import { Category, Film } from "@/types";
 import { useWatchlist } from "@/lib/watchlist-context";
@@ -46,26 +45,12 @@ interface HomeClientProps {
   data: FestivalData;
 }
 
-// Convert various rating formats to a 5-star scale
-function getRatingScore(film: Film): number | null {
-  if (film.imdbRating) {
-    const rating = parseFloat(film.imdbRating);
-    if (!isNaN(rating)) return rating / 2;
-  }
-  if (film.letterboxdRating) {
-    const rating = parseFloat(film.letterboxdRating);
-    if (!isNaN(rating)) return rating;
-  }
-  return null;
-}
-
 export default function HomeClient({ data }: HomeClientProps) {
   const { festival, categories, films } = data;
   
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [ratingFilter, setRatingFilter] = useState<number | null>(null);
   const [showWatchlist, setShowWatchlist] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -90,15 +75,6 @@ export default function HomeClient({ data }: HomeClientProps) {
       film.country?.toLowerCase().includes(query)
     );
   }, [films, searchQuery]);
-
-  // Memoize rated films based on current filter
-  const ratedFilms = useMemo(() => {
-    if (ratingFilter === null) return [];
-    return films.filter(film => {
-      const score = getRatingScore(film);
-      return score !== null && score >= ratingFilter;
-    });
-  }, [films, ratingFilter]);
 
   // Memoize festival-grouped award-winning films
   const festivalGroupedFilms = useMemo(() => {
@@ -136,13 +112,6 @@ export default function HomeClient({ data }: HomeClientProps) {
   const awardFilmsCount = useMemo(() => 
     films.filter(film => film.awardsWon).length, [films]);
 
-  // Memoize rating filter counts - prevents recalculation on every render
-  const ratingFilterOptions = useMemo(() => [
-    { min: 4.5, label: "★★★★★", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 4.5; }).length },
-    { min: 4.0, label: "★★★★½", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 4.0; }).length },
-    { min: 3.5, label: "★★★★", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 3.5; }).length },
-  ], [films]);
-
   // Restore state from URL hash on initial load
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -162,10 +131,6 @@ export default function HomeClient({ data }: HomeClientProps) {
         setSelectedFilm(null);
         return;
       }
-      if (ratingFilter !== null) {
-        setRatingFilter(null);
-        return;
-      }
       if (showWatchlist) {
         setShowWatchlist(false);
         return;
@@ -175,7 +140,7 @@ export default function HomeClient({ data }: HomeClientProps) {
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [isDrawerOpen, ratingFilter, showWatchlist]);
+  }, [isDrawerOpen, showWatchlist]);
 
   const handleCategoryClick = (category: Category) => {
     window.history.pushState({ category: category.id }, "", `#${category.slug}`);
@@ -185,7 +150,6 @@ export default function HomeClient({ data }: HomeClientProps) {
   const handleBackToCategories = () => {
     window.history.pushState(null, "", "/");
     setSelectedCategory(null);
-    setRatingFilter(null);
     setShowWatchlist(false);
   };
 
@@ -194,13 +158,8 @@ export default function HomeClient({ data }: HomeClientProps) {
     setShowWatchlist(true);
   };
 
-  const handleRatingFilter = (minRating: number) => {
-    window.history.pushState({ rating: minRating }, "", `#rated-${minRating}`);
-    setRatingFilter(minRating);
-  };
-
   const handleFilmClick = (film: Film, filmList?: Film[], index?: number) => {
-    const base = ratingFilter !== null ? `rated-${ratingFilter}` : selectedCategory?.slug;
+    const base = selectedCategory?.slug;
     window.history.pushState({ film: film.id }, "", `#${base}/${film.id}`);
     setSelectedFilm(film);
     setDrawerFilms(filmList || []);
@@ -223,88 +182,10 @@ export default function HomeClient({ data }: HomeClientProps) {
     return films.filter((film) => film.categoryId === categoryId);
   }, [films]);
 
-  const getRatingLabel = (rating: number): string => {
-    if (rating >= 4.5) return "5 Star";
-    if (rating >= 4.0) return "4.5 Star";
-    return "4 Star";
-  };
-
   return (
     <main className="min-h-screen bg-zinc-950">
       <AnimatePresence mode="wait">
-        {ratingFilter !== null ? (
-          /* Rated Films View */
-          <motion.div
-            key={`rated-${ratingFilter}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="min-h-screen"
-          >
-            {/* Header */}
-            <div className="bg-gradient-to-br from-yellow-900/30 to-amber-900/20 py-12 px-4 border-b border-yellow-800/30">
-              <div className="max-w-7xl mx-auto">
-                <motion.button
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  onClick={handleBackToCategories}
-                  className="flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg px-2 py-1 -ml-2"
-                  aria-label="Go back to all categories"
-                >
-                  <span>←</span>
-                  <span>All Categories</span>
-                </motion.button>
-
-                <div className="flex items-start justify-between">
-                  <div>
-                    <motion.h1
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-3xl md:text-4xl font-bold text-white flex items-center gap-3"
-                    >
-                      <span className="text-yellow-500">★</span>
-                      {getRatingLabel(ratingFilter)} Films
-                    </motion.h1>
-                    <motion.p
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 }}
-                      className="mt-2 text-white/70"
-                    >
-                      Highly rated films from Letterboxd & IMDb
-                    </motion.p>
-                  </div>
-
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2"
-                  >
-                    <span className="text-xl font-bold text-white">{ratedFilms.length}</span>
-                    <span className="text-sm text-white/60">films</span>
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-
-            {/* Films Grid */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
-              <VirtualizedFilmGrid
-                films={ratedFilms}
-                onFilmClick={handleFilmClick}
-                emptyState={
-                  <div className="text-center py-16">
-                    <span className="text-6xl mb-4 block">⭐</span>
-                    <p className="text-zinc-400 text-lg mb-2">No rated films yet</p>
-                    <p className="text-zinc-500 text-sm">
-                      Run <code className="bg-zinc-800 px-2 py-1 rounded">npm run pipeline:ratings</code> with an OMDB API key to fetch ratings
-                    </p>
-                  </div>
-                }
-              />
-            </div>
-          </motion.div>
-        ) : showWatchlist ? (
+        {showWatchlist ? (
           /* Watchlist View */
           <motion.div
             key="watchlist"
@@ -565,12 +446,6 @@ export default function HomeClient({ data }: HomeClientProps) {
                 ))}
               </div>
             </section>
-
-            {/* Rating Filter Pills */}
-            <RatingFilterPills 
-              options={ratingFilterOptions} 
-              onFilter={handleRatingFilter} 
-            />
 
             {/* Award Winners Section - Grouped by Festival */}
             <AwardWinnersSection
