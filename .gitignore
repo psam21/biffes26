@@ -29,3 +29,6 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Original unoptimized posters (use posters-optimized instead)
+public/posters/

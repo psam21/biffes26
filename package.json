@@ -12,6 +12,8 @@
     "pipeline:quick": "tsx scripts/pipeline.ts --skip-scrape",
     "pipeline:ratings": "tsx scripts/pipeline.ts --skip-scrape --skip-posters",
     "download-posters": "tsx scripts/download-posters.ts",
+    "optimize-images": "tsx scripts/optimize-images.ts",
+    "update-poster-urls": "tsx scripts/update-poster-urls.ts",
     "schedule:generate": "node scripts/extract-schedule.js",
     "schedule:validate": "node scripts/extract-schedule.js --ocr --validate",
     "schedule:from-ocr": "node scripts/extract-schedule.js --ocr",
