@@ -121,3 +121,13 @@ body {
 .animate-fade-in-scale {
   animation: fade-in-scale 0.2s ease-out forwards;
 }
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
