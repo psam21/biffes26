@@ -242,12 +242,11 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                         <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
                           {rec.reason}
                         </span>
-                        {rec.alternativeShowings && rec.alternativeShowings.length > 0 && (
-                          <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                            🔄 {rec.alternativeShowings.slice(0, 1).map(s => `${s.dateLabel} ${s.time}`).join('')}
-                            {rec.alternativeShowings.length > 1 && ` +${rec.alternativeShowings.length - 1}`}
+                        {rec.alternativeShowings && rec.alternativeShowings.map((s, i) => (
+                          <span key={i} className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                            🔄 {s.dateLabel} {s.time}
                           </span>
-                        )}
+                        ))}
                       </div>
                     </div>
                   </div>
