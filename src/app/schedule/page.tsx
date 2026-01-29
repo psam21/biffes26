@@ -14,6 +14,7 @@ interface Showing {
   language: string;
   duration: number;
   special?: string;
+  filmId?: string;
 }
 
 interface ScreenSchedule {
@@ -286,7 +287,17 @@ export default function SchedulePage() {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="font-medium text-white text-sm leading-tight truncate" title={showing.film}>
-                                    {showing.film}
+                                    {showing.filmId ? (
+                                      <Link 
+                                        href={`/#film-${showing.filmId}`}
+                                        className="hover:text-yellow-400 transition-colors inline-flex items-center gap-1"
+                                      >
+                                        {showing.film}
+                                        <span className="text-[10px] text-yellow-400/60">↗</span>
+                                      </Link>
+                                    ) : (
+                                      showing.film
+                                    )}
                                     {showing.special && (
                                       <span className="ml-2 text-[10px] bg-yellow-400 text-black px-1.5 py-0.5 rounded font-bold">
                                         {showing.special}
