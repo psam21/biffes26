@@ -1,6 +1,6 @@
 "use client";
 
-import { Film } from "lucide-react";
+import { Film } from "@/lib/icons";
 import { Category } from "@/types";
 import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";
 

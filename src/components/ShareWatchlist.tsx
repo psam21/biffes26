@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Download, X, Ticket, Film, Clapperboard } from "lucide-react";
+import { Check, Download, X, Ticket, Film, Clapperboard } from "@/lib/icons";
 import { useWatchlist } from "@/lib/watchlist-context";
 
 export function ShareWatchlist() {

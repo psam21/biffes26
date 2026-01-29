@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Film, Globe, MapPin, Calendar } from "lucide-react";
+import { Film, Globe, MapPin, Calendar } from "@/lib/icons";
 import { Venue } from "@/types";
 
 interface FestivalTickerProps {

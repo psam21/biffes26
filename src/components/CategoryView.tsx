@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Film as FilmIcon } from "lucide-react";
+import { ArrowLeft, Film as FilmIcon } from "@/lib/icons";
 import { Category, Film } from "@/types";
 import { VirtualizedFilmGrid } from "./VirtualizedFilmGrid";
 import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";

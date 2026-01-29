@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
-import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight } from "@/lib/icons";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "./WatchlistButton";
