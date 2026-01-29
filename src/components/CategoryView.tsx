@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeft, Film as FilmIcon } from "lucide-react";
 import { Category, Film } from "@/types";
-import { FilmCard } from "./FilmCard";
+import { VirtualizedFilmGrid } from "./VirtualizedFilmGrid";
 import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";
 
 interface CategoryViewProps {
@@ -82,25 +82,16 @@ export function CategoryView({
 
       {/* Films Grid */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          <AnimatePresence mode="popLayout">
-            {films.map((film, index) => (
-              <FilmCard
-                key={film.id}
-                film={film}
-                onClick={() => onFilmClick(film, films, index)}
-                index={index}
-              />
-            ))}
-          </AnimatePresence>
-        </div>
-
-        {films.length === 0 && (
-          <div className="text-center py-16">
-            <FilmIcon className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
-            <p className="text-zinc-500">No films available in this category yet.</p>
-          </div>
-        )}
+        <VirtualizedFilmGrid
+          films={films}
+          onFilmClick={onFilmClick}
+          emptyState={
+            <div className="text-center py-16">
+              <FilmIcon className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
+              <p className="text-zinc-500">No films available in this category yet.</p>
+            </div>
+          }
+        />
       </div>
     </motion.div>
   );

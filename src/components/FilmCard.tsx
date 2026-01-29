@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Star } from "lucide-react";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "./WatchlistButton";
@@ -14,7 +13,14 @@ interface FilmCardProps {
   index: number;
 }
 
-export function FilmCard({ film, onClick, index }: FilmCardProps) {
+// Extract animation variants outside component to prevent recreation
+const cardVariants = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+  hover: { y: -6 }
+};
+
+function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
   const [imgSrc, setImgSrc] = useState(film.posterUrl);
   const [hasError, setHasError] = useState(false);
 
@@ -32,27 +38,16 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
     }
   };
 
-  // Get best available rating normalized to 5-star scale
-  const getRating = (): string | null => {
-    if (film.imdbRating) {
-      // IMDB is out of 10, convert to 5
-      const score = (parseFloat(film.imdbRating) / 2).toFixed(1);
-      return score;
-    }
-    if (film.letterboxdRating) {
-      // Letterboxd is already out of 5
-      return film.letterboxdRating;
-    }
-    return null;
-  };
-  const rating = getRating();
+  // Limit stagger delay to prevent excessive animation times
+  const staggerDelay = Math.min(index * 0.02, 0.5);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3, delay: index * 0.03 }}
-      whileHover={{ y: -6 }}
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      whileHover="hover"
+      transition={{ duration: 0.2, delay: staggerDelay }}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -143,3 +138,9 @@ export function FilmCard({ film, onClick, index }: FilmCardProps) {
     </motion.div>
   );
 }
+
+// Memoize to prevent re-renders when parent state changes
+export const FilmCard = memo(FilmCardComponent, (prevProps, nextProps) => {
+  return prevProps.film.id === nextProps.film.id && 
+         prevProps.index === nextProps.index;
+});

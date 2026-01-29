@@ -6,3 +6,4 @@ export { CategoryView } from "./CategoryView";
 export { WatchlistButton } from "./WatchlistButton";
 export { WatchlistIcon } from "./WatchlistIcon";
 export { ShareWatchlist } from "./ShareWatchlist";
+export { VirtualizedFilmGrid } from "./VirtualizedFilmGrid";

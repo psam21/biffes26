@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,6 +13,7 @@ import {
   WatchlistButton,
   WatchlistIcon,
   ShareWatchlist,
+  VirtualizedFilmGrid,
 } from "@/components";
 import { Category, Film, Venue } from "@/types";
 import festivalData from "@/data/biffes_data.json";
@@ -56,29 +57,84 @@ export default function Home() {
     films: Film[];
   };
 
-  // Get films filtered by rating
-  const getFilteredFilms = (minRating: number): Film[] => {
-    return films.filter((film) => {
+  // Memoize filtered film arrays - computed once unless dependencies change
+  const fiveStarFilms = useMemo(() => 
+    films.filter(film => {
       const score = getRatingScore(film);
-      return score !== null && score >= minRating;
+      return score !== null && score >= 4.5;
+    }), [films]);
+    
+  const fourHalfStarFilms = useMemo(() => 
+    films.filter(film => {
+      const score = getRatingScore(film);
+      return score !== null && score >= 4.0;
+    }), [films]);
+    
+  const fourStarFilms = useMemo(() => 
+    films.filter(film => {
+      const score = getRatingScore(film);
+      return score !== null && score >= 3.5;
+    }), [films]);
+
+  // Memoize watchlist films - only recompute when watchlist or films change
+  const watchlistFilms = useMemo(() => 
+    films.filter(film => watchlist.includes(film.id)), [films, watchlist]);
+
+  // Memoize search films - only recompute when query changes
+  const searchFilms = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return [];
+    return films.filter(film => 
+      film.title.toLowerCase().includes(query) ||
+      film.director?.toLowerCase().includes(query) ||
+      film.country?.toLowerCase().includes(query)
+    );
+  }, [films, searchQuery]);
+
+  // Memoize rated films based on current filter
+  const ratedFilms = useMemo(() => {
+    if (ratingFilter === null) return [];
+    return films.filter(film => {
+      const score = getRatingScore(film);
+      return score !== null && score >= ratingFilter;
     });
-  };
+  }, [films, ratingFilter]);
 
-  const fiveStarFilms = getFilteredFilms(4.5); // 4.5-5 stars
-  const fourHalfStarFilms = getFilteredFilms(4.0); // 4-5 stars  
-  const fourStarFilms = getFilteredFilms(3.5); // 3.5-5 stars
+  // Memoize festival-grouped award-winning films
+  const festivalGroupedFilms = useMemo(() => {
+    const festivalGroups = [
+      { name: 'Cannes Film Festival', key: 'cannes', emoji: '🌴', color: 'from-yellow-600/30 to-amber-600/20 border-yellow-500/40' },
+      { name: 'Venice Film Festival', key: 'venice', emoji: '🦁', color: 'from-red-600/30 to-rose-600/20 border-red-500/40' },
+      { name: 'Berlin Film Festival', key: 'berlin', emoji: '🐻', color: 'from-amber-600/30 to-orange-600/20 border-amber-500/40' },
+      { name: 'Sundance Film Festival', key: 'sundance', emoji: '🎿', color: 'from-blue-600/30 to-cyan-600/20 border-blue-500/40' },
+      { name: 'Toronto Film Festival', key: 'toronto', emoji: '🍁', color: 'from-red-600/30 to-pink-600/20 border-red-500/40' },
+      { name: 'Locarno Film Festival', key: 'locarno', emoji: '🐆', color: 'from-purple-600/30 to-violet-600/20 border-purple-500/40' },
+      { name: 'San Sebastián Film Festival', key: 'san sebast', emoji: '🌊', color: 'from-teal-600/30 to-emerald-600/20 border-teal-500/40' },
+      { name: 'Karlovy Vary', key: 'karlovy', emoji: '💎', color: 'from-cyan-600/30 to-sky-600/20 border-cyan-500/40' },
+      { name: 'National Film Awards (India)', key: 'national film award', emoji: '🇮🇳', color: 'from-orange-600/30 to-green-600/20 border-orange-500/40' },
+      { name: 'Other Festivals', key: '__other__', emoji: '🎬', color: 'from-zinc-600/30 to-slate-600/20 border-zinc-500/40' },
+    ];
+    
+    const awardFilms = films.filter(film => film.awardsWon);
+    const usedFilmIds = new Set<string>();
+    
+    return festivalGroups.map(festival => {
+      const festivalFilms = festival.key === '__other__' 
+        ? awardFilms.filter(film => !usedFilmIds.has(film.id))
+        : awardFilms.filter(film => {
+            const matches = film.awardsWon?.toLowerCase().includes(festival.key);
+            if (matches) usedFilmIds.add(film.id);
+            return matches;
+          });
+      
+      if (festivalFilms.length === 0) return null;
+      return { ...festival, films: festivalFilms };
+    }).filter(Boolean) as Array<{ name: string; key: string; emoji: string; color: string; films: Film[] }>;
+  }, [films]);
 
-  // Get watchlist films
-  const watchlistFilms = films.filter(film => watchlist.includes(film.id));
-
-  // Search films
-  const searchFilms = searchQuery.trim()
-    ? films.filter(film => 
-        film.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        film.director?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        film.country?.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
+  // Memoize award films count
+  const awardFilmsCount = useMemo(() => 
+    films.filter(film => film.awardsWon).length, [films]);
 
   // Restore state from URL hash on initial load
   useEffect(() => {
@@ -162,15 +218,10 @@ export default function Home() {
     setTimeout(() => setSelectedFilm(null), 300);
   };
 
-  const getCategoryFilms = (categoryId: string): Film[] => {
+  // Memoize category films lookup
+  const getCategoryFilms = useCallback((categoryId: string): Film[] => {
     return films.filter((film) => film.categoryId === categoryId);
-  };
-
-  // Get current filtered films based on rating
-  const getRatedFilms = (): Film[] => {
-    if (ratingFilter === null) return [];
-    return getFilteredFilms(ratingFilter);
-  };
+  }, [films]);
 
   const getRatingLabel = (rating: number): string => {
     if (rating >= 4.5) return "5 Star";
@@ -231,7 +282,7 @@ export default function Home() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2"
                   >
-                    <span className="text-xl font-bold text-white">{getRatedFilms().length}</span>
+                    <span className="text-xl font-bold text-white">{ratedFilms.length}</span>
                     <span className="text-sm text-white/60">films</span>
                   </motion.div>
                 </div>
@@ -240,26 +291,19 @@ export default function Home() {
 
             {/* Films Grid */}
             <div className="max-w-7xl mx-auto px-4 py-8">
-              {getRatedFilms().length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                  {getRatedFilms().map((film, index) => (
-                    <FilmCard
-                      key={film.id}
-                      film={film}
-                      onClick={() => handleFilmClick(film, getRatedFilms(), index)}
-                      index={index}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-16">
-                  <span className="text-6xl mb-4 block">⭐</span>
-                  <p className="text-zinc-400 text-lg mb-2">No rated films yet</p>
-                  <p className="text-zinc-500 text-sm">
-                    Run <code className="bg-zinc-800 px-2 py-1 rounded">npm run pipeline:ratings</code> with an OMDB API key to fetch ratings
-                  </p>
-                </div>
-              )}
+              <VirtualizedFilmGrid
+                films={ratedFilms}
+                onFilmClick={handleFilmClick}
+                emptyState={
+                  <div className="text-center py-16">
+                    <span className="text-6xl mb-4 block">⭐</span>
+                    <p className="text-zinc-400 text-lg mb-2">No rated films yet</p>
+                    <p className="text-zinc-500 text-sm">
+                      Run <code className="bg-zinc-800 px-2 py-1 rounded">npm run pipeline:ratings</code> with an OMDB API key to fetch ratings
+                    </p>
+                  </div>
+                }
+              />
             </div>
           </motion.div>
         ) : showWatchlist ? (
@@ -327,25 +371,20 @@ export default function Home() {
                   <div className="animate-spin w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full mx-auto mb-4"></div>
                   <p className="text-zinc-400">Loading your watchlist...</p>
                 </div>
-              ) : watchlistFilms.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                  {watchlistFilms.map((film, index) => (
-                    <FilmCard
-                      key={film.id}
-                      film={film}
-                      onClick={() => handleFilmClick(film, watchlistFilms, index)}
-                      index={index}
-                    />
-                  ))}
-                </div>
               ) : (
-                <div className="text-center py-16">
-                  <span className="text-6xl mb-4 block">📝</span>
-                  <p className="text-zinc-400 text-lg mb-2">Your watchlist is empty</p>
-                  <p className="text-zinc-500 text-sm">
-                    Click the <span className="inline-flex items-center justify-center w-5 h-5 bg-zinc-700 rounded-full text-xs">+</span> button on any film to add it
-                  </p>
-                </div>
+                <VirtualizedFilmGrid
+                  films={watchlistFilms}
+                  onFilmClick={handleFilmClick}
+                  emptyState={
+                    <div className="text-center py-16">
+                      <span className="text-6xl mb-4 block">📝</span>
+                      <p className="text-zinc-400 text-lg mb-2">Your watchlist is empty</p>
+                      <p className="text-zinc-500 text-sm">
+                        Click the <span className="inline-flex items-center justify-center w-5 h-5 bg-zinc-700 rounded-full text-xs">+</span> button on any film to add it
+                      </p>
+                    </div>
+                  }
+                />
               )}
             </div>
           </motion.div>
@@ -536,78 +575,48 @@ export default function Home() {
                   🏆 Award-Winning Films
                 </h2>
                 <p className="text-xs text-zinc-500 mt-1">
-                  {films.filter(film => film.awardsWon).length} festival favorites grouped by prestige
+                  {awardFilmsCount} festival favorites grouped by prestige
                 </p>
               </div>
               
               {/* Festival Groups */}
-              {(() => {
-                const festivalGroups = [
-                  { name: 'Cannes Film Festival', key: 'cannes', emoji: '🌴', color: 'from-yellow-600/30 to-amber-600/20 border-yellow-500/40' },
-                  { name: 'Venice Film Festival', key: 'venice', emoji: '🦁', color: 'from-red-600/30 to-rose-600/20 border-red-500/40' },
-                  { name: 'Berlin Film Festival', key: 'berlin', emoji: '🐻', color: 'from-amber-600/30 to-orange-600/20 border-amber-500/40' },
-                  { name: 'Sundance Film Festival', key: 'sundance', emoji: '🎿', color: 'from-blue-600/30 to-cyan-600/20 border-blue-500/40' },
-                  { name: 'Toronto Film Festival', key: 'toronto', emoji: '🍁', color: 'from-red-600/30 to-pink-600/20 border-red-500/40' },
-                  { name: 'Locarno Film Festival', key: 'locarno', emoji: '🐆', color: 'from-purple-600/30 to-violet-600/20 border-purple-500/40' },
-                  { name: 'San Sebastián Film Festival', key: 'san sebast', emoji: '🌊', color: 'from-teal-600/30 to-emerald-600/20 border-teal-500/40' },
-                  { name: 'Karlovy Vary', key: 'karlovy', emoji: '💎', color: 'from-cyan-600/30 to-sky-600/20 border-cyan-500/40' },
-                  { name: 'National Film Awards (India)', key: 'national film award', emoji: '🇮🇳', color: 'from-orange-600/30 to-green-600/20 border-orange-500/40' },
-                  { name: 'Other Festivals', key: '__other__', emoji: '🎬', color: 'from-zinc-600/30 to-slate-600/20 border-zinc-500/40' },
-                ];
-                
-                const awardFilms = films.filter(film => film.awardsWon);
-                const usedFilmIds = new Set<string>();
-                
-                return festivalGroups.map(festival => {
-                  const festivalFilms = festival.key === '__other__' 
-                    ? awardFilms.filter(film => !usedFilmIds.has(film.id))
-                    : awardFilms.filter(film => {
-                        const matches = film.awardsWon?.toLowerCase().includes(festival.key);
-                        if (matches) usedFilmIds.add(film.id);
-                        return matches;
-                      });
-                  
-                  if (festivalFilms.length === 0) return null;
-                  
-                  return (
-                    <div key={festival.key} className="mb-6">
-                      <div className={`flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-gradient-to-r ${festival.color}`}>
-                        <span className="text-lg">{festival.emoji}</span>
-                        <h3 className="text-sm font-semibold text-white">{festival.name}</h3>
-                        <span className="text-xs text-zinc-400">({festivalFilms.length})</span>
-                      </div>
-                      <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
-                        {festivalFilms.map((film, filmIndex) => (
-                          <button
-                            key={film.id}
-                            onClick={() => handleFilmClick(film, festivalFilms, filmIndex)}
-                            className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
-                          >
-                            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
-                              {film.posterUrl ? (
-                                <Image
-                                  src={film.posterUrl}
-                                  alt={film.title}
-                                  fill
-                                  sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 10vw"
-                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
-                                  {film.title}
-                                </div>
-                              )}
-                            </div>
-                            <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
+              {festivalGroupedFilms.map(festival => (
+                <div key={festival.key} className="mb-6">
+                  <div className={`flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-gradient-to-r ${festival.color}`}>
+                    <span className="text-lg">{festival.emoji}</span>
+                    <h3 className="text-sm font-semibold text-white">{festival.name}</h3>
+                    <span className="text-xs text-zinc-400">({festival.films.length})</span>
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+                    {festival.films.map((film, filmIndex) => (
+                      <button
+                        key={film.id}
+                        onClick={() => handleFilmClick(film, festival.films, filmIndex)}
+                        className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
+                      >
+                        <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
+                          {film.posterUrl ? (
+                            <Image
+                              src={film.posterUrl}
+                              alt={film.title}
+                              fill
+                              sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 10vw"
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">
                               {film.title}
-                            </p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
+                            </div>
+                          )}
+                        </div>
+                        <p className="mt-1.5 text-[10px] text-zinc-400 group-hover:text-white transition-colors line-clamp-2 text-center leading-tight">
+                          {film.title}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </section>
 
             {/* Footer with Credits */}
