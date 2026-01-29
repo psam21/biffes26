@@ -8,7 +8,7 @@ export { Film } from "lucide-react";
 export { X } from "lucide-react";
 
 // FilmDrawer icons
-export { Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight } from "lucide-react";
+export { Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 
 // ShareWatchlist icons
 export { Check, Download, Ticket, Clapperboard } from "lucide-react";

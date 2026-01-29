@@ -158,9 +158,13 @@ export default function HomeClient({ data }: HomeClientProps) {
     setShowWatchlist(true);
   };
 
-  const handleFilmClick = (film: Film, filmList?: Film[], index?: number) => {
-    const base = selectedCategory?.slug;
-    window.history.pushState({ film: film.id }, "", `#${base}/${film.id}`);
+  const handleFilmClick = (film: Film, filmList?: Film[], index?: number, openInNewTab?: boolean) => {
+    // Open in new tab if requested (e.g., middle-click or ctrl+click)
+    if (openInNewTab) {
+      window.open(`/film/${film.id}`, '_blank');
+      return;
+    }
+    // Otherwise open drawer for quick preview
     setSelectedFilm(film);
     setDrawerFilms(filmList || []);
     setDrawerIndex(index ?? -1);
@@ -173,7 +177,6 @@ export default function HomeClient({ data }: HomeClientProps) {
   };
 
   const handleCloseDrawer = () => {
-    window.history.back();
     setIsDrawerOpen(false);
     setTimeout(() => setSelectedFilm(null), 300);
   };

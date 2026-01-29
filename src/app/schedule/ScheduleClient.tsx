@@ -94,12 +94,16 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
 
   const currentDay = days[selectedDay];
 
-  // Handle film click
-  const handleFilmClick = useCallback((filmTitle: string) => {
+  // Handle film click - navigate to film page
+  const handleFilmClick = useCallback((filmTitle: string, openInNewTab = false) => {
     const film = filmsByTitle.get(filmTitle.toUpperCase());
     if (film) {
-      setSelectedFilm(film);
-      setIsDrawerOpen(true);
+      if (openInNewTab) {
+        window.open(`/film/${film.id}`, '_blank');
+      } else {
+        setSelectedFilm(film);
+        setIsDrawerOpen(true);
+      }
     }
   }, [filmsByTitle]);
 

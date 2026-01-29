@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
-import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight } from "@/lib/icons";
+import Link from "next/link";
+import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight, ExternalLink } from "@/lib/icons";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "./WatchlistButton";
@@ -229,7 +230,17 @@ export function FilmDrawer({
                     </p>
                   )}
                 </div>
-                <WatchlistButton filmId={film.id} variant="full" />
+                <div className="flex gap-2">
+                  <Link
+                    href={`/film/${film.id}`}
+                    target="_blank"
+                    className="flex items-center gap-1.5 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm text-zinc-300 hover:text-white"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="hidden sm:inline">Full Page</span>
+                  </Link>
+                  <WatchlistButton filmId={film.id} variant="full" />
+                </div>
               </div>
 
               {/* Meta info grid */}
