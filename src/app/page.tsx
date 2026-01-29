@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import {
   CategoryCard,
   FilmDrawer,
@@ -85,7 +86,8 @@ export default function Home() {
     if (hash) {
       const category = categories.find((c) => c.slug === hash || hash.startsWith(c.slug + "/"));
       if (category) {
-        setSelectedCategory(category);
+        // Use requestAnimationFrame to defer state update outside effect
+        requestAnimationFrame(() => setSelectedCategory(category));
       }
     }
   }, [categories]);
@@ -406,7 +408,7 @@ export default function Home() {
                     >
                       {searchFilms.length === 0 ? (
                         <div className="p-4 text-center text-zinc-500 text-sm">
-                          No films found for "{searchQuery}"
+                          No films found for &quot;{searchQuery}&quot;
                         </div>
                       ) : (
                         <div className="p-2">
@@ -424,9 +426,11 @@ export default function Home() {
                               className="w-full flex items-center gap-3 p-2 hover:bg-zinc-800 rounded-lg transition-colors text-left"
                             >
                               {film.posterUrl ? (
-                                <img
+                                <Image
                                   src={film.posterUrl}
                                   alt={film.title}
+                                  width={40}
+                                  height={56}
                                   className="w-10 h-14 object-cover rounded"
                                 />
                               ) : (
@@ -581,10 +585,12 @@ export default function Home() {
                           >
                             <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">
                               {film.posterUrl ? (
-                                <img
+                                <Image
                                   src={film.posterUrl}
                                   alt={film.title}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  fill
+                                  sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 10vw"
+                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs p-2 text-center">

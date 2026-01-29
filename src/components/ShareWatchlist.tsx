@@ -19,8 +19,11 @@ export function ShareWatchlist() {
   // Auto-generate code when modal opens and no code exists
   useEffect(() => {
     if (isOpen && activeTab === "share" && !syncCode && watchlist.length > 0) {
-      setGenerating(true);
-      generateSyncCode().finally(() => setGenerating(false));
+      // Use requestAnimationFrame to defer state update outside effect
+      requestAnimationFrame(() => {
+        setGenerating(true);
+        generateSyncCode().finally(() => setGenerating(false));
+      });
     }
   }, [isOpen, activeTab, syncCode, watchlist.length, generateSyncCode]);
 

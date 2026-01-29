@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
 import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight } from "lucide-react";
@@ -26,7 +26,6 @@ export function FilmDrawer({
   currentIndex = -1,
   onNavigate 
 }: FilmDrawerProps) {
-  const [imgSrc, setImgSrc] = useState(film?.posterUrl || "");
   const [hasError, setHasError] = useState(false);
   const [direction, setDirection] = useState(0);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -34,10 +33,30 @@ export function FilmDrawer({
   const canGoPrev = currentIndex > 0;
   const canGoNext = currentIndex < films.length - 1;
 
+  const navigatePrev = useCallback(() => {
+    if (canGoPrev && onNavigate) {
+      setDirection(-1);
+      onNavigate(films[currentIndex - 1], currentIndex - 1);
+    }
+  }, [canGoPrev, onNavigate, films, currentIndex]);
+
+  const navigateNext = useCallback(() => {
+    if (canGoNext && onNavigate) {
+      setDirection(1);
+      onNavigate(films[currentIndex + 1], currentIndex + 1);
+    }
+  }, [canGoNext, onNavigate, films, currentIndex]);
+
+  // Track current image source with fallback logic
+  const currentImgSrc = useMemo(() => {
+    if (!film) return "";
+    return hasError && film.posterUrlRemote ? film.posterUrlRemote : film.posterUrl;
+  }, [film, hasError]);
+
+  // Reset error state when film changes
   useEffect(() => {
     if (film) {
-      setImgSrc(film.posterUrl);
-      setHasError(false);
+      requestAnimationFrame(() => setHasError(false));
     }
   }, [film]);
 
@@ -61,26 +80,11 @@ export function FilmDrawer({
     }
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, canGoPrev, canGoNext, currentIndex]);
+  }, [isOpen, onClose, canGoPrev, canGoNext, navigatePrev, navigateNext]);
 
   const handleImageError = () => {
     if (!hasError && film?.posterUrlRemote) {
-      setImgSrc(film.posterUrlRemote);
       setHasError(true);
-    }
-  };
-
-  const navigatePrev = () => {
-    if (canGoPrev && onNavigate) {
-      setDirection(-1);
-      onNavigate(films[currentIndex - 1], currentIndex - 1);
-    }
-  };
-
-  const navigateNext = () => {
-    if (canGoNext && onNavigate) {
-      setDirection(1);
-      onNavigate(films[currentIndex + 1], currentIndex + 1);
     }
   };
 
@@ -182,9 +186,9 @@ export function FilmDrawer({
 
             {/* Poster header */}
             <div className="relative aspect-video bg-zinc-800">
-              {imgSrc ? (
+              {currentImgSrc ? (
                 <Image
-                  src={imgSrc}
+                  src={currentImgSrc}
                   alt={film.title}
                   fill
                   className="object-cover"

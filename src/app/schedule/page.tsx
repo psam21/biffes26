@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import scheduleData from "@/data/schedule_data.json";
+import festivalData from "@/data/biffes_data.json";
 import Link from "next/link";
+import { FilmDrawer } from "@/components/FilmDrawer";
+import { Film } from "@/types";
 
 interface Showing {
   time: string;
@@ -56,11 +59,38 @@ export default function SchedulePage() {
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"table" | "list">("table");
+  const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const days = scheduleData.days as DaySchedule[];
   const venues = scheduleData.schedule.venues;
+  const films = festivalData.films as Film[];
+
+  // Create a mapping from film title (uppercase) to Film object
+  const filmsByTitle = useMemo(() => {
+    const map = new Map<string, Film>();
+    films.forEach(film => {
+      // Store by uppercase title for matching with schedule data
+      map.set(film.title.toUpperCase(), film);
+    });
+    return map;
+  }, [films]);
 
   const currentDay = days[selectedDay];
+
+  // Handle film click
+  const handleFilmClick = useCallback((filmTitle: string) => {
+    const film = filmsByTitle.get(filmTitle.toUpperCase());
+    if (film) {
+      setSelectedFilm(film);
+      setIsDrawerOpen(true);
+    }
+  }, [filmsByTitle]);
+
+  const handleCloseDrawer = useCallback(() => {
+    setIsDrawerOpen(false);
+    setTimeout(() => setSelectedFilm(null), 300);
+  }, []);
 
   // Filter screenings based on venue and search
   const filteredScreenings = useMemo(() => {
@@ -317,11 +347,19 @@ export default function SchedulePage() {
                                 const occupied = isTimeOccupied(screen, time);
                                 
                                 if (showing) {
+                                  const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
                                   return (
                                     <td key={time} className="py-2 px-2 align-top">
-                                      <div className={`${venueColors[venueKey]?.bg || "bg-white/5"} ${venueColors[venueKey]?.border || "border-white/10"} border rounded-lg p-2 hover:bg-white/10 transition-colors cursor-default`}>
-                                        <div className="font-medium text-white text-xs leading-tight mb-1" title={showing.film}>
+                                      <div 
+                                        className={`${venueColors[venueKey]?.bg || "bg-white/5"} ${venueColors[venueKey]?.border || "border-white/10"} border rounded-lg p-2 transition-colors ${hasFilmData ? "hover:bg-white/20 cursor-pointer hover:scale-[1.02] transform" : "cursor-default hover:bg-white/10"}`}
+                                        onClick={() => hasFilmData && handleFilmClick(showing.film)}
+                                        role={hasFilmData ? "button" : undefined}
+                                        tabIndex={hasFilmData ? 0 : undefined}
+                                        onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
+                                      >
+                                        <div className={`font-medium text-white text-xs leading-tight mb-1 ${hasFilmData ? "hover:text-yellow-400" : ""}`} title={showing.film}>
                                           {showing.film.length > 28 ? showing.film.slice(0, 28) + "…" : showing.film}
+                                          {hasFilmData && <span className="ml-1 text-yellow-400/60">↗</span>}
                                         </div>
                                         {showing.director && (
                                           <div className="text-[10px] text-white/50 mb-1 truncate" title={showing.director}>
@@ -399,51 +437,49 @@ export default function SchedulePage() {
                           </div>
                           
                           <div className="divide-y divide-white/5">
-                            {screen.showings.map((showing, idx) => (
-                              <div
-                                key={idx}
-                                className={`p-3 hover:bg-white/5 transition-colors ${
-                                  showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
-                                }`}
-                              >
-                                <div className="flex items-start gap-3">
-                                  <div className="text-sm font-mono font-bold text-yellow-400 w-14 flex-shrink-0">
-                                    {showing.time}
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="font-medium text-white text-sm leading-tight" title={showing.film}>
-                                      {showing.filmId ? (
-                                        <Link 
-                                          href={`/#film-${showing.filmId}`}
-                                          className="hover:text-yellow-400 transition-colors inline-flex items-center gap-1"
-                                        >
-                                          {showing.film}
-                                          <span className="text-[10px] text-yellow-400/60">↗</span>
-                                        </Link>
-                                      ) : (
-                                        showing.film
-                                      )}
-                                      {showing.special && (
-                                        <span className="ml-2 text-[10px] bg-yellow-400 text-black px-1.5 py-0.5 rounded font-bold">
-                                          {showing.special}
-                                        </span>
-                                      )}
+                            {screen.showings.map((showing, idx) => {
+                              const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
+                              return (
+                                <div
+                                  key={idx}
+                                  className={`p-3 transition-colors ${
+                                    showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
+                                  } ${hasFilmData ? "hover:bg-white/10 cursor-pointer" : "hover:bg-white/5"}`}
+                                  onClick={() => hasFilmData && handleFilmClick(showing.film)}
+                                  role={hasFilmData ? "button" : undefined}
+                                  tabIndex={hasFilmData ? 0 : undefined}
+                                  onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <div className="text-sm font-mono font-bold text-yellow-400 w-14 flex-shrink-0">
+                                      {showing.time}
                                     </div>
-                                    {showing.director && (
-                                      <div className="text-xs text-white/50 mt-0.5">
-                                        {showing.director}
+                                    <div className="flex-1 min-w-0">
+                                      <div className={`font-medium text-white text-sm leading-tight ${hasFilmData ? "hover:text-yellow-400" : ""}`} title={showing.film}>
+                                        {showing.film}
+                                        {hasFilmData && <span className="ml-1 text-[10px] text-yellow-400/60">↗</span>}
+                                        {showing.special && (
+                                          <span className="ml-2 text-[10px] bg-yellow-400 text-black px-1.5 py-0.5 rounded font-bold">
+                                            {showing.special}
+                                          </span>
+                                        )}
                                       </div>
-                                    )}
-                                    <div className="flex items-center gap-2 mt-1 text-[10px] text-white/40 flex-wrap">
-                                      {showing.country && <span>{showing.country}</span>}
-                                      {showing.year > 0 && <span>• {showing.year}</span>}
-                                      {showing.language && <span>• {showing.language}</span>}
-                                      {showing.duration > 0 && <span>• {formatDuration(showing.duration)}</span>}
+                                      {showing.director && (
+                                        <div className="text-xs text-white/50 mt-0.5">
+                                          {showing.director}
+                                        </div>
+                                      )}
+                                      <div className="flex items-center gap-2 mt-1 text-[10px] text-white/40 flex-wrap">
+                                        {showing.country && <span>{showing.country}</span>}
+                                        {showing.year > 0 && <span>• {showing.year}</span>}
+                                        {showing.language && <span>• {showing.language}</span>}
+                                        {showing.duration > 0 && <span>• {formatDuration(showing.duration)}</span>}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         </motion.div>
                       );
@@ -494,6 +530,13 @@ export default function SchedulePage() {
           <p className="mt-1">Subject to change • Last updated: {new Date(scheduleData.schedule.lastUpdated).toLocaleDateString()}</p>
         </div>
       </footer>
+
+      {/* Film Detail Drawer */}
+      <FilmDrawer
+        film={selectedFilm}
+        isOpen={isDrawerOpen}
+        onClose={handleCloseDrawer}
+      />
     </div>
   );
 }
