@@ -28,10 +28,10 @@ function getColumnCount(width: number): number {
   return 2;
 }
 
-// Card dimensions (aspect-[2/3] poster + ~100px info section)
+// Card dimensions (aspect-[2/3] poster + info section)
 const GAP = 16; // gap-4 = 1rem = 16px
 const CARD_ASPECT_RATIO = 2 / 3;
-const INFO_HEIGHT = 100;
+const INFO_HEIGHT = 140; // title (2 lines) + director + country/year + padding
 
 export function VirtualizedFilmGrid({ 
   films, 
