@@ -25,6 +25,10 @@ const ShareWatchlist = dynamic(() => import("@/components/ShareWatchlist").then(
   ssr: false,
   loading: () => <div className="w-8 h-8 bg-zinc-700 rounded-lg animate-pulse" />,
 });
+const RecommendationsModal = dynamic(() => import("@/components/RecommendationsModal").then(m => ({ default: m.RecommendationsModal })), {
+  ssr: false,
+  loading: () => null,
+});
 
 // Types for the data passed from server
 interface FestivalData {
@@ -80,6 +84,7 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   const [showWatchlist, setShowWatchlist] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [showRecommendations, setShowRecommendations] = useState(false);
   
   // Navigation context for swipe in drawer
   const [drawerFilms, setDrawerFilms] = useState<Film[]>([]);
@@ -334,93 +339,106 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
             {/* Compact Header */}
             <header className="pt-6 pb-4">
               <div className="flex items-start justify-between max-w-7xl mx-auto px-4">
-                {/* Search Box - Left */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="relative"
-                >
-                  <div className={`flex items-center gap-1.5 rounded-md transition-all ${
-                    showSearch
-                      ? "bg-zinc-800 border border-zinc-600"
-                      : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
-                  }`}>
-                    <button
-                      onClick={() => setShowSearch(!showSearch)}
-                      className="flex items-center gap-1.5 px-2 py-1.5"
-                    >
-                      <span className="text-zinc-400 text-sm">🔍</span>
-                      {!showSearch && <span className="text-xs text-zinc-300 hidden sm:inline">Search</span>}
-                    </button>
-                    {showSearch && (
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Film, director, country..."
-                        autoFocus
-                        className="bg-transparent text-white text-xs placeholder:text-zinc-500 outline-none w-36 sm:w-44 pr-2 py-1.5"
-                      />
-                    )}
-                  </div>
-                  
-                  {/* Search Results Dropdown */}
-                  {showSearch && searchQuery.trim() && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto"
-                    >
-                      {searchFilms.length === 0 ? (
-                        <div className="p-4 text-center text-zinc-500 text-sm">
-                          No films found for &quot;{searchQuery}&quot;
-                        </div>
-                      ) : (
-                        <div className="p-2">
-                          <div className="text-xs text-zinc-500 px-2 py-1 mb-1">
-                            {searchFilms.length} result{searchFilms.length !== 1 ? 's' : ''}
-                          </div>
-                          {searchFilms.slice(0, 8).map((film) => (
-                            <button
-                              key={film.id}
-                              onClick={() => {
-                                handleFilmClick(film);
-                                setShowSearch(false);
-                                setSearchQuery("");
-                              }}
-                              className="w-full flex items-center gap-3 p-2 hover:bg-zinc-800 rounded-lg transition-colors text-left"
-                            >
-                              {film.posterUrl ? (
-                                <Image
-                                  src={film.posterUrl}
-                                  alt={film.title}
-                                  width={40}
-                                  height={56}
-                                  className="w-10 h-14 object-cover rounded"
-                                />
-                              ) : (
-                                <div className="w-10 h-14 bg-zinc-800 rounded flex items-center justify-center text-lg">
-                                  🎬
-                                </div>
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <div className="text-sm text-white font-medium truncate">{film.title}</div>
-                                <div className="text-xs text-zinc-500 truncate">
-                                  {film.director}{film.country ? ` • ${film.country}` : ''}
-                                </div>
-                              </div>
-                            </button>
-                          ))}
-                          {searchFilms.length > 8 && (
-                            <div className="text-xs text-zinc-500 text-center py-2">
-                              +{searchFilms.length - 8} more results
-                            </div>
-                          )}
-                        </div>
+                {/* Search & Recommendations - Left */}
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="relative"
+                  >
+                    <div className={`flex items-center gap-1.5 rounded-md transition-all ${
+                      showSearch
+                        ? "bg-zinc-800 border border-zinc-600"
+                        : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
+                    }`}>
+                      <button
+                        onClick={() => setShowSearch(!showSearch)}
+                        className="flex items-center gap-1.5 px-2 py-1.5"
+                      >
+                        <span className="text-zinc-400 text-sm">🔍</span>
+                        {!showSearch && <span className="text-xs text-zinc-300 hidden sm:inline">Search</span>}
+                      </button>
+                      {showSearch && (
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="Film, director, country..."
+                          autoFocus
+                          className="bg-transparent text-white text-xs placeholder:text-zinc-500 outline-none w-36 sm:w-44 pr-2 py-1.5"
+                        />
                       )}
-                    </motion.div>
-                  )}
-                </motion.div>
+                    </div>
+                    
+                    {/* Search Results Dropdown */}
+                    {showSearch && searchQuery.trim() && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto"
+                      >
+                        {searchFilms.length === 0 ? (
+                          <div className="p-4 text-center text-zinc-500 text-sm">
+                            No films found for &quot;{searchQuery}&quot;
+                          </div>
+                        ) : (
+                          <div className="p-2">
+                            <div className="text-xs text-zinc-500 px-2 py-1 mb-1">
+                              {searchFilms.length} result{searchFilms.length !== 1 ? 's' : ''}
+                            </div>
+                            {searchFilms.slice(0, 8).map((film) => (
+                              <button
+                                key={film.id}
+                                onClick={() => {
+                                  handleFilmClick(film);
+                                  setShowSearch(false);
+                                  setSearchQuery("");
+                                }}
+                                className="w-full flex items-center gap-3 p-2 hover:bg-zinc-800 rounded-lg transition-colors text-left"
+                              >
+                                {film.posterUrl ? (
+                                  <Image
+                                    src={film.posterUrl}
+                                    alt={film.title}
+                                    width={40}
+                                    height={56}
+                                    className="w-10 h-14 object-cover rounded"
+                                  />
+                                ) : (
+                                  <div className="w-10 h-14 bg-zinc-800 rounded flex items-center justify-center text-lg">
+                                    🎬
+                                  </div>
+                                )}
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm text-white font-medium truncate">{film.title}</div>
+                                  <div className="text-xs text-zinc-500 truncate">
+                                    {film.director}{film.country ? ` • ${film.country}` : ''}
+                                  </div>
+                                </div>
+                              </button>
+                            ))}
+                            {searchFilms.length > 8 && (
+                              <div className="text-xs text-zinc-500 text-center py-2">
+                                +{searchFilms.length - 8} more results
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
+                  </motion.div>
+
+                  {/* Recommendations Button */}
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    onClick={() => setShowRecommendations(true)}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
+                  >
+                    <span className="text-amber-400 text-sm">✨</span>
+                    <span className="text-xs text-white hidden sm:inline">For You</span>
+                  </motion.button>
+                </div>
 
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -554,6 +572,18 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
         films={drawerFilms}
         currentIndex={drawerIndex}
         onNavigate={handleDrawerNavigate}
+      />
+
+      {/* Recommendations Modal */}
+      <RecommendationsModal
+        isOpen={showRecommendations}
+        onClose={() => setShowRecommendations(false)}
+        scheduleData={scheduleData}
+        films={films}
+        onFilmClick={(film) => {
+          setShowRecommendations(false);
+          handleFilmClick(film);
+        }}
       />
     </main>
   );
