@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Film } from "@/types";
+import { RatingBadges } from "@/components/RatingBadges";
 
 // Lazy load FilmDrawer - only loaded when user clicks a film
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
@@ -360,6 +361,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                 
                                 if (showing) {
                                   const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
+                                  const filmData = filmsByTitle.get(showing.film.toUpperCase());
                                   return (
                                     <td key={time} className="p-1 border-l border-white/5 align-top">
                                       <div 
@@ -377,6 +379,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                             Dir: {showing.director.length > 20 ? showing.director.slice(0, 20) + "…" : showing.director}
                                           </div>
                                         )}
+                                        {filmData && <RatingBadges film={filmData} size="xs" className="mt-1" />}
                                         <div className="flex gap-1 mt-1 text-[9px] text-white/40 flex-wrap">
                                           {showing.country && <span>{showing.country}</span>}
                                           {showing.year > 0 && <span>| {showing.year}</span>}
@@ -442,6 +445,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                           <div className="divide-y divide-white/5">
                             {screen.showings.map((showing, idx) => {
                               const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
+                              const filmData = filmsByTitle.get(showing.film.toUpperCase());
                               return (
                                 <div
                                   key={idx}
@@ -472,6 +476,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                           {showing.director}
                                         </div>
                                       )}
+                                      {filmData && <RatingBadges film={filmData} size="xs" className="mt-1 flex-row flex-wrap" />}
                                       <div className="flex items-center gap-2 mt-1 text-[10px] text-white/40 flex-wrap">
                                         {showing.country && <span>{showing.country}</span>}
                                         {showing.year > 0 && <span>• {showing.year}</span>}

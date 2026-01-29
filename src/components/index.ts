@@ -9,3 +9,4 @@ export { ShareWatchlist } from "./ShareWatchlist";
 export { VirtualizedFilmGrid } from "./VirtualizedFilmGrid";
 export { RatingFilterPills } from "./RatingFilterPills";
 export { AwardWinnersSection } from "./AwardWinnersSection";
+export { RatingBadges } from "./RatingBadges";
