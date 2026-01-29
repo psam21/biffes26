@@ -39,6 +39,7 @@ export interface RecommendedShowing {
   screen: string;
   score: number;
   reason: string;
+  alternativeShowings?: { date: string; dateLabel: string; time: string; venue: string }[];
 }
 
 // Calculate a film's score based on available ratings
@@ -165,6 +166,27 @@ export function generateRecommendations(
     filmMap.set(film.title.toUpperCase(), film);
   });
 
+  // Build a map of all showings for each film across all days (for alternatives)
+  const allFilmShowings = new Map<string, { date: string; dateLabel: string; time: string; venue: string }[]>();
+  for (const day of scheduleData.days) {
+    for (const screening of day.screenings) {
+      const venueInfo = scheduleData.schedule.venues[screening.venue];
+      const venueName = venueInfo?.name || screening.venue;
+      for (const showing of screening.showings) {
+        const filmKey = showing.film.toUpperCase();
+        if (!allFilmShowings.has(filmKey)) {
+          allFilmShowings.set(filmKey, []);
+        }
+        allFilmShowings.get(filmKey)!.push({
+          date: day.date,
+          dateLabel: day.label.replace('Day ', '').split(' - ')[1] || day.label,
+          time: showing.time,
+          venue: venueName.includes('Cinepolis') ? 'LuLu' : venueName.split(' ')[0],
+        });
+      }
+    }
+  }
+
   // Collect all showings with their scores
   const allShowings: RecommendedShowing[] = [];
   
@@ -180,6 +202,13 @@ export function generateRecommendations(
       const startMinutes = timeToMinutes(showing.time);
       const endMinutes = startMinutes + (showing.duration || film.duration || 120);
 
+      // Find alternative showings on other days
+      const filmKey = showing.film.toUpperCase();
+      const allShowingsForFilm = allFilmShowings.get(filmKey) || [];
+      const alternativeShowings = allShowingsForFilm.filter(s => 
+        s.date !== date // Different day
+      );
+
       allShowings.push({
         time: showing.time,
         endTime: minutesToTime(endMinutes),
@@ -189,6 +218,7 @@ export function generateRecommendations(
         screen: screening.screen,
         score,
         reason,
+        alternativeShowings: alternativeShowings.length > 0 ? alternativeShowings : undefined,
       });
     }
   }

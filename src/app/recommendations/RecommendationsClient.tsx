@@ -236,10 +236,16 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                       <span>•</span>
                       <span>{formatDuration(rec.film.duration)}</span>
                     </div>
-                    <div className="mt-3">
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
                       <span className="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
                         {rec.reason}
                       </span>
+                      {rec.alternativeShowings && rec.alternativeShowings.length > 0 && (
+                        <span className="text-xs px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                          🔄 Also: {rec.alternativeShowings.slice(0, 2).map(s => `${s.dateLabel} ${s.time}`).join(', ')}
+                          {rec.alternativeShowings.length > 2 && ` +${rec.alternativeShowings.length - 2}`}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </button>
