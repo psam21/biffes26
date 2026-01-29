@@ -25,10 +25,6 @@ const ShareWatchlist = dynamic(() => import("@/components/ShareWatchlist").then(
   ssr: false,
   loading: () => <div className="w-8 h-8 bg-zinc-700 rounded-lg animate-pulse" />,
 });
-const RecommendationsModal = dynamic(() => import("@/components/RecommendationsModal").then(m => ({ default: m.RecommendationsModal })), {
-  ssr: false,
-  loading: () => null,
-});
 
 // Types for the data passed from server
 interface FestivalData {
@@ -84,7 +80,6 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   const [showWatchlist, setShowWatchlist] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [showRecommendations, setShowRecommendations] = useState(false);
   
   // Navigation context for swipe in drawer
   const [drawerFilms, setDrawerFilms] = useState<Film[]>([]);
@@ -428,16 +423,17 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
                     )}
                   </motion.div>
 
-                  {/* Recommendations Button */}
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    onClick={() => setShowRecommendations(true)}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
-                  >
-                    <span className="text-amber-400 text-sm">✨</span>
-                    <span className="text-xs text-white hidden sm:inline">For You</span>
-                  </motion.button>
+                  {/* Recommendations Link */}
+                  <Link href="/recommendations">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
+                    >
+                      <span className="text-amber-400 text-sm">✨</span>
+                      <span className="text-xs text-white hidden sm:inline">For You</span>
+                    </motion.div>
+                  </Link>
                 </div>
 
                 <motion.div
@@ -572,18 +568,6 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
         films={drawerFilms}
         currentIndex={drawerIndex}
         onNavigate={handleDrawerNavigate}
-      />
-
-      {/* Recommendations Modal */}
-      <RecommendationsModal
-        isOpen={showRecommendations}
-        onClose={() => setShowRecommendations(false)}
-        scheduleData={scheduleData}
-        films={films}
-        onFilmClick={(film) => {
-          setShowRecommendations(false);
-          handleFilmClick(film);
-        }}
       />
     </main>
   );

@@ -122,7 +122,7 @@ function minutesToTime(minutes: number): string {
 function hasConflict(
   showing1: RecommendedShowing,
   showing2: RecommendedShowing,
-  bufferMinutes: number = 30
+  bufferMinutes: number = 5
 ): boolean {
   const start1 = timeToMinutes(showing1.time);
   const end1 = timeToMinutes(showing1.endTime) + bufferMinutes;
