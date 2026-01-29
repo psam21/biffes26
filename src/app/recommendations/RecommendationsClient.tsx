@@ -235,7 +235,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                         <span>•</span>
                         <span>{formatDuration(rec.film.duration)}</span>
                         <span>•</span>
-                        <span className="truncate">{rec.venueName.includes('Cinepolis') ? 'LuLu' : rec.venueName.split(' ')[0]}{rec.screen !== 'Main' ? ` #${rec.screen}` : ''}</span>
+                        <span>Screen {rec.screen}</span>
                       </div>
                       
                       <div className="mt-2 flex flex-wrap items-center gap-1.5">
