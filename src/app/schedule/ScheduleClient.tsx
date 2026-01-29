@@ -410,7 +410,6 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                         </div>
                       ))}
                     </div>
-                    </div>
                   </div>
                 );
               })}
