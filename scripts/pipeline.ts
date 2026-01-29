@@ -475,7 +475,7 @@ async function main() {
   }
 
   // Step 2: Fetch ratings (only for films missing ratings)
-  if (!skipRatings && OMDB_API_KEY) {
+  if (!skipRatings) {
     const filmsNeedingRatings = allFilms.filter(f => !f.imdbRating && !(f as any).letterboxdRating);
     
     if (filmsNeedingRatings.length > 0) {
@@ -486,13 +486,19 @@ async function main() {
         const filmIndex = allFilms.findIndex(f => f.id === film.id);
         console.log(`  [${i + 1}/${filmsNeedingRatings.length}] ${film.title}`);
         
-        const withRatings = await fetchRatings(film);
+        let withRatings = film;
         
-        // Also try Letterboxd for festival films
-        if (!withRatings.imdbRating) {
+        // Try OMDB if we have API key
+        if (OMDB_API_KEY) {
+          withRatings = await fetchRatings(film);
+        }
+        
+        // Also try Letterboxd for all films (doesn't need API key)
+        if (!withRatings.imdbRating && !(withRatings as any).letterboxdRating) {
           const lbRating = await fetchLetterboxdRating(film);
           if (lbRating) {
             (withRatings as any).letterboxdRating = lbRating;
+            console.log(`    ✓ Letterboxd: ${lbRating}`);
           }
         }
         
@@ -502,9 +508,10 @@ async function main() {
     } else {
       console.log("\n\n⏭️  Step 2: All films already have ratings");
     }
-  } else if (!OMDB_API_KEY) {
-    console.log("\n\n⏭️  Skipping ratings (no OMDB_API_KEY set)");
-    console.log("   Get a free API key at: https://www.omdbapi.com/apikey.aspx");
+    
+    if (!OMDB_API_KEY) {
+      console.log("\n   ℹ️  Note: Set OMDB_API_KEY for IMDb ratings. Get one at: https://www.omdbapi.com/apikey.aspx");
+    }
   }
 
   // Step 3: Download posters (only missing ones - already incremental)
