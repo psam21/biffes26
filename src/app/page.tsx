@@ -7,10 +7,7 @@ import Image from "next/image";
 import {
   CategoryCard,
   FilmDrawer,
-  FestivalTicker,
   CategoryView,
-  FilmCard,
-  WatchlistButton,
   WatchlistIcon,
   ShareWatchlist,
   VirtualizedFilmGrid,
@@ -56,25 +53,6 @@ export default function Home() {
     categories: Category[];
     films: Film[];
   };
-
-  // Memoize filtered film arrays - computed once unless dependencies change
-  const fiveStarFilms = useMemo(() => 
-    films.filter(film => {
-      const score = getRatingScore(film);
-      return score !== null && score >= 4.5;
-    }), [films]);
-    
-  const fourHalfStarFilms = useMemo(() => 
-    films.filter(film => {
-      const score = getRatingScore(film);
-      return score !== null && score >= 4.0;
-    }), [films]);
-    
-  const fourStarFilms = useMemo(() => 
-    films.filter(film => {
-      const score = getRatingScore(film);
-      return score !== null && score >= 3.5;
-    }), [films]);
 
   // Memoize watchlist films - only recompute when watchlist or films change
   const watchlistFilms = useMemo(() => 
