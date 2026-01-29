@@ -13,7 +13,6 @@ import {
   formatDateLabel,
   RecommendedShowing,
 } from "@/lib/recommendations";
-import { RatingBadges } from "@/components/RatingBadges";
 import { formatDuration } from "@/lib/utils";
 import dynamic from "next/dynamic";
 
@@ -213,22 +212,14 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       {/* Time badge - inline on mobile */}
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base sm:text-lg font-bold text-amber-400">{rec.time}</span>
-                          <span className="text-[10px] sm:text-xs text-zinc-500">→ {rec.endTime}</span>
-                        </div>
-                        <RatingBadges film={rec.film} size="xs" className="flex-shrink-0 hidden sm:flex" />
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-base sm:text-lg font-bold text-amber-400">{rec.time}</span>
+                        <span className="text-[10px] sm:text-xs text-zinc-500">→ {rec.endTime}</span>
                       </div>
                       
                       <h3 className="font-semibold text-white text-sm sm:text-base leading-tight group-hover:text-amber-400 transition-colors line-clamp-2">
                         {rec.film.title}
                       </h3>
-                      
-                      {/* Ratings on mobile - below title */}
-                      <div className="sm:hidden mt-1">
-                        <RatingBadges film={rec.film} size="xs" />
-                      </div>
                       
                       <div className="flex items-center gap-1.5 mt-1 text-[11px] sm:text-xs text-zinc-500">
                         <span>{rec.film.language}</span>
