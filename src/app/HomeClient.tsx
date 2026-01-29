@@ -125,6 +125,13 @@ export default function HomeClient({ data }: HomeClientProps) {
   const awardFilmsCount = useMemo(() => 
     films.filter(film => film.awardsWon).length, [films]);
 
+  // Memoize rating filter counts - prevents recalculation on every render
+  const ratingFilterOptions = useMemo(() => [
+    { min: 4.5, label: "★★★★★", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 4.5; }).length },
+    { min: 4.0, label: "★★★★½", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 4.0; }).length },
+    { min: 3.5, label: "★★★★", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 3.5; }).length },
+  ], [films]);
+
   // Restore state from URL hash on initial load
   useEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -552,11 +559,7 @@ export default function HomeClient({ data }: HomeClientProps) {
             <section className="max-w-7xl mx-auto px-4 pb-6">
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="text-xs text-zinc-500">Filter by rating:</span>
-                {[
-                  { min: 4.5, label: "★★★★★", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 4.5; }).length },
-                  { min: 4.0, label: "★★★★½", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 4.0; }).length },
-                  { min: 3.5, label: "★★★★", count: films.filter(f => { const s = getRatingScore(f); return s !== null && s >= 3.5; }).length },
-                ].map(({ min, label, count }) => (
+                {ratingFilterOptions.map(({ min, label, count }) => (
                   <button
                     key={min}
                     onClick={() => handleRatingFilter(min)}
