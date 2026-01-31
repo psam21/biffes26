@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Film } from "@/types";
 import { WatchlistButton } from "@/components/WatchlistButton";
+import { SiteNav } from "@/components/SiteNav";
 
 interface Screening {
   date: string;
@@ -88,18 +89,16 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
     <div className="min-h-screen bg-zinc-950 text-white">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          {/* Site Navigation */}
+          <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
+            <SiteNav variant="minimal" />
+          </div>
+          
           <div className="flex items-center justify-between mb-3">
-            <Link href="/" className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              <span className="text-sm">Home</span>
-            </Link>
             <h1 className="text-lg font-bold">
               🎬 All Films <span className="text-zinc-500 font-normal">({filteredFilms.length})</span>
             </h1>
-            <div className="w-16" />
           </div>
           
           {/* Search */}

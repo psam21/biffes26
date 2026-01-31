@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { Film } from "@/types";
 import { RatingBadges } from "@/components/RatingBadges";
 import { WatchlistButton } from "@/components/WatchlistButton";
+import { SiteNav } from "@/components/SiteNav";
 
 // Lazy load FilmDrawer - only loaded when user clicks a film
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
@@ -244,16 +245,15 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-[1800px] mx-auto px-4 py-4">
+        <div className="max-w-[1800px] mx-auto px-4 py-3">
+          {/* Site Navigation */}
+          <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
+            <SiteNav variant="minimal" />
+          </div>
+          
           <div className="flex items-center justify-between mb-4">
-            <Link href="/" className="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              <span className="text-sm">Back to Films</span>
-            </Link>
             <h1 className="text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-              BIFFes 2026 Schedule
+              📅 BIFFes 2026 Schedule
             </h1>
             <div className="flex items-center gap-2">
               <button

@@ -6,7 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Film as FilmIcon } from "@/lib/icons";
 import { Category, Film } from "@/types";
-import { VirtualizedFilmGrid } from "@/components";
+import { VirtualizedFilmGrid, SiteNav } from "@/components";
 import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";
 
 const FilmDrawer = dynamic(
@@ -81,25 +81,21 @@ export default function CategoryClient({ category, films, scheduleData }: Catego
         {/* Category Header */}
         <div
           className={cn(
-            "bg-gradient-to-br py-8 sm:py-12 px-4 border-b",
+            "bg-gradient-to-br py-4 sm:py-6 px-4 border-b",
             getCategoryGradient(category.color),
             getCategoryBorderColor(category.color)
           )}
         >
           <div className="max-w-7xl mx-auto">
-            {/* Back button */}
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 sm:mb-6 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg px-2 py-1 -ml-2"
-            >
-              <span>←</span>
-              <span>Home</span>
-            </Link>
+            {/* Site Navigation */}
+            <div className="mb-4 -mx-1 overflow-x-auto scrollbar-hide">
+              <SiteNav variant="minimal" />
+            </div>
 
             {/* Category info */}
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white">
                   {category.name}
                 </h1>
                 <p className="mt-2 text-white/70 max-w-2xl text-sm sm:text-base">

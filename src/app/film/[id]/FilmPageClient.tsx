@@ -9,6 +9,7 @@ import { Film, Category } from "@/types";
 import { formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { RatingBadges } from "@/components/RatingBadges";
+import { SiteNav } from "@/components/SiteNav";
 
 interface Screening {
   date: string;
@@ -64,14 +65,11 @@ export function FilmPageClient({ film, category, allFilms, screenings }: FilmPag
     <main className="min-h-screen bg-zinc-950">
       {/* Header */}
       <div className="bg-zinc-900/50 border-b border-zinc-800">
-        <div className="max-w-5xl mx-auto px-4 py-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to Festival</span>
-          </Link>
+        <div className="max-w-5xl mx-auto px-4 py-3">
+          {/* Site Navigation */}
+          <div className="-mx-1 overflow-x-auto scrollbar-hide">
+            <SiteNav variant="minimal" />
+          </div>
         </div>
       </div>
 

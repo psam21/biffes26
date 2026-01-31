@@ -15,6 +15,7 @@ import {
 } from "@/lib/recommendations";
 import { formatDuration } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import { SiteNav } from "@/components/SiteNav";
 
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
   ssr: false,
@@ -108,15 +109,17 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
     <main className="min-h-screen bg-zinc-950">
       {/* Header */}
       <header className="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border-b border-amber-500/30">
-        <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6">
-          <div className="flex items-center justify-between mb-3">
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
-            >
-              <span>←</span>
-              <span className="text-sm">Back</span>
-            </Link>
+        <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4">
+          {/* Site Navigation */}
+          <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
+            <SiteNav variant="minimal" />
+          </div>
+          
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+              <span>✨</span>
+              Daily Picks
+            </h1>
             <button
               onClick={handleShare}
               className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm"
@@ -126,18 +129,12 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
             </button>
           </div>
           
-          <div className="text-center">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
-              <span>✨</span>
-              Best Films
-            </h1>
-            <p className="text-xs sm:text-sm text-amber-200/70 mt-1">
-              Optimized schedule based on ratings
-            </p>
-          </div>
+          <p className="text-xs sm:text-sm text-amber-200/70 mb-3">
+            Best films to watch each day, ranked by ratings
+          </p>
 
           {/* Date Selector - horizontal scroll on mobile */}
-          <div className="mt-4 -mx-4 px-4 overflow-x-auto scrollbar-hide">
+          <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide">
             <div className="flex gap-2 pb-2 min-w-max sm:justify-center sm:flex-wrap">
               {festivalDates.map(({ date, label }) => (
                 <button

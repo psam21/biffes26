@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { VirtualizedFilmGrid } from "@/components";
 import { WatchlistSchedule } from "@/components/WatchlistSchedule";
+import { SiteNav } from "@/components/SiteNav";
 import { Film } from "@/types";
 import { useWatchlist } from "@/lib/watchlist-context";
 
@@ -85,20 +86,17 @@ export default function WatchlistClient({ films, scheduleData }: WatchlistClient
         className="min-h-screen"
       >
         {/* Header */}
-        <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/20 py-8 sm:py-12 px-4 border-b border-green-800/30">
+        <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/20 py-4 sm:py-6 px-4 border-b border-green-800/30">
           <div className="max-w-7xl mx-auto">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 sm:mb-6 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-transparent rounded-lg px-2 py-1 -ml-2"
-            >
-              <span>←</span>
-              <span>Home</span>
-            </Link>
+            {/* Site Navigation */}
+            <div className="mb-4 -mx-1 overflow-x-auto scrollbar-hide">
+              <SiteNav variant="minimal" />
+            </div>
 
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-                  <span className="text-green-500">✓</span>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+                  <span className="text-green-500">❤️</span>
                   My Watchlist
                 </h1>
                 <p className="mt-2 text-white/70 text-sm sm:text-base">
