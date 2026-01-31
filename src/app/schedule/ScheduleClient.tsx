@@ -187,19 +187,90 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   }, [todayIndex]);
 
   // Create a mapping from film title (uppercase) to Film object
+  // Include normalized versions and known aliases for better matching
   const filmsByTitle = useMemo(() => {
     const map = new Map<string, Film>();
+    
+    // Helper to normalize title for matching
+    const normalize = (title: string) => {
+      return title
+        .toUpperCase()
+        .replace(/[^A-Z0-9\s]/g, '') // Remove punctuation
+        .replace(/\s+/g, ' ')         // Normalize whitespace
+        .trim();
+    };
+    
     films.forEach(film => {
-      map.set(film.title.toUpperCase(), film);
+      const upper = film.title.toUpperCase();
+      map.set(upper, film);
+      
+      // Also add normalized version
+      const normalized = normalize(film.title);
+      if (normalized !== upper) {
+        map.set(normalized, film);
+      }
     });
+    
+    // Known title variations in schedule vs database
+    const titleAliases: Record<string, string> = {
+      // Title variations
+      'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1',
+      'FIRE FLY': 'FLAMES', // Kannada film
+      'MOSQUITOS': 'MOSQUITOES',
+      'GEHENU LAMAI': 'GEHENNU LAMAI',
+      'ASAD AND BEAUTIFUL WORLD': 'A SAD AND BEAUTIFUL WORLD',
+      'JHANE MOVES TO THE COUNTRY': 'JANINE MOVES TO THE COUNTRY',
+      'THE SEASONS, TWO STRANGERS': 'TWO SEASONS, TWO STRANGERS',
+      'ANMOL - LOVINGLY OURS': 'ANMOL- LOVINGLY OURS',
+      'KONTINENTAL 25': "KONTINENTAL '25",
+      'LA CHAPELLE': 'THE CHAPEL',
+      'LA VIE EST BELLE': 'LIFE IS ROSY',
+      'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
+      "WERODON, L'ENFANT DU BON DIEU": "WENDEMI, THE GOOD LORD'S CHILD",
+      'TETES BRULEES': 'TÊTES BRÛLÉES',
+      'SAMBA TRAORE': 'SAMBA TRAORÉ',
+      'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
+      'CALLE MALAGA': 'CALLE MÁLAGA',
+      'BELEN': 'BELÉN',
+      'NINO OF POPULAR ENTERTAINMENT': 'NINO',
+      'SARKEET': 'SIRĀT',
+      'THAAY! SAHEBA': 'THAAYI SAHEBA',
+      'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+      'SIR JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+      'AGNIVATHWASI': 'AGNYATHAVASI',
+      'ACCIDENT': 'IT WAS JUST AN ACCIDENT',
+      'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
+    };
+    
+    // Add aliases pointing to the same films
+    Object.entries(titleAliases).forEach(([scheduleTitle, dbTitle]) => {
+      const film = map.get(dbTitle.toUpperCase()) || map.get(normalize(dbTitle));
+      if (film) {
+        map.set(scheduleTitle.toUpperCase(), film);
+        map.set(normalize(scheduleTitle), film);
+      }
+    });
+    
     return map;
   }, [films]);
+  
+  // Helper to find film by schedule title
+  const findFilmByTitle = useCallback((scheduleTitle: string): Film | undefined => {
+    const upper = scheduleTitle.toUpperCase();
+    if (filmsByTitle.has(upper)) return filmsByTitle.get(upper);
+    
+    // Try normalized version
+    const normalized = upper.replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+    if (filmsByTitle.has(normalized)) return filmsByTitle.get(normalized);
+    
+    return undefined;
+  }, [filmsByTitle]);
 
   const currentDay = days[selectedDay];
 
   // Handle film click - navigate to film page
   const handleFilmClick = useCallback((filmTitle: string, openInNewTab = false) => {
-    const film = filmsByTitle.get(filmTitle.toUpperCase());
+    const film = findFilmByTitle(filmTitle);
     if (film) {
       if (openInNewTab) {
         window.open(`/film/${film.id}`, '_blank');
@@ -208,7 +279,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
         setIsDrawerOpen(true);
       }
     }
-  }, [filmsByTitle]);
+  }, [findFilmByTitle]);
 
   const handleCloseDrawer = useCallback(() => {
     setIsDrawerOpen(false);
@@ -473,8 +544,8 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                           {/* Films at this time - now as mini cards */}
                           <div className="flex-1 p-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                             {showings.map((showing, idx) => {
-                              const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
-                              const filmData = filmsByTitle.get(showing.film.toUpperCase());
+                              const filmData = findFilmByTitle(showing.film);
+                              const hasFilmData = !!filmData;
                               const nowShowing = isNowShowing(time, showing.duration, isSelectedDayToday);
                               return (
                                 <div 
@@ -587,8 +658,8 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                           
                           <div className="divide-y divide-white/5">
                             {screen.showings.map((showing, idx) => {
-                              const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
-                              const filmData = filmsByTitle.get(showing.film.toUpperCase());
+                              const filmData = findFilmByTitle(showing.film);
+                              const hasFilmData = !!filmData;
                               const nowShowing = isNowShowing(showing.time, showing.duration, isSelectedDayToday);
                               return (
                                 <div
