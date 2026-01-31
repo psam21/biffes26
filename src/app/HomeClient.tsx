@@ -258,6 +258,18 @@ export default function HomeClient({ data }: HomeClientProps) {
                 </motion.div>
               </Link>
 
+              {/* All Films A-Z */}
+              <Link href="/films">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl transition-colors bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30"
+                >
+                  <span className="text-lg">🎬</span>
+                  <span className="text-sm text-white font-medium">A-Z</span>
+                </motion.div>
+              </Link>
+
               {/* Daily Recommendations */}
               <Link href="/recommendations">
                 <motion.div
