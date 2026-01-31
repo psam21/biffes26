@@ -35,7 +35,7 @@ function getCurrentTimeMinutesIST(): number {
 }
 
 // Check if a showing is currently playing
-function isNowShowing(time: string, duration: number, isToday: boolean): boolean {
+function isNowShowing(time: string, duration: number | undefined, isToday: boolean): boolean {
   if (!isToday) return false;
   const currentMinutes = getCurrentTimeMinutesIST();
   const [hours, mins] = time.split(':').map(Number);
@@ -47,11 +47,11 @@ function isNowShowing(time: string, duration: number, isToday: boolean): boolean
 interface Showing {
   time: string;
   film: string;
-  director: string;
-  country: string;
-  year: number;
-  language: string;
-  duration: number;
+  director?: string;
+  country?: string;
+  year?: number;
+  language?: string;
+  duration?: number;
   special?: string;
   filmId?: string;
 }
@@ -715,9 +715,9 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       {filmData && <RatingBadges film={filmData} size="xs" className="mt-1 flex-row flex-wrap" />}
                                       <div className="flex items-center gap-2 mt-1 text-[10px] text-white/40 flex-wrap">
                                         {showing.country && <span>{showing.country}</span>}
-                                        {showing.year > 0 && <span>• {showing.year}</span>}
+                                        {showing.year && showing.year > 0 && <span>• {showing.year}</span>}
                                         {showing.language && <span>• {showing.language}</span>}
-                                        {showing.duration > 0 && <span>• {formatDuration(showing.duration)}</span>}
+                                        {showing.duration && showing.duration > 0 && <span>• {formatDuration(showing.duration)}</span>}
                                       </div>
                                     </div>
                                   </div>

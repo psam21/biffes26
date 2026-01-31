@@ -3,11 +3,11 @@ import { Film } from "@/types";
 interface Showing {
   time: string;
   film: string;
-  director: string;
-  country: string;
-  year: number;
-  language: string;
-  duration: number;
+  director?: string;
+  country?: string;
+  year?: number;
+  language?: string;
+  duration?: number;
 }
 
 interface Screening {

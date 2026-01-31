@@ -25,11 +25,11 @@ interface ScheduleData {
       showings: Array<{
         time: string;
         film: string;
-        director: string;
-        country: string;
-        year: number;
-        language: string;
-        duration: number;
+        director?: string;
+        country?: string;
+        year?: number;
+        language?: string;
+        duration?: number;
       }>;
     }>;
   }>;

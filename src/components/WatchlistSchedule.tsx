@@ -7,11 +7,11 @@ import { Film } from "@/types";
 interface Showing {
   time: string;
   film: string;
-  director: string;
-  country: string;
-  year: number;
-  language: string;
-  duration: number;
+  director?: string;
+  country?: string;
+  year?: number;
+  language?: string;
+  duration?: number;
 }
 
 interface ScreenSchedule {
@@ -63,7 +63,7 @@ interface ScheduledShowing {
   venueName: string;
   screen: string;
   film: Film;
-  duration: number;
+  duration?: number;
 }
 
 export function WatchlistSchedule({ watchlistFilms, scheduleData, onFilmClick }: WatchlistScheduleProps) {
@@ -235,7 +235,7 @@ export function WatchlistSchedule({ watchlistFilms, scheduleData, onFilmClick }:
               const [bHour, bMin] = b.time.split(":").map(Number);
               const aMinutes = aHour * 60 + aMin;
               const bMinutes = bHour * 60 + bMin;
-              const aEnd = aMinutes + a.duration;
+              const aEnd = aMinutes + (a.duration || 120);
               // Check if b starts before a ends
               if (bMinutes < aEnd && bMinutes >= aMinutes) {
                 conflicts.push([a, b]);
