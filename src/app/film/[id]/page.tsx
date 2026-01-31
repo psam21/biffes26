@@ -2,10 +2,49 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FilmPageClient } from "./FilmPageClient";
 import biffesData from "@/data/biffes_data.json";
+import scheduleData from "@/data/schedule_data.json";
 import { Film, Category } from "@/types";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+}
+
+interface Screening {
+  date: string;
+  dayLabel: string;
+  time: string;
+  venue: string;
+  screen: string;
+}
+
+// Build screening lookup from schedule data
+function getScreeningsForFilm(filmTitle: string): Screening[] {
+  const screenings: Screening[] = [];
+  const filmKey = filmTitle.toUpperCase();
+  
+  for (const day of scheduleData.days) {
+    for (const screening of day.screenings) {
+      for (const showing of screening.showings) {
+        if (showing.film.toUpperCase() === filmKey) {
+          screenings.push({
+            date: day.date,
+            dayLabel: day.label,
+            time: showing.time,
+            venue: screening.venue,
+            screen: screening.screen,
+          });
+        }
+      }
+    }
+  }
+  
+  // Sort by date and time
+  screenings.sort((a, b) => {
+    if (a.date !== b.date) return a.date.localeCompare(b.date);
+    return a.time.localeCompare(b.time);
+  });
+  
+  return screenings;
 }
 
 // Generate static paths for all films
@@ -50,6 +89,7 @@ export default async function FilmPage({ params }: PageProps) {
   }
 
   const category = categories.find((c) => c.id === film.categoryId);
+  const screenings = getScreeningsForFilm(film.title);
 
-  return <FilmPageClient film={film} category={category} allFilms={films} />;
+  return <FilmPageClient film={film} category={category} allFilms={films} screenings={screenings} />;
 }

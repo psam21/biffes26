@@ -10,13 +10,47 @@ import { formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { RatingBadges } from "@/components/RatingBadges";
 
+interface Screening {
+  date: string;
+  dayLabel: string;
+  time: string;
+  venue: string;
+  screen: string;
+}
+
 interface FilmPageClientProps {
   film: Film;
   category?: Category;
   allFilms: Film[];
+  screenings: Screening[];
 }
 
-export function FilmPageClient({ film, category, allFilms }: FilmPageClientProps) {
+const venueNames: Record<string, string> = {
+  cinepolis: "LuLu Mall",
+  rajkumar: "Dr. Rajkumar Bhavana",
+  banashankari: "Suchitra Cinema",
+  openair: "Open Air @ LuLu",
+};
+
+const venueColors: Record<string, string> = {
+  cinepolis: "bg-blue-500/20 border-blue-500/30 text-blue-300",
+  rajkumar: "bg-amber-500/20 border-amber-500/30 text-amber-300",
+  banashankari: "bg-green-500/20 border-green-500/30 text-green-300",
+  openair: "bg-purple-500/20 border-purple-500/30 text-purple-300",
+};
+
+function formatScreeningDate(dateStr: string): string {
+  const date = new Date(dateStr + "T12:00:00");
+  return date.toLocaleDateString("en-IN", { weekday: "short", month: "short", day: "numeric" });
+}
+
+function formatScreenName(venue: string, screen: string): string {
+  if (venue === "openair") return "Open Air";
+  if (screen === "Open Forum") return "Open Forum";
+  return `Screen ${screen}`;
+}
+
+export function FilmPageClient({ film, category, allFilms, screenings }: FilmPageClientProps) {
   const [hasError, setHasError] = useState(false);
 
   const currentImgSrc = hasError && film.posterUrlRemote ? film.posterUrlRemote : film.posterUrl;
@@ -217,6 +251,42 @@ export function FilmPageClient({ film, category, allFilms }: FilmPageClientProps
                 </div>
               )}
             </div>
+
+            {/* Screenings */}
+            {screenings.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Screenings ({screenings.length})
+                </h3>
+                <div className="grid gap-2">
+                  {screenings.map((s, i) => (
+                    <div
+                      key={i}
+                      className={`flex items-center justify-between gap-3 px-4 py-3 rounded-lg border ${venueColors[s.venue] || "bg-zinc-800 border-zinc-700 text-zinc-300"}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="text-center min-w-[60px]">
+                          <div className="text-lg font-bold">{s.time}</div>
+                          <div className="text-xs opacity-70">{formatScreeningDate(s.date)}</div>
+                        </div>
+                        <div className="h-8 w-px bg-current opacity-20" />
+                        <div>
+                          <div className="font-medium">{venueNames[s.venue] || s.venue}</div>
+                          <div className="text-xs opacity-70">{formatScreenName(s.venue, s.screen)}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {screenings.length === 0 && (
+              <div className="bg-zinc-900/50 rounded-lg p-4 text-center">
+                <p className="text-zinc-500 text-sm">No scheduled screenings found</p>
+              </div>
+            )}
 
             {/* Synopsis */}
             {film.synopsis && (
