@@ -103,8 +103,8 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
           </div>
         )}
 
-        {/* Watchlist button (top-right) */}
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        {/* Watchlist button (top-right) - always visible on mobile, hover on desktop */}
+        <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
           <WatchlistButton filmId={film.id} />
         </div>
 

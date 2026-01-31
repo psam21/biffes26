@@ -25,6 +25,25 @@ function getTodayIST(): string {
   return istTime.toISOString().split('T')[0]; // Returns YYYY-MM-DD
 }
 
+// Get current time in IST as minutes since midnight
+function getCurrentTimeMinutesIST(): number {
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+  const istTime = new Date(utcTime + istOffset);
+  return istTime.getHours() * 60 + istTime.getMinutes();
+}
+
+// Check if a showing is currently playing
+function isNowShowing(time: string, duration: number, isToday: boolean): boolean {
+  if (!isToday) return false;
+  const currentMinutes = getCurrentTimeMinutesIST();
+  const [hours, mins] = time.split(':').map(Number);
+  const showingStart = hours * 60 + mins;
+  const showingEnd = showingStart + (duration || 120);
+  return currentMinutes >= showingStart && currentMinutes < showingEnd;
+}
+
 interface Showing {
   time: string;
   film: string;
@@ -119,6 +138,18 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [currentTimeMinutes, setCurrentTimeMinutes] = useState(getCurrentTimeMinutesIST);
+
+  // Update current time every minute for "Now Showing" indicator
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTimeMinutes(getCurrentTimeMinutesIST());
+    }, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
+
+  // Check if selected day is today (for Now Showing indicator)
+  const isSelectedDayToday = days[selectedDay]?.date === todayIST;
 
   // Set correct day after hydration
   useEffect(() => {
@@ -436,19 +467,27 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                             {showings.map((showing, idx) => {
                               const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
                               const filmData = filmsByTitle.get(showing.film.toUpperCase());
+                              const nowShowing = isNowShowing(time, showing.duration, isSelectedDayToday);
                               return (
                                 <div 
                                   key={idx}
-                                  className={`${colors.bg} ${colors.border} border rounded-lg p-3 relative group ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : ""}`}
+                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : ""}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
                                   role={hasFilmData ? "button" : undefined}
                                   tabIndex={hasFilmData ? 0 : undefined}
                                   onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
+                                  {/* Now Showing badge */}
+                                  {nowShowing && (
+                                    <div className="absolute -top-2 left-2 flex items-center gap-1 bg-green-500 text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">
+                                      <span className="w-1 h-1 bg-black rounded-full"></span>
+                                      LIVE
+                                    </div>
+                                  )}
                                   {/* Watchlist button */}
                                   {filmData && (
                                     <div 
-                                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                      className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <WatchlistButton filmId={filmData.id} />
@@ -538,10 +577,12 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                             {screen.showings.map((showing, idx) => {
                               const hasFilmData = filmsByTitle.has(showing.film.toUpperCase());
                               const filmData = filmsByTitle.get(showing.film.toUpperCase());
+                              const nowShowing = isNowShowing(showing.time, showing.duration, isSelectedDayToday);
                               return (
                                 <div
                                   key={idx}
                                   className={`p-3 transition-colors relative group ${
+                                    nowShowing ? "bg-green-500/20 border-l-4 border-green-400" :
                                     showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
                                   } ${hasFilmData ? "hover:bg-white/10 cursor-pointer" : "hover:bg-white/5"}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
@@ -549,16 +590,23 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                   tabIndex={hasFilmData ? 0 : undefined}
                                   onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
+                                  {/* Now Showing badge */}
+                                  {nowShowing && (
+                                    <div className="absolute top-2 left-2 flex items-center gap-1 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                      <span className="w-1.5 h-1.5 bg-black rounded-full"></span>
+                                      NOW
+                                    </div>
+                                  )}
                                   {/* Watchlist button */}
                                   {filmData && (
                                     <div 
-                                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                      className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <WatchlistButton filmId={filmData.id} />
                                     </div>
                                   )}
-                                  <div className="flex items-start gap-3">
+                                  <div className={`flex items-start gap-3 ${nowShowing ? "mt-6" : ""}`}>
                                     <div className="text-sm font-mono font-bold text-yellow-400 w-14 flex-shrink-0">
                                       {showing.time}
                                     </div>

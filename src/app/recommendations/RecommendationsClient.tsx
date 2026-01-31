@@ -16,6 +16,7 @@ import {
 import { formatDuration } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { SiteNav } from "@/components/SiteNav";
+import { useWatchlist } from "@/lib/watchlist-context";
 
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
   ssr: false,
@@ -59,7 +60,9 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
   const [selectedDate, setSelectedDate] = useState(dateParam || getCurrentFestivalDate());
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [addingAll, setAddingAll] = useState(false);
   
+  const { watchlist, addToWatchlist, isInWatchlist } = useWatchlist();
   const festivalDates = getFestivalDates();
 
   // Update URL when date changes
@@ -105,6 +108,24 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
     }
   };
 
+  // Count how many recommendations are already in watchlist
+  const inWatchlistCount = recommendations.filter(r => isInWatchlist(r.film.id)).length;
+  const allInWatchlist = recommendations.length > 0 && inWatchlistCount === recommendations.length;
+
+  const handleAddAllToWatchlist = async () => {
+    if (addingAll || allInWatchlist) return;
+    setAddingAll(true);
+    try {
+      for (const rec of recommendations) {
+        if (!isInWatchlist(rec.film.id)) {
+          await addToWatchlist(rec.film.id);
+        }
+      }
+    } finally {
+      setAddingAll(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-zinc-950">
       {/* Header */}
@@ -120,13 +141,49 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
               <span>✨</span>
               Daily Picks
             </h1>
-            <button
-              onClick={handleShare}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm"
-            >
-              <span>📤</span>
-              <span className="text-zinc-300 hidden sm:inline">Share</span>
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Add All to Watchlist button */}
+              {recommendations.length > 0 && (
+                <button
+                  onClick={handleAddAllToWatchlist}
+                  disabled={addingAll || allInWatchlist}
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-sm ${
+                    allInWatchlist
+                      ? "bg-green-600/30 text-green-300 cursor-default"
+                      : addingAll
+                      ? "bg-zinc-700 text-zinc-400 cursor-wait"
+                      : "bg-rose-600/30 hover:bg-rose-600/50 text-rose-200"
+                  }`}
+                >
+                  {allInWatchlist ? (
+                    <>
+                      <span>✓</span>
+                      <span className="hidden sm:inline">All Added</span>
+                    </>
+                  ) : addingAll ? (
+                    <>
+                      <span className="animate-spin">⏳</span>
+                      <span className="hidden sm:inline">Adding...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>❤️</span>
+                      <span className="hidden sm:inline">Add All</span>
+                      {inWatchlistCount > 0 && (
+                        <span className="text-xs opacity-70">({recommendations.length - inWatchlistCount})</span>
+                      )}
+                    </>
+                  )}
+                </button>
+              )}
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm"
+              >
+                <span>📤</span>
+                <span className="text-zinc-300 hidden sm:inline">Share</span>
+              </button>
+            </div>
           </div>
           
           <p className="text-xs sm:text-sm text-amber-200/70 mb-3">

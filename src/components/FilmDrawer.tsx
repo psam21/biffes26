@@ -85,6 +85,42 @@ function getScreeningsForFilm(filmTitle: string, scheduleData?: ScheduleData): S
   return screenings;
 }
 
+// Get next upcoming screening
+function getNextScreening(screenings: Screening[]): { screening: Screening; isNow: boolean; isToday: boolean } | null {
+  if (screenings.length === 0) return null;
+  
+  // Get current IST time
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+  const istTime = new Date(utcTime + istOffset);
+  const todayIST = istTime.toISOString().split('T')[0];
+  const currentMinutes = istTime.getHours() * 60 + istTime.getMinutes();
+  
+  for (const screening of screenings) {
+    const [hours, mins] = screening.time.split(':').map(Number);
+    const screeningMinutes = hours * 60 + mins;
+    
+    // Future date
+    if (screening.date > todayIST) {
+      return { screening, isNow: false, isToday: false };
+    }
+    
+    // Today - check if it's upcoming or currently showing
+    if (screening.date === todayIST) {
+      // Assume 2 hour duration for "now showing" check
+      if (currentMinutes >= screeningMinutes && currentMinutes < screeningMinutes + 120) {
+        return { screening, isNow: true, isToday: true };
+      }
+      if (screeningMinutes > currentMinutes) {
+        return { screening, isNow: false, isToday: true };
+      }
+    }
+  }
+  
+  return null;
+}
+
 function formatScreenName(venue: string, screen: string): string {
   if (venue === "openair") return "Open Air";
   return `Screen ${screen}`;
@@ -123,6 +159,11 @@ export function FilmDrawer({
     if (!film) return [];
     return getScreeningsForFilm(film.title, scheduleData);
   }, [film, scheduleData]);
+
+  // Get next/current screening
+  const nextScreeningInfo = useMemo(() => {
+    return getNextScreening(screenings);
+  }, [screenings]);
 
   const navigatePrev = useCallback(() => {
     if (canGoPrev && onNavigate) {
@@ -305,6 +346,39 @@ export function FilmDrawer({
 
             {/* Content */}
             <div className="p-6 space-y-6">
+              {/* Next/Current Screening Banner */}
+              {nextScreeningInfo && (
+                <div className={`-mx-6 -mt-6 px-6 py-3 ${
+                  nextScreeningInfo.isNow 
+                    ? "bg-green-500/20 border-b border-green-500/30" 
+                    : nextScreeningInfo.isToday
+                    ? "bg-amber-500/20 border-b border-amber-500/30"
+                    : "bg-blue-500/20 border-b border-blue-500/30"
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {nextScreeningInfo.isNow ? (
+                        <span className="flex items-center gap-1.5 text-green-400 font-semibold text-sm">
+                          <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                          NOW SHOWING
+                        </span>
+                      ) : nextScreeningInfo.isToday ? (
+                        <span className="text-amber-400 font-semibold text-sm">⏰ TODAY</span>
+                      ) : (
+                        <span className="text-blue-400 font-semibold text-sm">📅 NEXT</span>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <div className="text-white font-bold">{nextScreeningInfo.screening.time}</div>
+                      <div className="text-xs text-zinc-400">
+                        {nextScreeningInfo.isToday ? "" : nextScreeningInfo.screening.dayLabel.split(" - ")[0] + " • "}
+                        {venueNames[nextScreeningInfo.screening.venue]}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Title and Watchlist button */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
