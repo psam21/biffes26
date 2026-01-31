@@ -74,7 +74,7 @@
       "venue": "cinepolis",
       "screen": "7",
       "showings": [
-        {"time": "05:40", "film": "DEAD DOG", "director": "Sarah Francis", "country": "Lebanon", "year": 2025, "language": "Arabic", "duration": 92},
+        {"time": "09:40", "film": "DEAD DOG", "director": "Sarah Francis", "country": "Lebanon", "year": 2025, "language": "Arabic", "duration": 92},
         {"time": "11:40", "film": "BHAKTA KANAKADASA", "director": "Y. R. Swamy", "country": "India", "year": 1960, "language": "Kannada", "duration": 127},
         {"time": "14:30", "film": "HUMAN RESOURCE", "director": "Nawapol Thamrongrattanarit", "country": "Thailand", "year": 2025, "language": "Thai", "duration": 122},
         {"time": "17:00", "film": "FATHER", "director": "Tereza Nvotova", "country": "Slovakia", "year": 2025, "language": "Slovak", "duration": 103},

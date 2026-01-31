@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -13,6 +13,16 @@ const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ 
   ssr: false,
   loading: () => null,
 });
+
+// Get current date in India timezone (IST = UTC+5:30)
+function getTodayIST(): string {
+  const now = new Date();
+  // Convert to IST by adding 5:30 hours offset
+  const istOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+  const istTime = new Date(utcTime + istOffset);
+  return istTime.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+}
 
 interface Showing {
   time: string;
@@ -74,15 +84,67 @@ const venueIcons: Record<string, string> = {
 };
 
 export default function ScheduleClient({ scheduleData, films }: ScheduleClientProps) {
-  const [selectedDay, setSelectedDay] = useState(0);
+  const days = scheduleData.days;
+  const venues = scheduleData.schedule.venues;
+
+  // Get today's date in IST and find the matching day index
+  const todayIST = useMemo(() => getTodayIST(), []);
+  const todayIndex = useMemo(() => {
+    const idx = days.findIndex(day => day.date === todayIST);
+    // If today is before festival, show first day; if after, show last day
+    if (idx === -1) {
+      if (todayIST < days[0].date) return 0;
+      if (todayIST > days[days.length - 1].date) return days.length - 1;
+      return 0;
+    }
+    return idx;
+  }, [days, todayIST]);
+
+  const [selectedDay, setSelectedDay] = useState(() => {
+    // Calculate on client side to avoid SSR mismatch
+    if (typeof window === 'undefined') return 0;
+    const today = getTodayIST();
+    const idx = days.findIndex(day => day.date === today);
+    if (idx === -1) {
+      if (today < days[0].date) return 0;
+      if (today > days[days.length - 1].date) return days.length - 1;
+      return 0;
+    }
+    return idx;
+  });
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"compact" | "cards">("cards");
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const days = scheduleData.days;
-  const venues = scheduleData.schedule.venues;
+  // Set correct day after hydration
+  useEffect(() => {
+    if (!hasMounted) {
+      setHasMounted(true);
+      setSelectedDay(todayIndex);
+    }
+  }, [hasMounted, todayIndex]);
+
+  // Check if a day is in the past (before today in IST)
+  const isDayPast = useCallback((date: string) => date < todayIST, [todayIST]);
+
+  // Ref for day tabs container to scroll to today
+  const dayTabsRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll to today's tab on mount
+  useEffect(() => {
+    if (dayTabsRef.current && todayIndex > 0) {
+      const container = dayTabsRef.current;
+      const buttons = container.querySelectorAll('button');
+      if (buttons[todayIndex]) {
+        const button = buttons[todayIndex] as HTMLElement;
+        const scrollLeft = button.offsetLeft - container.offsetWidth / 2 + button.offsetWidth / 2;
+        container.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
+      }
+    }
+  }, [todayIndex]);
 
   // Create a mapping from film title (uppercase) to Film object
   const filmsByTitle = useMemo(() => {
@@ -216,23 +278,34 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
           </div>
           
           {/* Day Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {days.map((day, index) => (
-              <button
-                key={day.date}
-                onClick={() => setSelectedDay(index)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  selectedDay === index
-                    ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black"
-                    : "bg-white/10 text-white/70 hover:bg-white/20"
-                }`}
-              >
-                <span className="block">{day.label.split(" - ")[0]}</span>
-                <span className="block text-xs opacity-70">
-                  {new Date(day.date).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
-                </span>
-              </button>
-            ))}
+          <div ref={dayTabsRef} className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {days.map((day, index) => {
+              const isPast = isDayPast(day.date);
+              const isToday = day.date === todayIST;
+              const isSelected = selectedDay === index;
+              
+              return (
+                <button
+                  key={day.date}
+                  onClick={() => setSelectedDay(index)}
+                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all relative ${
+                    isSelected
+                      ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black"
+                      : isPast
+                        ? "bg-white/5 text-white/30 hover:bg-white/10"
+                        : "bg-white/10 text-white/70 hover:bg-white/20"
+                  }`}
+                >
+                  {isToday && !isSelected && (
+                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full" />
+                  )}
+                  <span className="block">{day.label.split(" - ")[0]}</span>
+                  <span className={`block text-xs ${isPast && !isSelected ? "opacity-50" : "opacity-70"}`}>
+                    {isToday ? "Today" : new Date(day.date).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </header>

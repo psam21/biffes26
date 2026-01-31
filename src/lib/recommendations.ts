@@ -248,14 +248,15 @@ export function generateRecommendations(
 // Get all available festival dates
 export function getFestivalDates(): { date: string; label: string }[] {
   return [
-    { date: '2026-01-30', label: 'Thu, Jan 30' },
-    { date: '2026-01-31', label: 'Fri, Jan 31' },
-    { date: '2026-02-01', label: 'Sat, Feb 1' },
-    { date: '2026-02-02', label: 'Sun, Feb 2' },
-    { date: '2026-02-03', label: 'Mon, Feb 3' },
-    { date: '2026-02-04', label: 'Tue, Feb 4' },
-    { date: '2026-02-05', label: 'Wed, Feb 5' },
-    { date: '2026-02-06', label: 'Thu, Feb 6' },
+    { date: '2026-01-29', label: 'Thu, Jan 29' },
+    { date: '2026-01-30', label: 'Fri, Jan 30' },
+    { date: '2026-01-31', label: 'Sat, Jan 31' },
+    { date: '2026-02-01', label: 'Sun, Feb 1' },
+    { date: '2026-02-02', label: 'Mon, Feb 2' },
+    { date: '2026-02-03', label: 'Tue, Feb 3' },
+    { date: '2026-02-04', label: 'Wed, Feb 4' },
+    { date: '2026-02-05', label: 'Thu, Feb 5' },
+    { date: '2026-02-06', label: 'Fri, Feb 6' },
   ];
 }
 

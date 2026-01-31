@@ -1,6 +1,6 @@
 {
   "schedule": {
-    "lastUpdated": "2026-01-30T12:00:00.000Z",
+    "lastUpdated": "2026-01-31T03:32:06.513Z",
     "source": "film schedule curve (29th Jan) - 12 pages.pdf (Image extracted)",
     "note": "Schedule extracted directly from PDF images. Verified against official schedule.",
     "venues": {
@@ -90,7 +90,7 @@
             {
               "time": "10:40",
               "film": "THE DEVIL SMOKES",
-              "director": "Ernesto Mart\u00ednez Bucio",
+              "director": "Ernesto Martínez Bucio",
               "country": "Mexico",
               "year": 2025,
               "language": "Spanish",
@@ -935,7 +935,7 @@
           "screen": "7",
           "showings": [
             {
-              "time": "05:40",
+              "time": "09:40",
               "film": "DEAD DOG",
               "director": "Sarah Francis",
               "country": "Lebanon",
@@ -1911,7 +1911,7 @@
             {
               "time": "11:50",
               "film": "THE DEVIL SMOKES",
-              "director": "Ernesto Mart\u00ednez Bucio",
+              "director": "Ernesto Martínez Bucio",
               "country": "Mexico",
               "year": 2025,
               "language": "Spanish",
