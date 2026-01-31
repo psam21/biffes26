@@ -169,15 +169,14 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
                   BIFFes
                 </span>
               </h1>
-              <p className="text-sm text-zinc-400 mt-1">
-                January 29 – February 6, 2026
-              </p>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+                <span>January 29 – February 6, 2026</span>
+                <span className="mx-2 text-zinc-600">|</span>
                 <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
                 {" • "}
-                <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Dr. Rajkumar Bhavana</a>
+                <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Rajkumar Bhavana</a>
                 {" • "}
-                <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
+                <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra</a>
               </p>
             </motion.div>
 
