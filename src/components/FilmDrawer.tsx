@@ -4,10 +4,91 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight, ExternalLink } from "@/lib/icons";
+import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight, ExternalLink, MapPin } from "@/lib/icons";
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "./WatchlistButton";
+
+interface Screening {
+  date: string;
+  dayLabel: string;
+  time: string;
+  venue: string;
+  screen: string;
+}
+
+interface ScheduleData {
+  days: Array<{
+    date: string;
+    dayNumber: number;
+    label: string;
+    screenings: Array<{
+      venue: string;
+      screen: string;
+      showings: Array<{
+        time: string;
+        film: string;
+        director: string;
+        country: string;
+        year: number;
+        language: string;
+        duration: number;
+      }>;
+    }>;
+  }>;
+  schedule: {
+    venues: Record<string, { name: string; location: string; screens?: number }>;
+  };
+}
+
+const venueNames: Record<string, string> = {
+  cinepolis: "LuLu Mall Cinepolis",
+  rajkumar: "Dr. Rajkumar Rangamandira",
+  banashankari: "Suchitra Banashankari",
+  openair: "PVR INOX Open Air",
+};
+
+const drawerVenueColors: Record<string, string> = {
+  cinepolis: "bg-blue-500/15 border-blue-500/30 text-blue-300",
+  rajkumar: "bg-amber-500/15 border-amber-500/30 text-amber-300",
+  banashankari: "bg-green-500/15 border-green-500/30 text-green-300",
+  openair: "bg-purple-500/15 border-purple-500/30 text-purple-300",
+};
+
+function getScreeningsForFilm(filmTitle: string, scheduleData?: ScheduleData): Screening[] {
+  if (!scheduleData) return [];
+  const screenings: Screening[] = [];
+  const filmKey = filmTitle.toUpperCase();
+
+  for (const day of scheduleData.days) {
+    for (const screening of day.screenings) {
+      for (const showing of screening.showings) {
+        if (showing.film.toUpperCase() === filmKey) {
+          screenings.push({
+            date: day.date,
+            dayLabel: day.label,
+            time: showing.time,
+            venue: screening.venue,
+            screen: screening.screen,
+          });
+        }
+      }
+    }
+  }
+
+  // Sort by date and time
+  screenings.sort((a, b) => {
+    if (a.date !== b.date) return a.date.localeCompare(b.date);
+    return a.time.localeCompare(b.time);
+  });
+
+  return screenings;
+}
+
+function formatScreenName(venue: string, screen: string): string {
+  if (venue === "openair") return "Open Air";
+  return `Screen ${screen}`;
+}
 
 interface FilmDrawerProps {
   film: Film | null;
@@ -17,6 +98,8 @@ interface FilmDrawerProps {
   films?: Film[];
   currentIndex?: number;
   onNavigate?: (film: Film, index: number) => void;
+  // Schedule props for showing screenings
+  scheduleData?: ScheduleData;
 }
 
 export function FilmDrawer({ 
@@ -25,7 +108,8 @@ export function FilmDrawer({
   onClose, 
   films = [],
   currentIndex = -1,
-  onNavigate 
+  onNavigate,
+  scheduleData 
 }: FilmDrawerProps) {
   const [hasError, setHasError] = useState(false);
   const [direction, setDirection] = useState(0);
@@ -33,6 +117,12 @@ export function FilmDrawer({
 
   const canGoPrev = currentIndex > 0;
   const canGoNext = currentIndex < films.length - 1;
+
+  // Compute screenings for current film
+  const screenings = useMemo(() => {
+    if (!film) return [];
+    return getScreeningsForFilm(film.title, scheduleData);
+  }, [film, scheduleData]);
 
   const navigatePrev = useCallback(() => {
     if (canGoPrev && onNavigate) {
@@ -353,6 +443,35 @@ export function FilmDrawer({
                         <span className="text-white font-semibold">{film.letterboxdRating}</span>
                       </a>
                     )}
+                  </div>
+                </div>
+              )}
+
+              {/* Screenings */}
+              {screenings.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wide flex items-center gap-2">
+                    <MapPin className="w-4 h-4" />
+                    Screenings ({screenings.length})
+                  </h3>
+                  <div className="grid gap-2">
+                    {screenings.map((s, i) => (
+                      <Link
+                        key={i}
+                        href={`/schedule?day=${s.date.replace(/-/g, "").slice(-4)}`}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border transition-colors hover:opacity-80 ${drawerVenueColors[s.venue] || "bg-zinc-800 border-zinc-700 text-zinc-300"}`}
+                      >
+                        <div className="text-center min-w-[50px]">
+                          <div className="text-base font-bold">{s.time}</div>
+                          <div className="text-[10px] opacity-70">{s.dayLabel}</div>
+                        </div>
+                        <div className="h-6 w-px bg-current opacity-20" />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-sm truncate">{venueNames[s.venue] || s.venue}</div>
+                          <div className="text-[10px] opacity-70">{formatScreenName(s.venue, s.screen)}</div>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}

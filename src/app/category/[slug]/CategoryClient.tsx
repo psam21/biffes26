@@ -14,12 +14,37 @@ const FilmDrawer = dynamic(
   { ssr: false, loading: () => null }
 );
 
+interface ScheduleData {
+  days: Array<{
+    date: string;
+    dayNumber: number;
+    label: string;
+    screenings: Array<{
+      venue: string;
+      screen: string;
+      showings: Array<{
+        time: string;
+        film: string;
+        director: string;
+        country: string;
+        year: number;
+        language: string;
+        duration: number;
+      }>;
+    }>;
+  }>;
+  schedule: {
+    venues: Record<string, { name: string; location: string; screens?: number }>;
+  };
+}
+
 interface CategoryClientProps {
   category: Category;
   films: Film[];
+  scheduleData?: ScheduleData;
 }
 
-export default function CategoryClient({ category, films }: CategoryClientProps) {
+export default function CategoryClient({ category, films, scheduleData }: CategoryClientProps) {
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerFilms, setDrawerFilms] = useState<Film[]>([]);
@@ -105,6 +130,7 @@ export default function CategoryClient({ category, films }: CategoryClientProps)
         films={drawerFilms}
         currentIndex={drawerIndex}
         onNavigate={handleDrawerNavigate}
+        scheduleData={scheduleData}
       />
     </main>
   );

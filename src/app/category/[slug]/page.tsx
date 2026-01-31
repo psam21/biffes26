@@ -1,6 +1,7 @@
 // Server Component - data is loaded at build time
 import { notFound } from "next/navigation";
 import festivalData from "@/data/biffes_data.json";
+import scheduleData from "@/data/schedule_data.json";
 import { Category, Film } from "@/types";
 import CategoryClient from "./CategoryClient";
 
@@ -38,5 +39,5 @@ export default async function CategoryPage({ params }: PageProps) {
   
   const categoryFilms = films.filter((film) => film.categoryId === category.id);
   
-  return <CategoryClient category={category} films={categoryFilms} />;
+  return <CategoryClient category={category} films={categoryFilms} scheduleData={scheduleData} />;
 }

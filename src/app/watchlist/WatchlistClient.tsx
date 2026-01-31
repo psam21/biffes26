@@ -175,6 +175,7 @@ export default function WatchlistClient({ films, scheduleData }: WatchlistClient
         films={drawerFilms}
         currentIndex={drawerIndex}
         onNavigate={handleDrawerNavigate}
+        scheduleData={scheduleData}
       />
     </main>
   );

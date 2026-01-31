@@ -35,11 +35,36 @@ interface FestivalData {
   films: Film[];
 }
 
-interface HomeClientProps {
-  data: FestivalData;
+interface ScheduleData {
+  days: Array<{
+    date: string;
+    dayNumber: number;
+    label: string;
+    screenings: Array<{
+      venue: string;
+      screen: string;
+      showings: Array<{
+        time: string;
+        film: string;
+        director: string;
+        country: string;
+        year: number;
+        language: string;
+        duration: number;
+      }>;
+    }>;
+  }>;
+  schedule: {
+    venues: Record<string, { name: string; location: string; screens?: number }>;
+  };
 }
 
-export default function HomeClient({ data }: HomeClientProps) {
+interface HomeClientProps {
+  data: FestivalData;
+  scheduleData?: ScheduleData;
+}
+
+export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   const { festival, categories, films } = data;
   
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
@@ -380,6 +405,7 @@ export default function HomeClient({ data }: HomeClientProps) {
         films={drawerFilms}
         currentIndex={drawerIndex}
         onNavigate={handleDrawerNavigate}
+        scheduleData={scheduleData}
       />
     </main>
   );

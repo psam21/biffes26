@@ -263,6 +263,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
         films={recommendations.map(r => r.film)}
         currentIndex={selectedFilm ? recommendations.findIndex(r => r.film.id === selectedFilm.id) : -1}
         onNavigate={(film) => setSelectedFilm(film)}
+        scheduleData={scheduleData}
       />
     </main>
   );
