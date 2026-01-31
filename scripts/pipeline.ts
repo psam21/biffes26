@@ -549,13 +549,21 @@ async function main() {
       }
     } else {
       console.log("\n\n⏭️  Step 3: All posters already downloaded");
-      // Still update poster paths
+      // Update poster paths - prefer optimized webp if it exists
+      const optimizedDir = path.join(process.cwd(), "public/posters-optimized");
+      const hasOptimized = fs.existsSync(optimizedDir);
+      
       for (let i = 0; i < allFilms.length; i++) {
         const film = allFilms[i];
         if (existingPosters.has(film.id)) {
-          const files = fs.readdirSync(postersDir).filter(f => f.startsWith(film.id + '.'));
-          if (files.length > 0) {
-            allFilms[i].posterUrl = `/posters/${files[0]}`;
+          // Check for optimized webp first
+          if (hasOptimized && fs.existsSync(path.join(optimizedDir, `${film.id}.webp`))) {
+            allFilms[i].posterUrl = `/posters-optimized/${film.id}.webp`;
+          } else {
+            const files = fs.readdirSync(postersDir).filter(f => f.startsWith(film.id + '.'));
+            if (files.length > 0) {
+              allFilms[i].posterUrl = `/posters/${files[0]}`;
+            }
           }
         }
       }

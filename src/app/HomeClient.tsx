@@ -129,27 +129,52 @@ export default function HomeClient({ data }: HomeClientProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        {/* Compact Header */}
-        <header className="pt-6 pb-4">
-          <div className="flex items-start justify-between max-w-7xl mx-auto px-4">
-            {/* Search & Recommendations - Left */}
-            <div className="flex items-center gap-2">
+        {/* Hero Header */}
+        <header className="pt-6 pb-6">
+          <div className="max-w-7xl mx-auto px-4">
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-6"
+            >
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
+                17th{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
+                  BIFFes
+                </span>
+              </h1>
+              <p className="text-sm text-zinc-400 mt-1">
+                January 29 – February 6, 2026
+              </p>
+              <p className="text-xs text-zinc-500 mt-1">
+                <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
+                {" • "}
+                <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Dr. Rajkumar Bhavana</a>
+                {" • "}
+                <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
+              </p>
+            </motion.div>
+
+            {/* 4 Main Actions - Centered */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              {/* Search */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative"
               >
-                <div className={`flex items-center gap-1.5 rounded-md transition-all ${
+                <div className={`flex items-center gap-2 rounded-xl transition-all ${
                   showSearch
-                    ? "bg-zinc-800 border border-zinc-600"
-                    : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
+                    ? "bg-zinc-800 border border-zinc-600 px-3 py-2"
+                    : "bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 px-3 py-2"
                 }`}>
                   <button
                     onClick={() => setShowSearch(!showSearch)}
-                    className="flex items-center gap-1.5 px-2 py-1.5"
+                    className="flex items-center gap-2"
                   >
-                    <span className="text-zinc-400 text-sm">🔍</span>
-                    {!showSearch && <span className="text-xs text-zinc-300 hidden sm:inline">Search</span>}
+                    <span className="text-lg">🔍</span>
+                    {!showSearch && <span className="text-sm text-zinc-300 font-medium">Search</span>}
                   </button>
                   {showSearch && (
                     <input
@@ -158,7 +183,7 @@ export default function HomeClient({ data }: HomeClientProps) {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Film, director, country..."
                       autoFocus
-                      className="bg-transparent text-white text-xs placeholder:text-zinc-500 outline-none w-36 sm:w-44 pr-2 py-1.5"
+                      className="bg-transparent text-white text-sm placeholder:text-zinc-500 outline-none w-40 sm:w-48"
                     />
                   )}
                 </div>
@@ -221,72 +246,50 @@ export default function HomeClient({ data }: HomeClientProps) {
                 )}
               </motion.div>
 
-              {/* Recommendations Link */}
-              <Link href="/recommendations">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
-                >
-                  <span className="text-amber-400 text-sm">✨</span>
-                  <span className="text-xs text-white hidden sm:inline">For You</span>
-                </motion.div>
-              </Link>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center flex-1"
-            >
-              <h1 className="text-2xl md:text-3xl font-bold text-white">
-                17th{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
-                  BIFFes
-                </span>
-              </h1>
-              <p className="text-sm text-zinc-400 mt-1">
-                January 29 – February 6, 2026
-              </p>
-              <p className="text-xs text-zinc-500 mt-1">
-                <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
-                {" • "}
-                <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Dr. Rajkumar Bhavana</a>
-                {" • "}
-                <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra Cinema</a>
-              </p>
-            </motion.div>
-            
-            {/* Schedule & Watchlist Buttons */}
-            <div className="flex items-center gap-2">
+              {/* Schedule */}
               <Link href="/schedule">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl transition-colors bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30"
                 >
-                  <span className="text-blue-400 text-sm">📅</span>
-                  <span className="text-xs text-white hidden sm:inline">Schedule</span>
+                  <span className="text-lg">📅</span>
+                  <span className="text-sm text-white font-medium">Schedule</span>
                 </motion.div>
               </Link>
-              
+
+              {/* Daily Recommendations */}
+              <Link href="/recommendations">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl transition-colors bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
+                >
+                  <span className="text-lg">✨</span>
+                  <span className="text-sm text-white font-medium">Daily Picks</span>
+                </motion.div>
+              </Link>
+
+              {/* Watchlist */}
               <Link href="/watchlist">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-colors ${
                     watchlist.length > 0
-                      ? "bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30"
-                      : "bg-zinc-700/50 hover:bg-zinc-700/70 border border-zinc-600/50"
+                      ? "bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/30"
+                      : "bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700"
                   }`}
                 >
-                  <WatchlistIcon filled={watchlist.length > 0} size={16} className={watchlist.length > 0 ? "text-amber-400" : "text-zinc-400"} />
-                  <span className={`text-xs hidden sm:inline ${watchlist.length > 0 ? "text-white" : "text-zinc-300"}`}>
-                    {watchlist.length > 0 ? "Watchlist" : "Watchlist"}
+                  <WatchlistIcon filled={watchlist.length > 0} size={18} className={watchlist.length > 0 ? "text-rose-400" : "text-zinc-400"} />
+                  <span className={`text-sm font-medium ${watchlist.length > 0 ? "text-white" : "text-zinc-300"}`}>
+                    Watchlist
                   </span>
-                  <span className={`text-[10px] font-bold px-1 py-0.5 rounded-full ${watchlist.length > 0 ? "bg-amber-500 text-black" : "bg-zinc-600 text-zinc-300"}`}>
-                    {watchlist.length}
-                  </span>
+                  {watchlist.length > 0 && (
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-rose-500 text-white">
+                      {watchlist.length}
+                    </span>
+                  )}
                 </motion.div>
               </Link>
             </div>

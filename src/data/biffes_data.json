@@ -23,7 +23,7 @@
         "mapUrl": "https://maps.app.goo.gl/ruU2WZ2T991hrSLo7"
       }
     ],
-    "lastUpdated": "2026-01-29T09:23:18.049Z"
+    "lastUpdated": "2026-01-31T03:00:13.606Z"
   },
   "categories": [
     {
@@ -31,7 +31,7 @@
       "name": "Opening Film",
       "slug": "opening-film",
       "description": "The prestigious opening film of the festival",
-      "filmCount": 0,
+      "filmCount": 1,
       "color": "gold",
       "hasSubcategories": false
     },
@@ -40,7 +40,7 @@
       "name": "Closing Film",
       "slug": "closing-film",
       "description": "The grand finale film of the festival",
-      "filmCount": 0,
+      "filmCount": 1,
       "color": "gold",
       "hasSubcategories": false
     },
@@ -145,6 +145,34 @@
     }
   ],
   "films": [
+    {
+      "id": "opening-1",
+      "title": "PORTE BAGAGE",
+      "director": "Abdelkarim El-Fassi",
+      "country": "NETHERLANDS, MOROCCO",
+      "year": 2025,
+      "duration": 100,
+      "language": "Dutch, Arabic",
+      "synopsis": "When caregiver Noor is offered her dream job as a chef in Paris, she can no longer care for her father Musa, who suffers from dementia. In response, she helps him fulfill his final wish: to return to Morocco. A layered and emotionally resonant family drama about a Moroccan-Dutch family on a redemptive road trip full of emotional baggage.",
+      "posterUrl": "/posters-optimized/opening-1.webp",
+      "categoryId": "18",
+      "kannadaTitle": "ಪೋರ್ಟೆ ಬಗೇಜ್",
+      "imdbId": "tt37308391"
+    },
+    {
+      "id": "closing-1",
+      "title": "NOUVELLE VAGUE",
+      "director": "Richard Linklater",
+      "country": "FRANCE, USA",
+      "year": 2025,
+      "duration": 105,
+      "language": "French, English",
+      "synopsis": "Behind the scenes of the filming of Jean-Luc Godard's groundbreaking 1960 film 'Breathless' (À bout de souffle). A love letter to cinema and the French New Wave movement that revolutionized filmmaking.",
+      "posterUrl": "",
+      "categoryId": "19",
+      "kannadaTitle": "ನೂವೆಲ್ ವಾಗ್",
+      "imdbId": "tt31688586"
+    },
     {
       "id": "285",
       "title": "FLAMES",
