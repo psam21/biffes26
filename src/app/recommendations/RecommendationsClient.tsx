@@ -109,7 +109,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
     <main className="min-h-screen bg-zinc-950">
       {/* Header */}
       <header className="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border-b border-amber-500/30">
-        <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4">
+        <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           {/* Site Navigation */}
           <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
             <SiteNav variant="minimal" />
@@ -158,7 +158,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
       </header>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
+      <div className="max-w-7xl mx-auto px-4 py-4 sm:py-8">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-base sm:text-lg font-semibold text-white">
             {formatDateLabel(selectedDate)}

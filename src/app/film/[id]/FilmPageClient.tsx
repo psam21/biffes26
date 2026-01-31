@@ -65,7 +65,7 @@ export function FilmPageClient({ film, category, allFilms, screenings }: FilmPag
     <main className="min-h-screen bg-zinc-950">
       {/* Header */}
       <div className="bg-zinc-900/50 border-b border-zinc-800">
-        <div className="max-w-5xl mx-auto px-4 py-3">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           {/* Site Navigation */}
           <div className="-mx-1 overflow-x-auto scrollbar-hide">
             <SiteNav variant="minimal" />
@@ -74,7 +74,7 @@ export function FilmPageClient({ film, category, allFilms, screenings }: FilmPag
       </div>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

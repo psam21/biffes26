@@ -245,7 +245,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-[1800px] mx-auto px-4 py-3">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           {/* Site Navigation */}
           <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
             <SiteNav variant="minimal" />
@@ -312,7 +312,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
 
       {/* Filters */}
       <div className="sticky top-[120px] z-40 bg-gray-900/90 backdrop-blur-md border-b border-white/5 py-3 px-4">
-        <div className="max-w-[1800px] mx-auto flex flex-wrap gap-3 items-center">
+        <div className="max-w-7xl mx-auto flex flex-wrap gap-3 items-center">
           <div className="relative flex-1 min-w-[200px] max-w-md">
             <input
               type="text"
@@ -352,7 +352,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       </div>
 
       {/* Main Content */}
-      <main className="max-w-[1800px] mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex flex-wrap gap-4 mb-6 text-sm text-white/60">
           <span>📅 {currentDay.label}</span>
           <span>🎬 {filteredScreenings.reduce((acc, s) => acc + s.showings.length, 0)} screenings</span>
@@ -610,7 +610,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
 
       {/* Legend */}
       <div className="border-t border-white/10 py-4 px-4 bg-gray-900/50">
-        <div className="max-w-[1800px] mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap gap-4 text-xs text-white/50 justify-center">
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded ${venueColors.cinepolis.bg} ${venueColors.cinepolis.border} border`}></div>
@@ -634,7 +634,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-6 px-4">
-        <div className="max-w-[1800px] mx-auto text-center text-sm text-white/40">
+        <div className="max-w-7xl mx-auto text-center text-sm text-white/40">
           <p>Schedule data from official BIFFes 2026 program (Version 4)</p>
           <p className="mt-1">Subject to change • Last updated: {new Date(scheduleData.schedule.lastUpdated).toLocaleDateString()}</p>
         </div>
