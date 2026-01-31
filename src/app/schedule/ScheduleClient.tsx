@@ -134,7 +134,11 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   });
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"compact" | "cards">("cards");
+  // Default to compact view on mobile (better for touch)
+  const [viewMode, setViewMode] = useState<"compact" | "cards">(() => {
+    if (typeof window === 'undefined') return "compact";
+    return window.innerWidth < 768 ? "compact" : "cards";
+  });
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
@@ -156,6 +160,10 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     if (!hasMounted) {
       setHasMounted(true);
       setSelectedDay(todayIndex);
+      // Set compact view on mobile after hydration
+      if (window.innerWidth < 768) {
+        setViewMode("compact");
+      }
     }
   }, [hasMounted, todayIndex]);
 
@@ -471,7 +479,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               return (
                                 <div 
                                   key={idx}
-                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : ""}`}
+                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : "opacity-80"}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
                                   role={hasFilmData ? "button" : undefined}
                                   tabIndex={hasFilmData ? 0 : undefined}
@@ -484,13 +492,17 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       LIVE
                                     </div>
                                   )}
-                                  {/* Watchlist button */}
-                                  {filmData && (
+                                  {/* Watchlist button - only for films in database */}
+                                  {filmData ? (
                                     <div 
                                       className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <WatchlistButton filmId={filmData.id} />
+                                    </div>
+                                  ) : (
+                                    <div className="absolute top-2 right-2 text-[9px] text-white/30 bg-white/5 px-1.5 py-0.5 rounded">
+                                      Archive
                                     </div>
                                   )}
                                   {/* Screen badge */}
@@ -584,7 +596,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                   className={`p-3 transition-colors relative group ${
                                     nowShowing ? "bg-green-500/20 border-l-4 border-green-400" :
                                     showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
-                                  } ${hasFilmData ? "hover:bg-white/10 cursor-pointer" : "hover:bg-white/5"}`}
+                                  } ${hasFilmData ? "hover:bg-white/10 cursor-pointer" : "hover:bg-white/5 opacity-80"}`}
                                   onClick={() => hasFilmData && handleFilmClick(showing.film)}
                                   role={hasFilmData ? "button" : undefined}
                                   tabIndex={hasFilmData ? 0 : undefined}
@@ -597,13 +609,17 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       NOW
                                     </div>
                                   )}
-                                  {/* Watchlist button */}
-                                  {filmData && (
+                                  {/* Watchlist button - only for films in database */}
+                                  {filmData ? (
                                     <div 
                                       className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <WatchlistButton filmId={filmData.id} />
+                                    </div>
+                                  ) : (
+                                    <div className="absolute top-2 right-2 text-[9px] text-white/30 bg-white/5 px-1.5 py-0.5 rounded">
+                                      Archive
                                     </div>
                                   )}
                                   <div className={`flex items-start gap-3 ${nowShowing ? "mt-6" : ""}`}>
