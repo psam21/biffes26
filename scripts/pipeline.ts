@@ -177,6 +177,22 @@ async function scrapeFilmDetails(film: Film): Promise<Film> {
     const $ = cheerio.load(response.data);
     const pageText = $("body").text();
 
+    // Extract director name from directornamefont span (excluding the film title)
+    // The pattern is: film title in first directornamefont, then director name in second
+    const directorSpans = $("span.directornamefont").toArray();
+    let director = "";
+    for (const span of directorSpans) {
+      const text = $(span).text().trim();
+      // Skip if it's the film title (usually uppercase and matches film title)
+      if (text.toUpperCase() !== film.title.toUpperCase() && 
+          !text.includes(film.title) &&
+          text.length > 0 && 
+          text.length < 100) {
+        director = text;
+        break;
+      }
+    }
+
     // Extract Kannada title (usually after English title)
     const kannadaTitleEl = $("h2, h3, .kn-language-content").filter((_, el) => {
       const text = $(el).text().trim();
@@ -244,7 +260,7 @@ async function scrapeFilmDetails(film: Film): Promise<Film> {
     return {
       ...film,
       kannadaTitle: kannadaTitle || film.kannadaTitle,
-      director: film.director || "",
+      director: director || film.director || "",
       country: country || film.country,
       language: language || film.language,
       duration: duration || film.duration,
