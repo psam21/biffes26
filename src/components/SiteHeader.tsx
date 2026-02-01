@@ -24,12 +24,16 @@ export function SiteHeader({ variant = "compact", sticky = true, className = "" 
               🎬 17th BIFFes
               <span className="hidden sm:inline"> – Bangalore International Film Festival</span>
             </h1>
-            <p className={`text-zinc-400 ${variant === "full" ? "text-sm mt-1" : "text-xs"}`}>
-              <span className="text-zinc-300">January 30 – February 6, 2026</span>
-              <span className="mx-2 text-zinc-600">|</span>
-              <span className="text-zinc-500">LULU Mall • Rajkumar Bhavana • Suchitra</span>
-            </p>
           </Link>
+          <p className={`text-zinc-400 ${variant === "full" ? "text-sm mt-1" : "text-xs"}`}>
+            <span className="text-zinc-300">January 30 – February 6, 2026</span>
+            <span className="mx-2 text-zinc-600">|</span>
+            <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
+            {" • "}
+            <a href="https://maps.app.goo.gl/8JZbsK4CSEm4AWm36" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Rajkumar Bhavana</a>
+            {" • "}
+            <a href="https://maps.app.goo.gl/ruU2WZ2T991hrSLo7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">Suchitra</a>
+          </p>
         </div>
         
         {/* Navigation */}
