@@ -285,71 +285,6 @@ export default function DataClient({ stats }: { stats: Stats }) {
           </div>
         </section>
 
-        {/* Ratings Intelligence */}
-        <section>
-          <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <span className="text-yellow-400">⭐</span> Ratings Intelligence
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <StatCard 
-              label="IMDb Ratings" 
-              value={stats.ratings.withImdb}
-              suffix={`/ ${stats.films.total}`}
-              delay={0}
-              color="text-yellow-400"
-            />
-            <StatCard 
-              label="Rotten Tomatoes" 
-              value={stats.ratings.withRT}
-              suffix={`/ ${stats.films.total}`}
-              delay={0.05}
-              color="text-red-400"
-            />
-            <StatCard 
-              label="Metacritic" 
-              value={stats.ratings.withMC}
-              suffix={`/ ${stats.films.total}`}
-              delay={0.1}
-              color="text-amber-400"
-            />
-            <StatCard 
-              label="Letterboxd" 
-              value={stats.ratings.withLB}
-              suffix={`/ ${stats.films.total}`}
-              delay={0.15}
-              color="text-green-400"
-            />
-            <StatCard 
-              label="Any Rating" 
-              value={Math.round((stats.ratings.withAnyRating / stats.films.total) * 100)}
-              suffix="%"
-              delay={0.2}
-              color="text-violet-400"
-            />
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-4 mt-4">
-            {stats.ratings.avgImdb && (
-              <div className="bg-gradient-to-br from-yellow-900/20 to-amber-900/10 border border-yellow-800/30 rounded-xl p-4">
-                <p className="text-xs text-yellow-500/70 uppercase tracking-wider mb-1">Average IMDb</p>
-                <p className="text-3xl font-bold text-yellow-400">{stats.ratings.avgImdb}<span className="text-lg text-yellow-600">/10</span></p>
-              </div>
-            )}
-            <div className="bg-gradient-to-br from-amber-900/20 to-yellow-900/10 border border-amber-800/30 rounded-xl p-4">
-              <p className="text-xs text-amber-500/70 uppercase tracking-wider mb-1">🏆 Award Winners</p>
-              <p className="text-3xl font-bold text-amber-400">{stats.ratings.awardWinners}</p>
-              <p className="text-xs text-zinc-500 mt-1">+{stats.ratings.awardNominated} nominated</p>
-            </div>
-            {stats.ratings.highestImdb && (
-              <div className="bg-gradient-to-br from-green-900/20 to-emerald-900/10 border border-green-800/30 rounded-xl p-4">
-                <p className="text-xs text-green-500/70 uppercase tracking-wider mb-1">Highest Rated</p>
-                <p className="text-sm font-semibold text-white truncate">{stats.ratings.highestImdb.title}</p>
-                <p className="text-2xl font-bold text-green-400 mt-1">{stats.ratings.highestImdb.rating}</p>
-              </div>
-            )}
-          </div>
-        </section>
-
         {/* Schedule Analytics */}
         <section>
           <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
@@ -412,11 +347,11 @@ export default function DataClient({ stats }: { stats: Stats }) {
           </div>
         </section>
 
-        {/* Year Distribution */}
+        {/* Film Release Years */}
         {stats.films.yearDistribution.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <span className="text-pink-400">📅</span> Production Years
+              <span className="text-pink-400">🎬</span> Film Release Years
             </h2>
             <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-4">
               <div className="flex items-end justify-between gap-2 h-32">
@@ -435,8 +370,8 @@ export default function DataClient({ stats }: { stats: Stats }) {
                 ))}
               </div>
               <div className="flex justify-between mt-2 text-xs text-zinc-500">
-                <span>{stats.films.yearDistribution[stats.films.yearDistribution.length - 1]?.year}</span>
                 <span>{stats.films.yearDistribution[0]?.year}</span>
+                <span>{stats.films.yearDistribution[stats.films.yearDistribution.length - 1]?.year}</span>
               </div>
             </div>
           </section>
