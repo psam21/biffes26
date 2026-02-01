@@ -11,3 +11,4 @@ export { RatingFilterPills } from "./RatingFilterPills";
 export { AwardWinnersSection } from "./AwardWinnersSection";
 export { RatingBadges } from "./RatingBadges";
 export { SiteNav } from "./SiteNav";
+export { SiteHeader } from "./SiteHeader";

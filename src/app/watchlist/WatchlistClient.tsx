@@ -6,7 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { VirtualizedFilmGrid } from "@/components";
 import { WatchlistSchedule } from "@/components/WatchlistSchedule";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteHeader } from "@/components/SiteHeader";
 import { Film } from "@/types";
 import { useWatchlist } from "@/lib/watchlist-context";
 
@@ -85,14 +85,11 @@ export default function WatchlistClient({ films, scheduleData }: WatchlistClient
         animate={{ opacity: 1 }}
         className="min-h-screen"
       >
-        {/* Header */}
+        <SiteHeader sticky={false} />
+        
+        {/* Page Header */}
         <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/20 py-4 sm:py-6 px-4 border-b border-green-800/30">
           <div className="max-w-7xl mx-auto">
-            {/* Site Navigation */}
-            <div className="mb-4 -mx-1 overflow-x-auto scrollbar-hide">
-              <SiteNav variant="minimal" />
-            </div>
-
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">

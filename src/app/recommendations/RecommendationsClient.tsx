@@ -15,7 +15,7 @@ import {
 } from "@/lib/recommendations";
 import { formatDuration } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteHeader } from "@/components/SiteHeader";
 import { useWatchlist } from "@/lib/watchlist-context";
 
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
@@ -133,14 +133,11 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
 
   return (
     <main id="main-content" className="min-h-screen bg-zinc-950">
-      {/* Header */}
+      <SiteHeader />
+      
+      {/* Page Header */}
       <header className="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border-b border-amber-500/30">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
-          {/* Site Navigation */}
-          <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
-            <SiteNav variant="minimal" />
-          </div>
-          
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
               <span>✨</span>

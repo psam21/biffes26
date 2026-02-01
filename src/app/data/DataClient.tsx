@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { SiteHeader } from "@/components/SiteHeader";
 
 interface Stats {
   festival: {
@@ -188,15 +189,11 @@ export default function DataClient({ stats }: { stats: Stats }) {
 
   return (
     <main id="main-content" className="min-h-screen bg-zinc-950">
-      {/* Header */}
+      <SiteHeader />
+      
+      {/* Page Header */}
       <header className="bg-gradient-to-br from-violet-900/30 to-indigo-900/20 border-b border-violet-800/30">
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          <Link 
-            href="/"
-            className="text-violet-400 hover:text-violet-300 text-sm mb-4 inline-flex items-center gap-1 transition-colors"
-          >
-            ← Back to Festival
-          </Link>
+        <div className="max-w-6xl mx-auto px-4 py-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Film } from "@/types";
 import { WatchlistButton } from "@/components/WatchlistButton";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteHeader } from "@/components/SiteHeader";
 import { VENUE_NAMES_SHORT, getScheduleTitleVariants } from "@/lib/constants";
 
 interface Screening {
@@ -96,18 +96,15 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
+      <SiteHeader />
+      
+      {/* Content Header */}
+      <div className="bg-zinc-900/50 border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 py-3">
-          {/* Site Navigation */}
-          <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
-            <SiteNav variant="minimal" />
-          </div>
-          
-          <div className="flex items-center justify-between mb-3">
-            <h1 className="text-lg font-bold">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">
               🎬 All Films <span className="text-zinc-500 font-normal">({filteredFilms.length})</span>
-            </h1>
+            </h2>
           </div>
           
           {/* Search - 4.7: Added clear button */}
@@ -163,7 +160,7 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
             ))}
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Film Grid */}
       <main id="main-content" className="max-w-7xl mx-auto px-4 py-4">

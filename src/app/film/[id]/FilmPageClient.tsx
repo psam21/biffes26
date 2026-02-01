@@ -9,7 +9,7 @@ import { Film, Category } from "@/types";
 import { formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { RatingBadges } from "@/components/RatingBadges";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteHeader } from "@/components/SiteHeader";
 import { VENUE_NAMES, VENUE_COLORS } from "@/lib/constants";
 
 interface Screening {
@@ -59,15 +59,7 @@ export function FilmPageClient({ film, category, allFilms, screenings }: FilmPag
 
   return (
     <main id="main-content" className="min-h-screen bg-zinc-950">
-      {/* Header */}
-      <div className="bg-zinc-900/50 border-b border-zinc-800">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          {/* Site Navigation */}
-          <div className="-mx-1 overflow-x-auto scrollbar-hide">
-            <SiteNav variant="minimal" />
-          </div>
-        </div>
-      </div>
+      <SiteHeader />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">

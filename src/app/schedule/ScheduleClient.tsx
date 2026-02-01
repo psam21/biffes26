@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { Film } from "@/types";
 import { RatingBadges } from "@/components/RatingBadges";
 import { WatchlistButton } from "@/components/WatchlistButton";
-import { SiteNav } from "@/components/SiteNav";
+import { SiteHeader } from "@/components/SiteHeader";
 import { useWatchlist } from "@/lib/watchlist-context";
 import { 
   VENUE_COLORS, 
@@ -330,18 +330,15 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
         {hasMounted && `Showing schedule for ${currentDay.label}`}
       </div>
       
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-white/10">
+      <SiteHeader />
+      
+      {/* Schedule Controls */}
+      <div className="sticky top-[85px] z-40 bg-gray-900/95 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3">
-          {/* Site Navigation */}
-          <div className="mb-3 -mx-1 overflow-x-auto scrollbar-hide">
-            <SiteNav variant="minimal" />
-          </div>
-          
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-              📅 BIFFes 2026 Schedule
-            </h1>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+              📅 Schedule
+            </h2>
             <div className="flex items-center gap-2" role="group" aria-label="View mode">
               <button
                 onClick={() => setViewMode("compact")}
@@ -403,7 +400,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
             <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-gray-900 to-transparent pointer-events-none sm:hidden" aria-hidden="true" />
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Filters */}
       <div className="sticky top-[120px] z-40 bg-gray-900/90 backdrop-blur-md border-b border-white/5 py-3 px-4">

@@ -6,7 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Film as FilmIcon } from "@/lib/icons";
 import { Category, Film } from "@/types";
-import { VirtualizedFilmGrid, SiteNav } from "@/components";
+import { VirtualizedFilmGrid, SiteHeader } from "@/components";
 import { cn, getCategoryGradient, getCategoryBorderColor } from "@/lib/utils";
 
 const FilmDrawer = dynamic(
@@ -78,6 +78,8 @@ export default function CategoryClient({ category, films, scheduleData }: Catego
         animate={{ opacity: 1 }}
         className="min-h-screen"
       >
+        <SiteHeader sticky={false} />
+        
         {/* Category Header */}
         <div
           className={cn(
@@ -87,11 +89,6 @@ export default function CategoryClient({ category, films, scheduleData }: Catego
           )}
         >
           <div className="max-w-7xl mx-auto">
-            {/* Site Navigation */}
-            <div className="mb-4 -mx-1 overflow-x-auto scrollbar-hide">
-              <SiteNav variant="minimal" />
-            </div>
-
             {/* Category info */}
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div>
