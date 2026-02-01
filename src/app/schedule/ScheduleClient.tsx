@@ -236,6 +236,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       'MATAPA A LEGEND CHAPTER-1': 'KANTARA A LEGEND CHAPTER-1',
       'K-POPPER': 'K POPPER',
       'MINO': 'NINO',
+      'MOHAM': 'DESIRE',  // Kannada title for DESIRE
       'FIRE FLY': 'FLAMES',
       'MOSQUITOS': 'MOSQUITOES',
       'GEHEMU LAMAI': 'GEHENNU LAMAI',
@@ -247,8 +248,10 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       'LA CHAPELLE': 'THE CHAPEL',
       'LA VIE EST BELLE': 'LIFE IS ROSY',
       'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
+      'NATIONALITÉ IMMIGRÉ': 'NATIONALITY: IMMIGRANT',
       "WERODON, L'ENFANT DU BON DIEU": "WENDEMI, THE GOOD LORD'S CHILD",
       'TETES BRULEES': 'TÊTES BRÛLÉES',
+      'TÊTES BRULÉES': 'TÊTES BRÛLÉES',
       'SAMBA TRAORE': 'SAMBA TRAORÉ',
       'CALLE MALAGA': 'CALLE MÁLAGA',
       'BELEN': 'BELÉN',
@@ -258,6 +261,17 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       // 'ACCIDENT' is a different film from 'IT WAS JUST AN ACCIDENT' - no alias needed
       'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
       'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU',
+      // Cleo variations
+      'CLEO FROM 5 TO 7': 'CLÉO FROM 5 TO 7',
+      // Kanal variations
+      'KANAL': 'CANAL',
+      // Porte Bagage
+      'PORTE BAGAGE': 'PORTE BAGAGE',
+      // Jeevann variations
+      'JEEVANN': 'JEVANN',
+      'JEEV': 'JEVANN',
+      // Family Deity typo
+      'FAMILT DEITY': 'FAMILY PATTABIC',
     };
     
     // Add aliases pointing to the same films

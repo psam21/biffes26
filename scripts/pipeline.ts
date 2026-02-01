@@ -6,7 +6,7 @@ import * as path from "path";
 const BASE_URL = "https://biffes.org";
 const OMDB_API_KEY = process.env.OMDB_API_KEY || ""; // Free API key from omdbapi.com
 
-// Category definitions
+// Category definitions - includes all categories and subcategories from biffes.org/filmcategory
 const CATEGORIES = [
   { id: "18", name: "Opening Film", slug: "opening-film", color: "gold" },
   { id: "19", name: "Closing Film", slug: "closing-film", color: "gold" },
@@ -21,6 +21,16 @@ const CATEGORIES = [
   { id: "26", name: "Voice for Equality", slug: "voice-equality", color: "world" },
   { id: "29", name: "Mid Festival Favourite", slug: "mid-festival", color: "gold" },
   { id: "24", name: "50 Years of Cinematic Journey", slug: "50-years", color: "retrospective" },
+  // Added missing categories
+  { id: "10", name: "Unsung Incredible India", slug: "unsung-india", color: "indian" },
+  // Subcategories - Country Focus
+  { id: "5", subcategoryId: "17", name: "Country Focus: Poland", slug: "country-focus-poland", color: "world" },
+  // Subcategories - Retrospective
+  { id: "11", subcategoryId: "23", name: "Retrospective: Smita Patil", slug: "retro-smita-patil", color: "retrospective" },
+  { id: "11", subcategoryId: "19", name: "Retrospective: Andrzej Wajda", slug: "retro-andrzej-wajda", color: "retrospective" },
+  { id: "11", subcategoryId: "18", name: "Retrospective: Dr. Rajkumar", slug: "retro-dr-rajkumar", color: "retrospective" },
+  // Subcategories - Contemporary Filmmaker in Focus
+  { id: "27", subcategoryId: "24", name: "Contemporary Filmmaker: Apichatpong Weerasethakul", slug: "filmmaker-apichatpong", color: "critics" },
 ];
 
 interface Film {
@@ -68,10 +78,12 @@ interface Category {
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Scrape film list from a category
-async function scrapeCategory(categoryId: string): Promise<Film[]> {
+// Scrape film list from a category (supports both regular categories and subcategories)
+async function scrapeCategory(categoryId: string, subcategoryId?: string): Promise<Film[]> {
   const films: Film[] = [];
-  const url = `${BASE_URL}/films?category_id=${categoryId}`;
+  const url = subcategoryId 
+    ? `${BASE_URL}/films?category_id=${categoryId}&subcategory_id=${subcategoryId}`
+    : `${BASE_URL}/films?category_id=${categoryId}`;
 
   try {
     console.log(`  📁 Fetching: ${url}`);
@@ -383,7 +395,7 @@ async function main() {
     console.log("  🔍 Scanning categories for changes...\n");
     
     for (const cat of CATEGORIES) {
-      const films = await scrapeCategory(cat.id);
+      const films = await scrapeCategory(cat.id, (cat as any).subcategoryId);
       
       for (const film of films) {
         scrapedFilms.push(film);
@@ -404,7 +416,7 @@ async function main() {
         description: getDescription(cat.name),
         filmCount: films.length,
         color: cat.color,
-        hasSubcategories: false,
+        hasSubcategories: !!(cat as any).subcategoryId,
       });
 
       await delay(300);
@@ -456,6 +468,8 @@ async function main() {
     }
 
     // Build final film list preserving existing data for unchanged films
+    const scrapedIds = new Set(scrapedFilms.map(f => f.id));
+    
     for (const film of scrapedFilms) {
       const existingOrUpdated = existingFilms.get(film.id);
       if (existingOrUpdated) {
@@ -463,6 +477,14 @@ async function main() {
         existingOrUpdated.categoryId = film.categoryId;
         allFilms.push(existingOrUpdated);
       } else {
+        allFilms.push(film);
+      }
+    }
+    
+    // Preserve existing films that weren't found in scrape (e.g., opening/closing films with different page structure)
+    for (const [id, film] of existingFilms) {
+      if (!scrapedIds.has(id)) {
+        console.log(`  ⚠️  Preserving existing film not found in scrape: ${film.title} (${id})`);
         allFilms.push(film);
       }
     }
