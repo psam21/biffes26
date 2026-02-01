@@ -29,8 +29,8 @@ A modern Progressive Web App for exploring the **17th Bengaluru International Fi
 - **Schedule Integration** — See your watchlist films mapped to screening times
 - **Conflict Detection** — Visual warnings when watchlist films overlap in schedule
 
-### ✨ AI Recommendations
-- **Daily Picks** — Algorithmically ranked recommendations for each festival day
+### ✨ Top Rated Picks
+- **Daily Picks** — Films ranked by highest ratings for each festival day
 - **Multi-Source Scoring** — Aggregates IMDb, RT, Metacritic, Letterboxd ratings with award bonuses
 - **Conflict-Free Planning** — Greedy algorithm ensures no overlapping screenings
 - **Alternative Showings** — Suggests other days/times if a recommended film conflicts
@@ -97,7 +97,7 @@ src/
 │   ├── page.tsx              # Home - categories & award winners
 │   ├── films/                # A-Z alphabetical film listing
 │   ├── schedule/             # 8-day festival schedule
-│   ├── recommendations/      # AI-powered daily picks
+│   ├── recommendations/      # Top-rated daily picks
 │   ├── watchlist/            # Personal watchlist with schedule view
 │   ├── data/                 # Festival statistics dashboard
 │   ├── category/[slug]/      # Dynamic category pages (13 categories)
