@@ -10,7 +10,7 @@ import { formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { RatingBadges } from "@/components/RatingBadges";
 import { SiteNav } from "@/components/SiteNav";
-import { VENUE_NAMES } from "@/lib/constants";
+import { VENUE_NAMES, VENUE_COLORS } from "@/lib/constants";
 
 interface Screening {
   date: string;
@@ -27,15 +27,14 @@ interface FilmPageClientProps {
   screenings: Screening[];
 }
 
-// Use centralized venue names (1.5)
+// Use centralized venue names and colors from constants (5.1)
 const venueNames = VENUE_NAMES;
 
-const venueColors: Record<string, string> = {
-  cinepolis: "bg-blue-500/20 border-blue-500/30 text-blue-300",
-  rajkumar: "bg-amber-500/20 border-amber-500/30 text-amber-300",
-  banashankari: "bg-green-500/20 border-green-500/30 text-green-300",
-  openair: "bg-purple-500/20 border-purple-500/30 text-purple-300",
-};
+// Helper to convert VENUE_COLORS format to combined class string
+function getVenueColorClass(venue: string): string {
+  const colors = VENUE_COLORS[venue] || VENUE_COLORS.cinepolis;
+  return `${colors.bg} ${colors.border} ${colors.text}`;
+}
 
 function formatScreeningDate(dateStr: string): string {
   const date = new Date(dateStr + "T12:00:00");
@@ -258,7 +257,7 @@ export function FilmPageClient({ film, category, allFilms, screenings }: FilmPag
                   {screenings.map((s, i) => (
                     <div
                       key={i}
-                      className={`flex items-center justify-between gap-3 px-4 py-3 rounded-lg border ${venueColors[s.venue] || "bg-zinc-800 border-zinc-700 text-zinc-300"}`}
+                      className={`flex items-center justify-between gap-3 px-4 py-3 rounded-lg border ${getVenueColorClass(s.venue)}`}
                     >
                       <div className="flex items-center gap-3">
                         <div className="text-center min-w-[60px]">

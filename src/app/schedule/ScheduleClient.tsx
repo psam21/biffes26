@@ -741,24 +741,24 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
         )}
       </main>
 
-      {/* Legend */}
+      {/* Legend - uses VENUE_COLORS from constants */}
       <div className="border-t border-white/10 py-4 px-4 bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap gap-4 text-xs text-white/50 justify-center">
             <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded ${venueColors.cinepolis.bg} ${venueColors.cinepolis.border} border`}></div>
+              <div className={`w-3 h-3 rounded ${VENUE_COLORS.cinepolis.bg} ${VENUE_COLORS.cinepolis.border} border`}></div>
               <span>Cinepolis (LuLu Mall)</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded ${venueColors.rajkumar.bg} ${venueColors.rajkumar.border} border`}></div>
+              <div className={`w-3 h-3 rounded ${VENUE_COLORS.rajkumar.bg} ${VENUE_COLORS.rajkumar.border} border`}></div>
               <span>Dr Rajkumar Bhavana</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded ${venueColors.banashankari.bg} ${venueColors.banashankari.border} border`}></div>
+              <div className={`w-3 h-3 rounded ${VENUE_COLORS.banashankari.bg} ${VENUE_COLORS.banashankari.border} border`}></div>
               <span>Suchitra (Banashankari)</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded ${venueColors.openair.bg} ${venueColors.openair.border} border`}></div>
+              <div className={`w-3 h-3 rounded ${VENUE_COLORS.openair.bg} ${VENUE_COLORS.openair.border} border`}></div>
               <span>Open Air (7 PM daily)</span>
             </div>
           </div>

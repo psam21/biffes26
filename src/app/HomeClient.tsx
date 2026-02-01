@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -78,16 +78,23 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   
   const { watchlist } = useWatchlist();
 
-  // Memoize search films - only recompute when query changes
+  // 3.2: Debounce search query to avoid jank during fast typing
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedSearchQuery(searchQuery), 150);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
+
+  // Memoize search films - only recompute when debounced query changes
   const searchFilms = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
+    const query = debouncedSearchQuery.trim().toLowerCase();
     if (!query) return [];
     return films.filter(film => 
       film.title.toLowerCase().includes(query) ||
       film.director?.toLowerCase().includes(query) ||
       film.country?.toLowerCase().includes(query)
     );
-  }, [films, searchQuery]);
+  }, [films, debouncedSearchQuery]);
 
   // Memoize festival-grouped award-winning films - single pass algorithm
   const festivalGroupedFilms = useMemo(() => {
@@ -205,7 +212,7 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
                 </span>
               </h1>
               <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-                <span>January 29 – February 6, 2026</span>
+                <span>January 30 – February 6, 2026</span>
                 <span className="mx-2 text-zinc-600">|</span>
                 <a href="https://maps.app.goo.gl/qk8Kk9QQVWizdCqn7" target="_blank" rel="noopener noreferrer" className="text-yellow-500 hover:text-yellow-400 hover:underline">LULU Mall</a>
                 {" • "}
@@ -237,11 +244,13 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
                   </button>
                   {showSearch && (
                     <input
+                      id="home-search"
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Film, director, country..."
                       autoFocus
+                      aria-label="Search films by title, director, or country"
                       className="bg-transparent text-white text-sm placeholder:text-zinc-500 outline-none w-40 sm:w-48"
                     />
                   )}

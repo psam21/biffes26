@@ -61,6 +61,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [addingAll, setAddingAll] = useState(false);
+  const [copiedFeedback, setCopiedFeedback] = useState(false);
   
   const { watchlist, addToWatchlist, isInWatchlist } = useWatchlist();
   const festivalDates = getFestivalDates();
@@ -107,7 +108,8 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
       }
     } else {
       await navigator.clipboard.writeText(url);
-      alert("Link copied to clipboard!");
+      setCopiedFeedback(true);
+      setTimeout(() => setCopiedFeedback(false), 2000);
     }
   };
 
@@ -188,11 +190,11 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
               )}
               <button
                 onClick={handleShare}
-                aria-label="Share recommendations"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm"
+                aria-label={copiedFeedback ? "Link copied!" : "Share recommendations"}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-sm ${copiedFeedback ? 'bg-green-600/30 text-green-300' : 'bg-zinc-800 hover:bg-zinc-700'}`}
               >
-                <span aria-hidden="true">📤</span>
-                <span className="text-zinc-300 hidden sm:inline">Share</span>
+                <span aria-hidden="true">{copiedFeedback ? '✓' : '📤'}</span>
+                <span className="text-zinc-300 hidden sm:inline">{copiedFeedback ? 'Copied!' : 'Share'}</span>
               </button>
             </div>
           </div>

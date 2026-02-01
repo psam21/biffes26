@@ -42,6 +42,16 @@ export interface RecommendedShowing {
   alternativeShowings?: { date: string; dateLabel: string; time: string; venue: string }[];
 }
 
+// 5.3: Named constants for rating thresholds (maintainability)
+const RATING_THRESHOLDS = {
+  IMDB_HIGHLIGHT: 7.5,        // Show in reason if IMDb >= 7.5/10
+  RT_HIGHLIGHT: 90,           // Show in reason if RT >= 90%
+  METACRITIC_HIGHLIGHT: 80,   // Show in reason if MC >= 80/100
+  LETTERBOXD_HIGHLIGHT: 3.7,  // Show in reason if LB >= 3.7/5
+  AWARD_BONUS: 10,            // Bonus points for any award
+  MAJOR_AWARD_BONUS: 10,      // Extra bonus for major festivals
+} as const;
+
 // Calculate a film's score based on available ratings
 function calculateFilmScore(film: Film): { score: number; reason: string } {
   let totalScore = 0;
@@ -54,7 +64,7 @@ function calculateFilmScore(film: Film): { score: number; reason: string } {
     if (!isNaN(imdb)) {
       totalScore += imdb * 10; // Scale to 100
       factors++;
-      if (imdb >= 7.5) reasons.push(`IMDb ${film.imdbRating}`);
+      if (imdb >= RATING_THRESHOLDS.IMDB_HIGHLIGHT) reasons.push(`IMDb ${film.imdbRating}`);
     }
   }
 
@@ -64,7 +74,7 @@ function calculateFilmScore(film: Film): { score: number; reason: string } {
     if (!isNaN(rt)) {
       totalScore += rt;
       factors++;
-      if (rt >= 90) reasons.push(`🍅 ${film.rottenTomatoes}`);
+      if (rt >= RATING_THRESHOLDS.RT_HIGHLIGHT) reasons.push(`🍅 ${film.rottenTomatoes}`);
     }
   }
 
@@ -74,7 +84,7 @@ function calculateFilmScore(film: Film): { score: number; reason: string } {
     if (!isNaN(mc)) {
       totalScore += mc;
       factors++;
-      if (mc >= 80) reasons.push(`MC ${film.metacritic}`);
+      if (mc >= RATING_THRESHOLDS.METACRITIC_HIGHLIGHT) reasons.push(`MC ${film.metacritic}`);
     }
   }
 
@@ -84,18 +94,18 @@ function calculateFilmScore(film: Film): { score: number; reason: string } {
     if (!isNaN(lb)) {
       totalScore += lb * 20;
       factors++;
-      if (lb >= 3.7) reasons.push(`LB ${film.letterboxdRating}`);
+      if (lb >= RATING_THRESHOLDS.LETTERBOXD_HIGHLIGHT) reasons.push(`LB ${film.letterboxdRating}`);
     }
   }
 
   // Bonus for award-winning films
   if (film.awardsWon) {
-    totalScore += 10;
+    totalScore += RATING_THRESHOLDS.AWARD_BONUS;
     if (film.awardsWon.toLowerCase().includes('cannes') ||
         film.awardsWon.toLowerCase().includes('venice') ||
         film.awardsWon.toLowerCase().includes('berlin') ||
         film.awardsWon.toLowerCase().includes('oscar')) {
-      totalScore += 10;
+      totalScore += RATING_THRESHOLDS.MAJOR_AWARD_BONUS;
       reasons.push('🏆 Award Winner');
     }
   }
@@ -209,7 +219,9 @@ export function generateRecommendations(
 
       const { score, reason } = calculateFilmScore(film);
       const startMinutes = timeToMinutes(showing.time);
-      const endMinutes = startMinutes + (showing.duration || film.duration || 120);
+      // 2.3: Ensure non-zero duration for conflict detection (default 120 min)
+      const duration = showing.duration || film.duration || 120;
+      const endMinutes = startMinutes + (duration > 0 ? duration : 120);
 
       // Find alternative showings on other days
       const filmKey = showing.film.toUpperCase();

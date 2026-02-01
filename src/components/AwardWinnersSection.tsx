@@ -48,6 +48,7 @@ function AwardWinnersSectionComponent({
               <button
                 key={film.id}
                 onClick={() => onFilmClick(film, festival.films, filmIndex)}
+                aria-label={`${film.title}${film.awardsWon ? ` - ${film.awardsWon.split(',')[0]}` : ''}`}
                 className="group relative focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-lg"
               >
                 <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700/50 group-hover:border-yellow-500/50 transition-all">

@@ -190,8 +190,12 @@ export function WatchlistSchedule({ watchlistFilms, scheduleData, onFilmClick }:
                   return (
                     <div
                       key={`${showing.date}-${showing.time}-${showing.film.id}-${idx}`}
-                      className="flex items-stretch hover:bg-white/5 transition-colors cursor-pointer"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${showing.film.title} at ${showing.time} - ${showing.venueName}`}
+                      className="flex items-stretch hover:bg-white/5 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-400"
                       onClick={() => onFilmClick?.(showing.film)}
+                      onKeyDown={(e) => e.key === 'Enter' && onFilmClick?.(showing.film)}
                     >
                       {/* Time */}
                       <div className="w-20 flex-shrink-0 py-3 px-4 bg-black/20 border-r border-zinc-800 flex items-center">
