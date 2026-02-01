@@ -17,15 +17,65 @@ interface Screening {
   screen: string;
 }
 
+// Title aliases mapping schedule titles to database titles
+// This is the same as in ScheduleClient.tsx - schedule title -> DB title
+const titleAliases: Record<string, string> = {
+  'GANARRAAG': 'GANARAAG', 'VAMYA': 'VANYA', 'ROOSTER': 'KOKORAS', 'SIRAT': 'SIRĀT', 'SARKEET': 'SIRĀT',
+  'PHOLDIBEE': 'PHOUOIBEE (THE GODDESS OF PADDY)', 'REPUBLIC OF PIPULPIPAS': 'REPUBLIC OF PIPOLIPINAS',
+  "HOMTIVENTAI '25": "KONTINENTAL '25", 'HOMTIVENTAI 25': "KONTINENTAL '25", 'KONTINENTAL 25': "KONTINENTAL '25",
+  'HY NAM INN': 'KY NAM INN', 'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA', 'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
+  'THE MYSTERIOUS CASE OF THE FLAMINGO': 'THE MYSTERIOUS GAZE OF THE FLAMINGO',
+  'SRIMANTHI DARSAIL PART 2': 'SRI JAGANNATHA DAASARU PART 2', 'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+  'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1', 'MATAPA A LEGEND CHAPTER-1': 'KANTARA A LEGEND CHAPTER-1',
+  'K-POPPER': 'K POPPER', 'MINO': 'NINO', 'MOHAM': 'DESIRE', 'FIRE FLY': 'FLAMES', 'MOSQUITOS': 'MOSQUITOES',
+  'LA CHAPELLE': 'THE CHAPEL', 'LA VIE EST BELLE': 'LIFE IS ROSY', 'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
+  'NATIONALITÉ IMMIGRÉ': 'NATIONALITY: IMMIGRANT', 'TETES BRULEES': 'TÊTES BRÛLÉES', 'TÊTES BRULÉES': 'TÊTES BRÛLÉES',
+  'SAMBA TRAORE': 'SAMBA TRAORÉ', 'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
+  'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU', 'KANAL': 'CANAL',
+  'JEEVANN': 'JEVANN', 'JEEV': 'JEVANN', 'BHOOTHALAM': 'HIDDEN TREMORS', 'GHARDEV': 'FAMILT DEITY',
+  'KANASEMBA KUDUREYAMERI': 'RIDING THE STALLION OF DREAM', 'KANGBO ALOTI': 'THE LOST PATH',
+  'KHALI PUTA': 'EMPTY PAGE', 'MAHAKAVI': 'THE EPIC POET', 'MRIGATRISHNA': 'MIRAGE',
+  'SABAR BONDA': 'CACTUS PEARS', 'VAGHACHIPANI': "TIGER'S POND", 'VASTHUHARA': 'THE DISPOSSESSED',
+  'DO BIGHA ZAMIN': 'TWO ACRES OF LAND', 'CLEO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
+  'CLÉO FROM 5 TO 7': 'CLEO FROM 5 TO 7', 'GEHEMU LAMAI': 'GEHENU LAMAI', 'GEHENNU LAMAI': 'GEHENU LAMAI',
+  'PADUVAARAHALLI PANDAVARU': 'PADUVARAHALLI PANDAVARU', 'PADUVARAHALLI PANDAVRU': 'PADUVARAHALLI PANDAVARU',
+};
+
+// Build reverse alias map: DB title -> all schedule title variants
+function getScheduleTitleVariants(dbTitle: string): string[] {
+  const variants = [dbTitle.toUpperCase()];
+  const dbUpper = dbTitle.toUpperCase();
+  
+  // Find all schedule titles that map to this DB title
+  for (const [scheduleTitle, mappedDbTitle] of Object.entries(titleAliases)) {
+    if (mappedDbTitle.toUpperCase() === dbUpper) {
+      variants.push(scheduleTitle.toUpperCase());
+    }
+  }
+  
+  // Also add normalized version (no accents/special chars)
+  const normalized = dbTitle.replace(/[^A-Za-z0-9\s]/g, '').toUpperCase();
+  if (!variants.includes(normalized)) {
+    variants.push(normalized);
+  }
+  
+  return variants;
+}
+
 // Build screening lookup from schedule data
 function getScreeningsForFilm(filmTitle: string): Screening[] {
   const screenings: Screening[] = [];
-  const filmKey = filmTitle.toUpperCase();
+  const titleVariants = getScheduleTitleVariants(filmTitle);
   
   for (const day of scheduleData.days) {
     for (const screening of day.screenings) {
       for (const showing of screening.showings) {
-        if (showing.film.toUpperCase() === filmKey) {
+        const showingTitle = showing.film.toUpperCase();
+        // Check if showing title matches any variant of the film title
+        if (titleVariants.some(variant => 
+          showingTitle === variant || 
+          showingTitle.replace(/[^A-Za-z0-9\s]/g, '') === variant.replace(/[^A-Za-z0-9\s]/g, '')
+        )) {
           screenings.push({
             date: day.date,
             dayLabel: day.label,
