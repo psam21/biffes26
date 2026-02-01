@@ -549,6 +549,9 @@ async function main() {
       ? new Set(fs.readdirSync(postersDir).map(f => f.split('.')[0]))
       : new Set();
     
+    const optimizedDir = path.join(process.cwd(), "public/posters-optimized");
+    const hasOptimized = fs.existsSync(optimizedDir);
+    
     const filmsNeedingPosters = allFilms.filter(f => !existingPosters.has(f.id) && f.posterUrl);
     
     if (filmsNeedingPosters.length > 0) {
@@ -565,33 +568,34 @@ async function main() {
             posterUrl: localPath,
             posterUrlRemote: remoteUrl,
           };
-        } else if (existingPosters.has(film.id)) {
-          // Use existing local poster
-          const ext = fs.readdirSync(postersDir).find(f => f.startsWith(film.id))?.split('.').pop() || 'jpg';
-          allFilms[i] = {
-            ...film,
-            posterUrl: `/posters/${film.id}.${ext}`,
-            posterUrlRemote: film.posterUrl.includes('biffes.org') ? film.posterUrl : (film as any).posterUrlRemote,
-          };
         }
       }
     } else {
       console.log("\n\n⏭️  Step 3: All posters already downloaded");
-      // Update poster paths - prefer optimized webp if it exists
-      const optimizedDir = path.join(process.cwd(), "public/posters-optimized");
-      const hasOptimized = fs.existsSync(optimizedDir);
-      
-      for (let i = 0; i < allFilms.length; i++) {
-        const film = allFilms[i];
-        if (existingPosters.has(film.id)) {
-          // Check for optimized webp first
-          if (hasOptimized && fs.existsSync(path.join(optimizedDir, `${film.id}.webp`))) {
-            allFilms[i].posterUrl = `/posters-optimized/${film.id}.webp`;
-          } else {
-            const files = fs.readdirSync(postersDir).filter(f => f.startsWith(film.id + '.'));
-            if (files.length > 0) {
-              allFilms[i].posterUrl = `/posters/${files[0]}`;
-            }
+    }
+    
+    // ALWAYS ensure local paths are set for existing posters
+    for (let i = 0; i < allFilms.length; i++) {
+      const film = allFilms[i];
+      if (existingPosters.has(film.id)) {
+        // Store remote URL before overwriting
+        const remoteUrl = film.posterUrl.includes('biffes.org') ? film.posterUrl.replace("biffes.org//", "biffes.org/") : film.posterUrlRemote;
+        
+        // Check for optimized webp first
+        if (hasOptimized && fs.existsSync(path.join(optimizedDir, `${film.id}.webp`))) {
+          allFilms[i] = {
+            ...film,
+            posterUrl: `/posters-optimized/${film.id}.webp`,
+            posterUrlRemote: remoteUrl || undefined,
+          };
+        } else {
+          const files = fs.readdirSync(postersDir).filter(f => f.startsWith(film.id + '.'));
+          if (files.length > 0) {
+            allFilms[i] = {
+              ...film,
+              posterUrl: `/posters/${files[0]}`,
+              posterUrlRemote: remoteUrl || undefined,
+            };
           }
         }
       }
