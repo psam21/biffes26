@@ -133,23 +133,29 @@ function hasConflict(
   return !(end1 <= start2 || end2 <= start1);
 }
 
-// Get the current festival date or the next festival date
+// Get the current festival date or the next festival date (in IST)
 export function getCurrentFestivalDate(): string {
+  // Convert to IST (UTC+5:30)
   const now = new Date();
-  const festivalStart = new Date('2026-01-30');
-  const festivalEnd = new Date('2026-02-06');
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+  const istTime = new Date(utcTime + istOffset);
+  const todayIST = istTime.toISOString().split('T')[0];
+  
+  const festivalStart = '2026-01-30';
+  const festivalEnd = '2026-02-06';
 
-  if (now < festivalStart) {
-    return '2026-01-30'; // Before festival, show first day
-  } else if (now > festivalEnd) {
-    return '2026-02-06'; // After festival, show last day
+  if (todayIST < festivalStart) {
+    return festivalStart; // Before festival, show first day
+  } else if (todayIST > festivalEnd) {
+    return festivalEnd; // After festival, show last day
   } else {
-    // During festival, use current date
-    return now.toISOString().split('T')[0];
+    return todayIST; // During festival, use current IST date
   }
 }
 
 // Generate optimal recommendations for a given date
+// Returns: { recommendations: RecommendedShowing[], status: 'ok' | 'no-schedule' | 'no-films' }
 export function generateRecommendations(
   date: string,
   scheduleData: ScheduleData,
@@ -158,7 +164,10 @@ export function generateRecommendations(
 ): RecommendedShowing[] {
   // Find the day's schedule
   const daySchedule = scheduleData.days.find(d => d.date === date);
-  if (!daySchedule) return [];
+  if (!daySchedule || daySchedule.screenings.length === 0) {
+    // No schedule for this date - return empty (caller can check scheduleData.days to distinguish)
+    return [];
+  }
 
   // Create a map for quick film lookup
   const filmMap = new Map<string, Film>();
@@ -245,19 +254,21 @@ export function generateRecommendations(
   return selected;
 }
 
-// Get all available festival dates
+// 3.3: Static festival dates - defined once, not recreated on each call
+const FESTIVAL_DATES: { date: string; label: string }[] = [
+  { date: '2026-01-30', label: 'Fri, Jan 30' },
+  { date: '2026-01-31', label: 'Sat, Jan 31' },
+  { date: '2026-02-01', label: 'Sun, Feb 1' },
+  { date: '2026-02-02', label: 'Mon, Feb 2' },
+  { date: '2026-02-03', label: 'Tue, Feb 3' },
+  { date: '2026-02-04', label: 'Wed, Feb 4' },
+  { date: '2026-02-05', label: 'Thu, Feb 5' },
+  { date: '2026-02-06', label: 'Fri, Feb 6' },
+];
+
+// Get all available festival dates (Jan 30 - Feb 6)
 export function getFestivalDates(): { date: string; label: string }[] {
-  return [
-    { date: '2026-01-29', label: 'Thu, Jan 29' },
-    { date: '2026-01-30', label: 'Fri, Jan 30' },
-    { date: '2026-01-31', label: 'Sat, Jan 31' },
-    { date: '2026-02-01', label: 'Sun, Feb 1' },
-    { date: '2026-02-02', label: 'Mon, Feb 2' },
-    { date: '2026-02-03', label: 'Tue, Feb 3' },
-    { date: '2026-02-04', label: 'Wed, Feb 4' },
-    { date: '2026-02-05', label: 'Thu, Feb 5' },
-    { date: '2026-02-06', label: 'Fri, Feb 6' },
-  ];
+  return FESTIVAL_DATES;
 }
 
 // Format date for display

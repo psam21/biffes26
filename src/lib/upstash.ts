@@ -4,10 +4,21 @@ import { Redis } from "@upstash/redis";
 // Set these in Vercel Environment Variables:
 // - UPSTASH_REDIS_REST_URL
 // - UPSTASH_REDIS_REST_TOKEN
-export const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
+
+// Only create Redis client if credentials are available
+const hasRedisCredentials = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+
+export const redis = hasRedisCredentials
+  ? new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL!,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    })
+  : (null as unknown as Redis); // Type assertion for conditional usage
+
+// Check if Redis is available
+export function isRedisAvailable(): boolean {
+  return hasRedisCredentials && redis !== null;
+}
 
 // Keys for storing data
 export const REDIS_KEYS = {
@@ -79,8 +90,7 @@ export interface FestivalData {
 // Get festival data from Redis (with fallback to static JSON)
 export async function getFestivalData(): Promise<FestivalData | null> {
   try {
-    // Check if Redis is configured
-    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    if (!isRedisAvailable()) {
       console.log("Upstash not configured, using static data");
       return null;
     }
@@ -93,11 +103,15 @@ export async function getFestivalData(): Promise<FestivalData | null> {
   }
 }
 
-// Save festival data to Redis
+// TTL for festival data: 7 days (keeps data fresh, auto-expires after festival)
+const FESTIVAL_DATA_TTL_SECONDS = 7 * 24 * 60 * 60;
+
+// Save festival data to Redis with TTL
 export async function saveFestivalData(data: FestivalData): Promise<boolean> {
   try {
-    await redis.set(REDIS_KEYS.FESTIVAL_DATA, data);
-    await redis.set(REDIS_KEYS.LAST_UPDATED, new Date().toISOString());
+    if (!isRedisAvailable()) return false;
+    await redis.set(REDIS_KEYS.FESTIVAL_DATA, data, { ex: FESTIVAL_DATA_TTL_SECONDS });
+    await redis.set(REDIS_KEYS.LAST_UPDATED, new Date().toISOString(), { ex: FESTIVAL_DATA_TTL_SECONDS });
     return true;
   } catch (error) {
     console.error("Error saving to Redis:", error);
@@ -108,7 +122,7 @@ export async function saveFestivalData(data: FestivalData): Promise<boolean> {
 // Get last update time
 export async function getLastUpdated(): Promise<string | null> {
   try {
-    if (!process.env.UPSTASH_REDIS_REST_URL) return null;
+    if (!isRedisAvailable()) return null;
     return await redis.get<string>(REDIS_KEYS.LAST_UPDATED);
   } catch {
     return null;
@@ -118,7 +132,7 @@ export async function getLastUpdated(): Promise<string | null> {
 // Get stored film IDs for diff comparison
 export async function getStoredFilmIds(): Promise<Set<string>> {
   try {
-    if (!process.env.UPSTASH_REDIS_REST_URL) return new Set();
+    if (!isRedisAvailable()) return new Set();
     const ids = await redis.get<string[]>(REDIS_KEYS.FILM_IDS);
     return new Set(ids || []);
   } catch {
@@ -126,10 +140,11 @@ export async function getStoredFilmIds(): Promise<Set<string>> {
   }
 }
 
-// Save film IDs
+// Save film IDs (2.5: add TTL to match festival data)
 export async function saveFilmIds(ids: string[]): Promise<void> {
   try {
-    await redis.set(REDIS_KEYS.FILM_IDS, ids);
+    if (!isRedisAvailable()) return;
+    await redis.set(REDIS_KEYS.FILM_IDS, ids, { ex: FESTIVAL_DATA_TTL_SECONDS });
   } catch (error) {
     console.error("Error saving film IDs:", error);
   }
@@ -138,7 +153,7 @@ export async function saveFilmIds(ids: string[]): Promise<void> {
 // Get stored category counts for quick-check
 export async function getCategoryCounts(): Promise<Record<string, number>> {
   try {
-    if (!process.env.UPSTASH_REDIS_REST_URL) return {};
+    if (!isRedisAvailable()) return {};
     const counts = await redis.get<Record<string, number>>(REDIS_KEYS.CATEGORY_COUNTS);
     return counts || {};
   } catch {
@@ -146,10 +161,11 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
   }
 }
 
-// Save category counts
+// Save category counts (2.5: add TTL to match festival data)
 export async function saveCategoryCounts(counts: Record<string, number>): Promise<void> {
   try {
-    await redis.set(REDIS_KEYS.CATEGORY_COUNTS, counts);
+    if (!isRedisAvailable()) return;
+    await redis.set(REDIS_KEYS.CATEGORY_COUNTS, counts, { ex: FESTIVAL_DATA_TTL_SECONDS });
   } catch (error) {
     console.error("Error saving category counts:", error);
   }

@@ -3,6 +3,12 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { Film } from "@/types";
+import { 
+  VENUE_COLORS, 
+  VENUE_ICONS, 
+  buildFilmLookupMap, 
+  getScheduleTitleVariants 
+} from "@/lib/constants";
 
 interface Showing {
   time: string;
@@ -40,19 +46,9 @@ interface WatchlistScheduleProps {
   onFilmClick?: (film: Film) => void;
 }
 
-const venueColors: Record<string, { bg: string; border: string; text: string }> = {
-  cinepolis: { bg: "bg-blue-500/10", border: "border-blue-500/30", text: "text-blue-400" },
-  rajkumar: { bg: "bg-amber-500/10", border: "border-amber-500/30", text: "text-amber-400" },
-  banashankari: { bg: "bg-green-500/10", border: "border-green-500/30", text: "text-green-400" },
-  openair: { bg: "bg-purple-500/10", border: "border-purple-500/30", text: "text-purple-400" },
-};
-
-const venueIcons: Record<string, string> = {
-  cinepolis: "🎬",
-  rajkumar: "🏛️",
-  banashankari: "🎭",
-  openair: "🌙",
-};
+// Use centralized venue colors and icons
+const venueColors = VENUE_COLORS;
+const venueIcons = VENUE_ICONS;
 
 interface ScheduledShowing {
   date: string;
@@ -70,11 +66,16 @@ export function WatchlistSchedule({ watchlistFilms, scheduleData, onFilmClick }:
   const { days, schedule } = scheduleData;
   const venues = schedule.venues;
 
-  // Create a map of film titles (uppercase) to film objects
+  // Create a map of film titles (with aliases) to film objects using centralized function (1.5)
   const filmsByTitle = useMemo(() => {
+    // Build a reverse lookup: for each schedule title variant, map to film
     const map = new Map<string, Film>();
     watchlistFilms.forEach(film => {
-      map.set(film.title.toUpperCase(), film);
+      // Get all possible schedule title variants for this film
+      const variants = getScheduleTitleVariants(film.title);
+      variants.forEach(variant => {
+        map.set(variant, film);
+      });
     });
     return map;
   }, [watchlistFilms]);
@@ -86,7 +87,13 @@ export function WatchlistSchedule({ watchlistFilms, scheduleData, onFilmClick }:
     days.forEach(day => {
       day.screenings.forEach(screening => {
         screening.showings.forEach(showing => {
-          const film = filmsByTitle.get(showing.film.toUpperCase());
+          // Use normalized title for lookup
+          const showingTitle = showing.film.toUpperCase();
+          const showingTitleNormalized = showingTitle
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+          
+          const film = filmsByTitle.get(showingTitle) || filmsByTitle.get(showingTitleNormalized);
           if (film) {
             showings.push({
               date: day.date,
@@ -224,32 +231,47 @@ export function WatchlistSchedule({ watchlistFilms, scheduleData, onFilmClick }:
         })}
       </div>
 
-      {/* Conflict Warning */}
+      {/* Conflict Warning - 3.2: Optimized from O(n²) to O(n log n) using sorting */}
       {(() => {
-        // Check for time conflicts (showings within 30 mins of each other on same day)
-        const conflicts: Array<[ScheduledShowing, ScheduledShowing]> = [];
-        scheduledShowings.forEach((a, i) => {
-          scheduledShowings.slice(i + 1).forEach(b => {
-            if (a.date === b.date) {
-              const [aHour, aMin] = a.time.split(":").map(Number);
-              const [bHour, bMin] = b.time.split(":").map(Number);
-              const aMinutes = aHour * 60 + aMin;
-              const bMinutes = bHour * 60 + bMin;
-              const aEnd = aMinutes + (a.duration || 120);
-              // Check if b starts before a ends
-              if (bMinutes < aEnd && bMinutes >= aMinutes) {
-                conflicts.push([a, b]);
-              }
-            }
-          });
+        // Sort by date and start time for efficient conflict detection
+        const sorted = [...scheduledShowings].sort((a, b) => {
+          const dateCompare = a.date.localeCompare(b.date);
+          if (dateCompare !== 0) return dateCompare;
+          return a.time.localeCompare(b.time);
         });
+        
+        const conflicts: Array<[ScheduledShowing, ScheduledShowing]> = [];
+        
+        // Linear scan through sorted array - only check adjacent showings on same day
+        for (let i = 0; i < sorted.length - 1; i++) {
+          const a = sorted[i];
+          const b = sorted[i + 1];
+          
+          // Only check if same day
+          if (a.date !== b.date) continue;
+          
+          const [aHour, aMin] = a.time.split(":").map(Number);
+          const [bHour, bMin] = b.time.split(":").map(Number);
+          const aMinutes = aHour * 60 + aMin;
+          const bMinutes = bHour * 60 + bMin;
+          const aEnd = aMinutes + (a.duration || 120);
+          
+          // Check if b starts before a ends
+          if (bMinutes < aEnd) {
+            conflicts.push([a, b]);
+          }
+        }
 
         if (conflicts.length === 0) return null;
 
         return (
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+          <div 
+            className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4"
+            role="alert"
+            tabIndex={0}
+          >
             <div className="flex items-start gap-3">
-              <span className="text-xl">⚠️</span>
+              <span className="text-xl" aria-hidden="true">⚠️</span>
               <div>
                 <h4 className="font-semibold text-amber-400">Schedule Conflicts</h4>
                 <p className="text-sm text-zinc-400 mt-1">

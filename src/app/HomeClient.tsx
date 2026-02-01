@@ -89,9 +89,9 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
     );
   }, [films, searchQuery]);
 
-  // Memoize festival-grouped award-winning films
+  // Memoize festival-grouped award-winning films - single pass algorithm
   const festivalGroupedFilms = useMemo(() => {
-    const festivalGroups = [
+    const festivalConfigs = [
       { name: 'Cannes Film Festival', key: 'cannes', emoji: '🌴', color: 'from-yellow-600/30 to-amber-600/20 border-yellow-500/40' },
       { name: 'Venice Film Festival', key: 'venice', emoji: '🦁', color: 'from-red-600/30 to-rose-600/20 border-red-500/40' },
       { name: 'Berlin Film Festival', key: 'berlin', emoji: '🐻', color: 'from-amber-600/30 to-orange-600/20 border-amber-500/40' },
@@ -101,24 +101,59 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
       { name: 'San Sebastián Film Festival', key: 'san sebast', emoji: '🌊', color: 'from-teal-600/30 to-emerald-600/20 border-teal-500/40' },
       { name: 'Karlovy Vary', key: 'karlovy', emoji: '💎', color: 'from-cyan-600/30 to-sky-600/20 border-cyan-500/40' },
       { name: 'National Film Awards (India)', key: 'national film award', emoji: '🇮🇳', color: 'from-orange-600/30 to-green-600/20 border-orange-500/40' },
-      { name: 'Other Festivals', key: '__other__', emoji: '🎬', color: 'from-zinc-600/30 to-slate-600/20 border-zinc-500/40' },
     ];
     
-    const awardFilms = films.filter(film => film.awardsWon);
+    // Single pass: group films by festival
+    const groups: Map<string, Film[]> = new Map();
+    const otherFilms: Film[] = [];
     const usedFilmIds = new Set<string>();
     
-    return festivalGroups.map(festival => {
-      const festivalFilms = festival.key === '__other__' 
-        ? awardFilms.filter(film => !usedFilmIds.has(film.id))
-        : awardFilms.filter(film => {
-            const matches = film.awardsWon?.toLowerCase().includes(festival.key);
-            if (matches) usedFilmIds.add(film.id);
-            return matches;
-          });
+    // Initialize groups
+    festivalConfigs.forEach(f => groups.set(f.key, []));
+    
+    // Single iteration over award films
+    films.forEach(film => {
+      if (!film.awardsWon) return;
       
-      if (festivalFilms.length === 0) return null;
-      return { ...festival, films: festivalFilms };
-    }).filter(Boolean) as Array<{ name: string; key: string; emoji: string; color: string; films: Film[] }>;
+      const awardsLower = film.awardsWon.toLowerCase();
+      let matched = false;
+      
+      for (const config of festivalConfigs) {
+        if (awardsLower.includes(config.key)) {
+          groups.get(config.key)!.push(film);
+          usedFilmIds.add(film.id);
+          matched = true;
+          break; // Each film goes to only one festival group
+        }
+      }
+      
+      if (!matched) {
+        otherFilms.push(film);
+      }
+    });
+    
+    // Build result array
+    const result: Array<{ name: string; key: string; emoji: string; color: string; films: Film[] }> = [];
+    
+    festivalConfigs.forEach(config => {
+      const festivalFilms = groups.get(config.key)!;
+      if (festivalFilms.length > 0) {
+        result.push({ ...config, films: festivalFilms });
+      }
+    });
+    
+    // Add "Other Festivals" group if there are unmatched films
+    if (otherFilms.length > 0) {
+      result.push({
+        name: 'Other Festivals',
+        key: '__other__',
+        emoji: '🎬',
+        color: 'from-zinc-600/30 to-slate-600/20 border-zinc-500/40',
+        films: otherFilms,
+      });
+    }
+    
+    return result;
   }, [films]);
 
   // Memoize award films count
@@ -149,7 +184,7 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main id="main-content" className="min-h-screen bg-zinc-950">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

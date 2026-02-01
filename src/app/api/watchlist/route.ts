@@ -1,10 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redis } from "@/lib/upstash";
+import { redis, isRedisAvailable } from "@/lib/upstash";
 
 // Redis key pattern for watchlists: biffes:watchlist:{userId}
 const getWatchlistKey = (userId: string) => `biffes:watchlist:${userId}`;
+const getRateLimitKey = (ip: string) => `biffes:ratelimit:${ip}`;
+
+// Rate limiting: max 60 requests per minute per IP (2.1)
+const RATE_LIMIT_MAX = 60;
+const RATE_LIMIT_WINDOW = 60; // seconds
+
+async function checkRateLimit(request: NextRequest): Promise<{ allowed: boolean; remaining: number }> {
+  if (!isRedisAvailable()) {
+    return { allowed: true, remaining: RATE_LIMIT_MAX }; // Skip rate limiting if Redis unavailable
+  }
+  
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+             request.headers.get("x-real-ip") || 
+             "unknown";
+  const key = getRateLimitKey(ip);
+  
+  try {
+    const current = await redis.incr(key);
+    if (current === 1) {
+      await redis.expire(key, RATE_LIMIT_WINDOW);
+    }
+    return { 
+      allowed: current <= RATE_LIMIT_MAX, 
+      remaining: Math.max(0, RATE_LIMIT_MAX - current) 
+    };
+  } catch {
+    return { allowed: true, remaining: RATE_LIMIT_MAX }; // Allow on error
+  }
+}
 
 export async function GET(request: NextRequest) {
+  // Rate limiting (2.1)
+  const { allowed, remaining } = await checkRateLimit(request);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" }, 
+      { status: 429, headers: { "X-RateLimit-Remaining": remaining.toString() } }
+    );
+  }
+  
   const userId = request.nextUrl.searchParams.get("userId");
   
   if (!userId) {
@@ -29,6 +67,15 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Rate limiting (2.1)
+  const { allowed, remaining } = await checkRateLimit(request);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" }, 
+      { status: 429, headers: { "X-RateLimit-Remaining": remaining.toString() } }
+    );
+  }
+  
   try {
     const body = await request.json();
     const { userId, filmId, action, watchlist: syncWatchlist } = body;

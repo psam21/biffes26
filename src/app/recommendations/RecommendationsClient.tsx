@@ -65,10 +65,13 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
   const { watchlist, addToWatchlist, isInWatchlist } = useWatchlist();
   const festivalDates = getFestivalDates();
 
-  // Update URL when date changes
+  // 3.5: Debounce URL update to avoid rapid history changes
   useEffect(() => {
-    const newUrl = `/recommendations?date=${selectedDate}`;
-    router.replace(newUrl, { scroll: false });
+    const timeout = setTimeout(() => {
+      const newUrl = `/recommendations?date=${selectedDate}`;
+      router.replace(newUrl, { scroll: false });
+    }, 150);
+    return () => clearTimeout(timeout);
   }, [selectedDate, router]);
 
   const recommendations = useMemo(() => {
@@ -127,7 +130,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main id="main-content" className="min-h-screen bg-zinc-950">
       {/* Header */}
       <header className="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border-b border-amber-500/30">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
@@ -147,6 +150,13 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                 <button
                   onClick={handleAddAllToWatchlist}
                   disabled={addingAll || allInWatchlist}
+                  aria-label={
+                    allInWatchlist 
+                      ? "All films added to watchlist" 
+                      : addingAll 
+                      ? "Adding films to watchlist..." 
+                      : `Add ${recommendations.length - inWatchlistCount} films to watchlist`
+                  }
                   className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-sm ${
                     allInWatchlist
                       ? "bg-green-600/30 text-green-300 cursor-default"
@@ -157,17 +167,17 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                 >
                   {allInWatchlist ? (
                     <>
-                      <span>✓</span>
+                      <span aria-hidden="true">✓</span>
                       <span className="hidden sm:inline">All Added</span>
                     </>
                   ) : addingAll ? (
                     <>
-                      <span className="animate-spin">⏳</span>
+                      <span className="animate-spin" aria-hidden="true">⏳</span>
                       <span className="hidden sm:inline">Adding...</span>
                     </>
                   ) : (
                     <>
-                      <span>❤️</span>
+                      <span aria-hidden="true">❤️</span>
                       <span className="hidden sm:inline">Add All</span>
                       {inWatchlistCount > 0 && (
                         <span className="text-xs opacity-70">({recommendations.length - inWatchlistCount})</span>
@@ -178,9 +188,10 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
               )}
               <button
                 onClick={handleShare}
+                aria-label="Share recommendations"
                 className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-sm"
               >
-                <span>📤</span>
+                <span aria-hidden="true">📤</span>
                 <span className="text-zinc-300 hidden sm:inline">Share</span>
               </button>
             </div>
@@ -197,6 +208,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                 <button
                   key={date}
                   onClick={() => setSelectedDate(date)}
+                  aria-pressed={selectedDate === date}
                   className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
                     selectedDate === date
                       ? "bg-amber-500 text-black"
@@ -255,6 +267,12 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
                           fill
                           className="object-cover group-hover:scale-105 transition-transform"
                           sizes="(max-width: 640px) 64px, 80px"
+                          onError={(e) => {
+                            // Fallback to remote poster on error
+                            if (rec.film.posterUrlRemote && e.currentTarget.src !== rec.film.posterUrlRemote) {
+                              e.currentTarget.src = rec.film.posterUrlRemote;
+                            }
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-2xl">
@@ -316,7 +334,7 @@ export default function RecommendationsClient({ films, scheduleData }: Recommend
         onClose={handleCloseDrawer}
         films={recommendations.map(r => r.film)}
         currentIndex={selectedFilm ? recommendations.findIndex(r => r.film.id === selectedFilm.id) : -1}
-        onNavigate={(film) => setSelectedFilm(film)}
+        onNavigate={(film, _index) => setSelectedFilm(film)}
         scheduleData={scheduleData}
       />
     </main>

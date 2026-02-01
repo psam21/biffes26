@@ -8,6 +8,12 @@ import { Film } from "@/types";
 import { RatingBadges } from "@/components/RatingBadges";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { SiteNav } from "@/components/SiteNav";
+import { 
+  VENUE_COLORS, 
+  VENUE_ICONS, 
+  buildFilmLookupMap, 
+  findFilmByScheduleTitle 
+} from "@/lib/constants";
 
 // Lazy load FilmDrawer - only loaded when user clicks a film
 const FilmDrawer = dynamic(() => import("@/components/FilmDrawer").then(m => ({ default: m.FilmDrawer })), {
@@ -89,23 +95,26 @@ interface ScheduleClientProps {
   films: Film[];
 }
 
-const venueColors: Record<string, { bg: string; border: string; text: string }> = {
-  cinepolis: { bg: "bg-blue-500/10", border: "border-blue-500/30", text: "text-blue-400" },
-  rajkumar: { bg: "bg-amber-500/10", border: "border-amber-500/30", text: "text-amber-400" },
-  banashankari: { bg: "bg-green-500/10", border: "border-green-500/30", text: "text-green-400" },
-  openair: { bg: "bg-purple-500/10", border: "border-purple-500/30", text: "text-purple-400" },
-};
-
-const venueIcons: Record<string, string> = {
-  cinepolis: "🎬",
-  rajkumar: "🏛️",
-  banashankari: "🎭",
-  openair: "🌙",
-};
+// Use centralized venue colors from constants
+const venueColors = VENUE_COLORS;
+const venueIcons = VENUE_ICONS;
 
 export default function ScheduleClient({ scheduleData, films }: ScheduleClientProps) {
   const days = scheduleData.days;
   const venues = scheduleData.schedule.venues;
+
+  // Guard against empty schedule data (2.3)
+  if (!days || days.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <span className="text-6xl mb-4 block">📅</span>
+          <h1 className="text-xl font-bold mb-2">Schedule Not Available</h1>
+          <p className="text-white/60">Check back later for the festival schedule.</p>
+        </div>
+      </div>
+    );
+  }
 
   // Get today's date in IST and find the matching day index
   const todayIST = useMemo(() => getTodayIST(), []);
@@ -120,49 +129,49 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     return idx;
   }, [days, todayIST]);
 
-  const [selectedDay, setSelectedDay] = useState(() => {
-    // Calculate on client side to avoid SSR mismatch
-    if (typeof window === 'undefined') return 0;
-    const today = getTodayIST();
-    const idx = days.findIndex(day => day.date === today);
-    if (idx === -1) {
-      if (today < days[0].date) return 0;
-      if (today > days[days.length - 1].date) return days.length - 1;
-      return 0;
-    }
-    return idx;
-  });
+  // 2.4: Always start with 0 on SSR to avoid hydration mismatch
+  const [selectedDay, setSelectedDay] = useState(0);
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(""); // 2.2: Debounced search
   // Default to compact view on mobile (better for touch)
-  const [viewMode, setViewMode] = useState<"compact" | "cards">(() => {
-    if (typeof window === 'undefined') return "compact";
-    return window.innerWidth < 768 ? "compact" : "cards";
-  });
+  const [viewMode, setViewMode] = useState<"compact" | "cards">("compact");
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [currentTimeMinutes, setCurrentTimeMinutes] = useState(getCurrentTimeMinutesIST);
 
-  // Update current time every minute for "Now Showing" indicator
+  // 2.2: Debounce search query to avoid jank
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTimeMinutes(getCurrentTimeMinutesIST());
-    }, 60000); // Update every minute
-    return () => clearInterval(interval);
-  }, []);
+    const timeout = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 150);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
   // Check if selected day is today (for Now Showing indicator)
   const isSelectedDayToday = days[selectedDay]?.date === todayIST;
 
-  // Set correct day after hydration
+  // Update current time every minute for "Now Showing" indicator
+  // Only run interval when viewing today's schedule (3.5 optimization)
+  useEffect(() => {
+    // Only update time when selected day is today
+    if (!isSelectedDayToday) return;
+    
+    const interval = setInterval(() => {
+      setCurrentTimeMinutes(getCurrentTimeMinutesIST());
+    }, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, [isSelectedDayToday]);
+
+  // Set correct day and view mode after hydration (2.4: avoids SSR mismatch)
   useEffect(() => {
     if (!hasMounted) {
       setHasMounted(true);
       setSelectedDay(todayIndex);
-      // Set compact view on mobile after hydration
-      if (window.innerWidth < 768) {
-        setViewMode("compact");
+      // Set cards view on desktop after hydration
+      if (window.innerWidth >= 768) {
+        setViewMode("cards");
       }
     }
   }, [hasMounted, todayIndex]);
@@ -187,131 +196,12 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   }, [todayIndex]);
 
   // Create a mapping from film title (uppercase) to Film object
-  // Include normalized versions and known aliases for better matching
-  const filmsByTitle = useMemo(() => {
-    const map = new Map<string, Film>();
-    
-    // Helper to normalize title for matching
-    const normalize = (title: string) => {
-      return title
-        .toUpperCase()
-        .replace(/[^A-Z0-9\s]/g, '') // Remove punctuation
-        .replace(/\s+/g, ' ')         // Normalize whitespace
-        .trim();
-    };
-    
-    films.forEach(film => {
-      const upper = film.title.toUpperCase();
-      map.set(upper, film);
-      
-      // Also add normalized version
-      const normalized = normalize(film.title);
-      if (normalized !== upper) {
-        map.set(normalized, film);
-      }
-    });
-    
-    // Known title variations in schedule vs database
-    const titleAliases: Record<string, string> = {
-      // Spelling variations
-      'GANARRAAG': 'GANARAAG',
-      'VAMYA': 'VANYA',
-      'ROOSTER': 'KOKORAS',
-      'SIRAT': 'SIRĀT',
-      'SARKEET': 'SIRĀT',
-      'PHOLDIBEE': 'PHOUOIBEE (THE GODDESS OF PADDY)',
-      'REPUBLIC OF PIPULPIPAS': 'REPUBLIC OF PIPOLIPINAS',
-      "HOMTIVENTAI '25": "KONTINENTAL '25",
-      'HOMTIVENTAI 25': "KONTINENTAL '25",
-      'KONTINENTAL 25': "KONTINENTAL '25",
-      'HY NAM INN': 'KY NAM INN',
-      'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA',
-      'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
-      'THE MYSTERIOUS CASE OF THE FLAMINGO': 'THE MYSTERIOUS GAZE OF THE FLAMINGO',
-      'SRIMANTHI DARSAIL PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-      'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-      'SIR JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-      
-      // Title variations
-      'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1',
-      'MATAPA A LEGEND CHAPTER-1': 'KANTARA A LEGEND CHAPTER-1',
-      'K-POPPER': 'K POPPER',
-      'MINO': 'NINO',
-      'MOHAM': 'DESIRE',  // Kannada title for DESIRE
-      'FIRE FLY': 'FLAMES',
-      'MOSQUITOS': 'MOSQUITOES',
-      'ASAD AND BEAUTIFUL WORLD': 'A SAD AND BEAUTIFUL WORLD',
-      'JHANE MOVES TO THE COUNTRY': 'JANINE MOVES TO THE COUNTRY',
-      'THE SEASONS, TWO STRANGERS': 'TWO SEASONS, TWO STRANGERS',
-      'ANMOL - LOVINGLY OURS': 'ANMOL- LOVINGLY OURS',
-      'LA CHAPELLE': 'THE CHAPEL',
-      'LA VIE EST BELLE': 'LIFE IS ROSY',
-      'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
-      'NATIONALITÉ IMMIGRÉ': 'NATIONALITY: IMMIGRANT',
-      "WERODON, L'ENFANT DU BON DIEU": "WENDEMI, THE GOOD LORD'S CHILD",
-      'TETES BRULEES': 'TÊTES BRÛLÉES',
-      'TÊTES BRULÉES': 'TÊTES BRÛLÉES',
-      'SAMBA TRAORE': 'SAMBA TRAORÉ',
-      'CALLE MALAGA': 'CALLE MÁLAGA',
-      'BELEN': 'BELÉN',
-      'NINO OF POPULAR ENTERTAINMENT': 'NINO',
-      'THAAY! SAHEBA': 'THAAYI SAHEBA',
-      'AGNIVATHWASI': 'AGNYATHAVASI',
-      'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
-      'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU',
-      'KANAL': 'CANAL',
-      'PORTE BAGAGE': 'PORTE BAGAGE',
-      'JEEVANN': 'JEVANN',
-      'JEEV': 'JEVANN',
-      
-      // Kannada title aliases (local names to English DB titles)
-      'BHOOTHALAM': 'HIDDEN TREMORS',
-      'GHARDEV': 'FAMILT DEITY',
-      'KANASEMBA KUDUREYAMERI': 'RIDING THE STALLION OF DREAM',
-      'KANGBO ALOTI': 'THE LOST PATH',
-      'KHALI PUTA': 'EMPTY PAGE',
-      'MAHAKAVI': 'THE EPIC POET',
-      'MRIGATRISHNA': 'MIRAGE',
-      'SABAR BONDA': 'CACTUS PEARS',
-      'VAGHACHIPANI': "TIGER'S POND",
-      'VASTHUHARA': 'THE DISPOSSESSED',
-      
-      // Restored Classics film titles
-      'DO BIGHA ZAMIN': 'TWO ACRES OF LAND',
-      'DO BHEEGA ZAMIN': 'TWO ACRES OF LAND',
-      'DO BEEGHA ZAMIN': 'TWO ACRES OF LAND',
-      'CLEO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
-      'CLÉO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
-      'GEHEMU LAMAI': 'GEHENU LAMAI',
-      'GEHENNU LAMAI': 'GEHENU LAMAI',
-      'THE EARRINGS OF MADAME DE...': 'THE EARRINGS OF MADAM DE',
-      'THE EARRINGS OF MADAME DE': 'THE EARRINGS OF MADAM DE',
-      'PADUVAARAHALLI PANDAVARU': 'PADUVARAHALLI PANDAVARU',
-      'PADUVARAHALLI PANDAVRU': 'PADUVARAHALLI PANDAVARU',
-    };
-    
-    // Add aliases pointing to the same films
-    Object.entries(titleAliases).forEach(([scheduleTitle, dbTitle]) => {
-      const film = map.get(dbTitle.toUpperCase()) || map.get(normalize(dbTitle));
-      if (film) {
-        map.set(scheduleTitle.toUpperCase(), film);
-        map.set(normalize(scheduleTitle), film);
-      }
-    });
-    
-    return map;
-  }, [films]);
+  // Uses centralized buildFilmLookupMap with all title aliases (fixes 3.1, 3.2)
+  const filmsByTitle = useMemo(() => buildFilmLookupMap(films), [films]);
   
   // Helper to find film by schedule title
   const findFilmByTitle = useCallback((scheduleTitle: string): Film | undefined => {
-    const upper = scheduleTitle.toUpperCase();
-    if (filmsByTitle.has(upper)) return filmsByTitle.get(upper);
-    
-    // Try normalized version
-    const normalized = upper.replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-    if (filmsByTitle.has(normalized)) return filmsByTitle.get(normalized);
-    
-    return undefined;
+    return findFilmByScheduleTitle(scheduleTitle, filmsByTitle);
   }, [filmsByTitle]);
 
   const currentDay = days[selectedDay];
@@ -364,7 +254,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     setTimeout(() => setSelectedFilm(null), 300);
   }, []);
 
-  // Filter screenings based on venue and search
+  // Filter screenings based on venue and search (2.2: use debounced query)
   const filteredScreenings = useMemo(() => {
     let screenings = currentDay.screenings;
     
@@ -372,8 +262,8 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       screenings = screenings.filter(s => s.venue === selectedVenue);
     }
     
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
+    if (debouncedSearchQuery.trim()) {
+      const query = debouncedSearchQuery.toLowerCase();
       screenings = screenings.map(screen => ({
         ...screen,
         showings: screen.showings.filter(showing =>
@@ -386,7 +276,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     }
     
     return screenings;
-  }, [currentDay, selectedVenue, searchQuery]);
+  }, [currentDay, selectedVenue, debouncedSearchQuery]);
 
   // Group by venue for display
   const screeningsByVenue = useMemo(() => {
@@ -431,6 +321,11 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white">
+      {/* 4.6: Announce day changes for screen readers */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {hasMounted && `Showing schedule for ${currentDay.label}`}
+      </div>
+      
       {/* Header */}
       <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -443,57 +338,65 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
             <h1 className="text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
               📅 BIFFes 2026 Schedule
             </h1>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2" role="group" aria-label="View mode">
               <button
                 onClick={() => setViewMode("compact")}
                 className={`p-2 rounded-lg transition-colors ${viewMode === "compact" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
-                title="Compact View"
+                aria-label="Compact view"
+                aria-pressed={viewMode === "compact"}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               </button>
               <button
                 onClick={() => setViewMode("cards")}
                 className={`p-2 rounded-lg transition-colors ${viewMode === "cards" ? "bg-white/20 text-white" : "text-white/50 hover:text-white"}`}
-                title="Cards View"
+                aria-label="Cards view"
+                aria-pressed={viewMode === "cards"}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
               </button>
             </div>
           </div>
           
-          {/* Day Tabs */}
-          <div ref={dayTabsRef} className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {days.map((day, index) => {
-              const isPast = isDayPast(day.date);
-              const isToday = day.date === todayIST;
-              const isSelected = selectedDay === index;
-              
-              return (
-                <button
-                  key={day.date}
-                  onClick={() => setSelectedDay(index)}
-                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all relative ${
-                    isSelected
-                      ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black"
-                      : isPast
-                        ? "bg-white/5 text-white/30 hover:bg-white/10"
-                        : "bg-white/10 text-white/70 hover:bg-white/20"
-                  }`}
-                >
-                  {isToday && !isSelected && (
-                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full" />
-                  )}
-                  <span className="block">{day.label.split(" - ")[0]}</span>
-                  <span className={`block text-xs ${isPast && !isSelected ? "opacity-50" : "opacity-70"}`}>
-                    {isToday ? "Today" : new Date(day.date).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
-                  </span>
-                </button>
-              );
-            })}
+          {/* Day Tabs - with overflow gradient hints (4.6) */}
+          <div className="relative">
+            <div ref={dayTabsRef} className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              {days.map((day, index) => {
+                const isPast = isDayPast(day.date);
+                const isToday = day.date === todayIST;
+                const isSelected = selectedDay === index;
+                
+                return (
+                  <button
+                    key={day.date}
+                    onClick={() => setSelectedDay(index)}
+                    aria-pressed={isSelected}
+                    aria-label={`${day.label}${isToday ? ' (Today)' : ''}${isSelected ? ' - Selected' : ''}`}
+                    className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all relative ${
+                      isSelected
+                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black"
+                        : isPast
+                          ? "bg-white/5 text-white/30 hover:bg-white/10"
+                          : "bg-white/10 text-white/70 hover:bg-white/20"
+                    }`}
+                  >
+                    {isToday && !isSelected && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full" aria-hidden="true" />
+                    )}
+                    <span className="block">{day.label.split(" - ")[0]}</span>
+                    <span className={`block text-xs ${isPast && !isSelected ? "opacity-50" : "opacity-70"}`}>
+                      {isToday ? "Today" : new Date(day.date).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {/* Overflow gradient hints */}
+            <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-gray-900 to-transparent pointer-events-none sm:hidden" aria-hidden="true" />
           </div>
         </div>
       </header>
@@ -502,21 +405,37 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       <div className="sticky top-[120px] z-40 bg-gray-900/90 backdrop-blur-md border-b border-white/5 py-3 px-4">
         <div className="max-w-7xl mx-auto flex flex-wrap gap-3 items-center">
           <div className="relative flex-1 min-w-[200px] max-w-md">
+            <label htmlFor="schedule-search" className="sr-only">Search films, directors, countries, or languages</label>
             <input
+              id="schedule-search"
               type="text"
               placeholder="Search films, directors..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2 pl-10 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
+              aria-label="Search films, directors, countries, or languages"
+              className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2 pl-10 pr-8 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
             />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
+            {/* 4.7: Clear search button */}
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-white/40 hover:text-white transition-colors"
+                aria-label="Clear search"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
           </div>
           
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => setSelectedVenue(null)}
+              aria-pressed={!selectedVenue}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 !selectedVenue ? "bg-white/20 text-white" : "bg-white/5 text-white/50 hover:bg-white/10"
               }`}
@@ -527,6 +446,7 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
               <button
                 key={key}
                 onClick={() => setSelectedVenue(selectedVenue === key ? null : key)}
+                aria-pressed={selectedVenue === key}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1 ${
                   selectedVenue === key ? "bg-white/20 text-white" : "bg-white/5 text-white/50 hover:bg-white/10"
                 }`}
@@ -540,16 +460,17 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main id="main-content" className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex flex-wrap gap-4 mb-6 text-sm text-white/60">
           <span>📅 {currentDay.label}</span>
           <span>🎬 {filteredScreenings.reduce((acc, s) => acc + s.showings.length, 0)} screenings</span>
           <span>🏢 {new Set(filteredScreenings.map(s => s.venue)).size} venues</span>
         </div>
 
-        {/* Forum Events */}
+        {/* Forum Events - 4.4: Added ID for skip link navigation */}
         {currentDay.forum && currentDay.forum.length > 0 && !selectedVenue && !searchQuery && (
           <motion.div 
+            id="forum-events"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
@@ -628,16 +549,21 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               return (
                                 <div 
                                   key={idx}
-                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group cursor-pointer hover:bg-white/10 transition-colors`}
+                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group cursor-pointer hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-gray-900`}
                                   onClick={() => handleFilmClick(showing.film)}
                                   role="button"
                                   tabIndex={0}
                                   onKeyDown={(e) => e.key === "Enter" && handleFilmClick(showing.film)}
+                                  aria-label={`${showing.film}${nowShowing ? ' - Now Showing' : ''}`}
                                 >
-                                  {/* Now Showing badge */}
+                                  {/* Now Showing badge (4.2 accessibility) */}
                                   {nowShowing && (
-                                    <div className="absolute -top-2 left-2 flex items-center gap-1 bg-green-500 text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">
-                                      <span className="w-1 h-1 bg-black rounded-full"></span>
+                                    <div 
+                                      className="absolute -top-2 left-2 flex items-center gap-1 bg-green-500 text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full animate-pulse"
+                                      role="status"
+                                      aria-label="Currently showing live"
+                                    >
+                                      <span className="w-1 h-1 bg-black rounded-full" aria-hidden="true"></span>
                                       LIVE
                                     </div>
                                   )}
@@ -747,10 +673,14 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                   tabIndex={0}
                                   onKeyDown={(e) => e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
-                                  {/* Now Showing badge */}
+                                  {/* Now Showing badge (4.2 accessibility) */}
                                   {nowShowing && (
-                                    <div className="absolute top-2 left-2 flex items-center gap-1 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
-                                      <span className="w-1.5 h-1.5 bg-black rounded-full"></span>
+                                    <div 
+                                      className="absolute top-2 left-2 flex items-center gap-1 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse"
+                                      role="status"
+                                      aria-label="Currently showing now"
+                                    >
+                                      <span className="w-1.5 h-1.5 bg-black rounded-full" aria-hidden="true"></span>
                                       NOW
                                     </div>
                                   )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useCallback } from "react";
+import { useRef, useMemo, useCallback, useState, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Film } from "@/types";
 import { FilmCard } from "./FilmCard";
@@ -40,28 +40,42 @@ export function VirtualizedFilmGrid({
 }: VirtualizedFilmGridProps) {
   const parentRef = useRef<HTMLDivElement>(null);
   
-  // Track container width for responsive columns
-  const containerWidth = useRef(0);
-  
-  // Get current column count based on window width
-  const getColumns = useCallback(() => {
+  // Track column count with state to trigger re-renders on resize
+  const [columns, setColumns] = useState(() => {
     if (typeof window === 'undefined') return 2;
     return getColumnCount(window.innerWidth);
-  }, []);
+  });
   
-  const columns = useMemo(() => getColumns(), [getColumns]);
+  // 3.3: Cache row height to avoid recalculation on every scroll
+  const cachedRowHeight = useRef<number>(400);
+  
+  // Update columns on window resize
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const handleResize = () => {
+      const newColumns = getColumnCount(window.innerWidth);
+      setColumns(prev => prev !== newColumns ? newColumns : prev);
+      // Invalidate cached height on resize
+      cachedRowHeight.current = 0;
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   // Calculate row count
   const rowCount = Math.ceil(films.length / columns);
   
-  // Estimate row height based on container width
+  // 3.3: Estimate row height - use cached value if available
   const estimateRowHeight = useCallback(() => {
+    if (cachedRowHeight.current > 0) return cachedRowHeight.current;
     if (!parentRef.current) return 400;
     const containerW = parentRef.current.offsetWidth;
-    containerWidth.current = containerW;
     const cardWidth = (containerW - (columns - 1) * GAP) / columns;
     const posterHeight = cardWidth / CARD_ASPECT_RATIO;
-    return posterHeight + INFO_HEIGHT + GAP;
+    cachedRowHeight.current = posterHeight + INFO_HEIGHT + GAP;
+    return cachedRowHeight.current;
   }, [columns]);
 
   const rowVirtualizer = useVirtualizer({

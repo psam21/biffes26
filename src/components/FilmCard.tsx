@@ -52,10 +52,10 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
         // CSS transitions for hover
         "transition-all duration-200 ease-out",
         "hover:-translate-y-1.5 hover:border-zinc-600",
-        "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
+        "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-black"
       )}
     >
-      {/* Poster */}
+      {/* Poster - 4.3: Added blur placeholder for loading state */}
       <div className="relative aspect-[2/3] bg-zinc-800">
         {film.posterUrl ? (
           <Image
@@ -66,10 +66,12 @@ function FilmCardComponent({ film, onClick, index }: FilmCardProps) {
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             onError={handleImageError}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAHhAAAgICAgMAAAAAAAAAAAAAAQIDBAAREiEFMVH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAAIDAQAAAAAAAAAAAAAAAAABAhEhMf/aAAwDAQACEQMRAD8AyDxPjqdmGOW1WSWQqGeJ3K8W19NrvsZW/wAYxjUn5Jo0f//Z"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-zinc-600 text-4xl">🎬</span>
+            <span className="text-zinc-600 text-4xl" aria-hidden="true">🎬</span>
           </div>
         )}
 

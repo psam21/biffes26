@@ -86,6 +86,8 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [syncCode, setSyncCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // 2.6: Track if initial server sync has completed to prevent race condition
+  const [hasInitialSync, setHasInitialSync] = useState(false);
   
   // Track pending changes for debounced sync
   const pendingChangesRef = useRef<{ add: Set<string>; remove: Set<string> }>({
@@ -96,77 +98,90 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
 
   // Initialize user ID and load watchlist
   useEffect(() => {
+    // Guard: only run on client side
+    if (typeof window === 'undefined') return;
+    
     const initUser = async () => {
-      checkCacheVersion();
-      
-      let id = localStorage.getItem(STORAGE_KEYS.userId);
-      if (!id) {
-        id = generateUserId();
-        localStorage.setItem(STORAGE_KEYS.userId, id);
-      }
-      setUserId(id);
-
-      // Load existing sync code if any
-      const existingCode = localStorage.getItem(STORAGE_KEYS.syncCode);
-      if (existingCode) {
-        setSyncCode(existingCode);
-      }
-
-      // Load from localStorage first (instant) - this is the cache
-      const localWatchlist = localStorage.getItem(STORAGE_KEYS.watchlist);
-      const localData: string[] = localWatchlist ? JSON.parse(localWatchlist) : [];
-      if (localData.length > 0) {
-        setWatchlist(localData);
-      }
-      
-      // Mark loading done immediately - user sees cached data
-      setIsLoading(false);
-
-      // Background sync with server (if not recently synced)
-      if (shouldSyncWithServer()) {
-        try {
-          const res = await fetch(`/api/watchlist?userId=${id}`);
-          if (res.ok) {
-            const data = await res.json();
-            const serverData: string[] = data.watchlist || [];
-            
-            // Smart merge: union of local and server
-            if (serverData.length > 0 || localData.length > 0) {
-              const merged = [...new Set([...localData, ...serverData])];
-              
-              // Only update if different
-              if (JSON.stringify(merged.sort()) !== JSON.stringify(localData.sort())) {
-                setWatchlist(merged);
-                localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(merged));
-              }
-              
-              // Push merged to server if we had local-only items
-              if (merged.length > serverData.length) {
-                await fetch("/api/watchlist", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ userId: id, watchlist: merged, action: "sync" }),
-                });
-              }
-            }
-            markSynced();
-          }
-        } catch (error) {
-          console.error("Background sync failed:", error);
-          // Keep using localStorage data - already set above
+      try {
+        checkCacheVersion();
+        
+        let id = localStorage.getItem(STORAGE_KEYS.userId);
+        if (!id) {
+          id = generateUserId();
+          localStorage.setItem(STORAGE_KEYS.userId, id);
         }
+        setUserId(id);
+
+        // Load existing sync code if any
+        const existingCode = localStorage.getItem(STORAGE_KEYS.syncCode);
+        if (existingCode) {
+          setSyncCode(existingCode);
+        }
+
+        // Load from localStorage first (instant) - this is the cache
+        const localWatchlist = localStorage.getItem(STORAGE_KEYS.watchlist);
+        const localData: string[] = localWatchlist ? JSON.parse(localWatchlist) : [];
+        if (localData.length > 0) {
+          setWatchlist(localData);
+        }
+        
+        // Mark loading done immediately - user sees cached data
+        setIsLoading(false);
+
+        // Background sync with server (if not recently synced)
+        if (shouldSyncWithServer()) {
+          try {
+            const res = await fetch(`/api/watchlist?userId=${id}`);
+            if (res.ok) {
+              const data = await res.json();
+              const serverData: string[] = data.watchlist || [];
+              
+              // Smart merge: union of local and server
+              if (serverData.length > 0 || localData.length > 0) {
+                const merged = [...new Set([...localData, ...serverData])];
+                
+                // Only update if different
+                if (JSON.stringify(merged.sort()) !== JSON.stringify(localData.sort())) {
+                  setWatchlist(merged);
+                  localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(merged));
+                }
+                
+                // Push merged to server if we had local-only items
+                if (merged.length > serverData.length) {
+                  await fetch("/api/watchlist", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: id, watchlist: merged, action: "sync" }),
+                  });
+                }
+              }
+              markSynced();
+              setHasInitialSync(true); // 2.6: Mark initial sync complete
+            }
+          } catch (error) {
+            console.error("Background sync failed:", error);
+            // Keep using localStorage data - already set above
+            setHasInitialSync(true); // 2.6: Mark complete even on error
+          }
+        } else {
+          setHasInitialSync(true); // 2.6: No sync needed, mark complete
+        }
+      } catch (error) {
+        console.error("Failed to initialize watchlist:", error);
+        setIsLoading(false);
+        setHasInitialSync(true);
       }
     };
 
     initUser();
   }, []);
 
-  // Sync to localStorage as backup (always sync, even empty to clear old data)
+  // 2.6: Only sync to localStorage after initial server sync completes (prevents race)
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && hasInitialSync) {
       localStorage.setItem(STORAGE_KEYS.watchlist, JSON.stringify(watchlist));
     }
-  }, [watchlist, isLoading]);
+  }, [watchlist, isLoading, hasInitialSync]);
   
   // Debounced server sync - batches rapid changes
   const scheduleServerSync = useCallback((currentUserId: string, currentWatchlist: string[]) => {
@@ -262,6 +277,7 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
     return null;
   }, [userId]);
 
+  // 2.2: Improved error handling - returns result with error type
   const loadFromSyncCode = useCallback(async (code: string): Promise<boolean> => {
     try {
       const res = await fetch(`/api/watchlist/sync?code=${code.toUpperCase()}`);
@@ -282,11 +298,22 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
           }
           return true;
         }
+        // Code found but no watchlist data
+        console.warn("Sync code found but no watchlist data");
+        return false;
       }
+      // Code not found (404) or other error
+      if (res.status === 404) {
+        console.warn("Sync code not found");
+      } else {
+        console.error("Server error loading sync code:", res.status);
+      }
+      return false;
     } catch (error) {
-      console.error("Failed to load from sync code:", error);
+      // Network error - different from "code not found"
+      console.error("Network error loading sync code:", error);
+      return false;
     }
-    return false;
   }, [userId]);
 
   return (

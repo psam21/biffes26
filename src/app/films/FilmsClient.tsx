@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Film } from "@/types";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { SiteNav } from "@/components/SiteNav";
+import { VENUE_NAMES_SHORT, getScheduleTitleVariants } from "@/lib/constants";
 
 interface Screening {
   date: string;
@@ -19,12 +20,8 @@ interface FilmsClientProps {
   screeningLookup: Record<string, Screening[]>;
 }
 
-const venueNames: Record<string, string> = {
-  cinepolis: "LuLu",
-  rajkumar: "Rajkumar",
-  banashankari: "Suchitra",
-  openair: "Open Air",
-};
+// Use centralized venue names (1.5)
+const venueNames = VENUE_NAMES_SHORT;
 
 const venueColors: Record<string, string> = {
   cinepolis: "bg-blue-500/20 text-blue-300",
@@ -56,7 +53,11 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
 
   // Get unique first letters
   const letters = useMemo(() => {
-    const letterSet = new Set(sortedFilms.map(f => f.title[0].toUpperCase()));
+    const letterSet = new Set(
+      sortedFilms
+        .filter(f => f.title && f.title.length > 0)
+        .map(f => f.title[0].toUpperCase())
+    );
     return Array.from(letterSet).sort();
   }, [sortedFilms]);
 
@@ -65,7 +66,7 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
     let result = sortedFilms;
     
     if (filterLetter) {
-      result = result.filter(f => f.title[0].toUpperCase() === filterLetter);
+      result = result.filter(f => f.title && f.title.length > 0 && f.title[0].toUpperCase() === filterLetter);
     }
     
     if (searchQuery.trim()) {
@@ -80,9 +81,17 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
     return result;
   }, [sortedFilms, filterLetter, searchQuery]);
 
-  // Get screenings for a film
+  // Get screenings for a film (2.4: use aliases for matching)
   const getScreenings = (film: Film): Screening[] => {
-    return screeningLookup[film.title.toUpperCase()] || [];
+    // Try all title variants for this film
+    const variants = getScheduleTitleVariants(film.title);
+    for (const variant of variants) {
+      const screenings = screeningLookup[variant];
+      if (screenings && screenings.length > 0) {
+        return screenings;
+      }
+    }
+    return [];
   };
 
   return (
@@ -101,24 +110,38 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
             </h1>
           </div>
           
-          {/* Search */}
+          {/* Search - 4.7: Added clear button */}
           <div className="relative mb-3">
+            <label htmlFor="films-search" className="sr-only">Search films, directors, or countries</label>
             <input
+              id="films-search"
               type="text"
               placeholder="Search films, directors, countries..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 pl-10 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 pl-10 pr-8 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
             />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-zinc-500 hover:text-white transition-colors"
+                aria-label="Clear search"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
           </div>
 
-          {/* Letter Filter */}
-          <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide">
+          {/* Letter Filter - 4.2: Added aria-pressed for accessibility */}
+          <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide" role="group" aria-label="Filter by first letter">
             <button
               onClick={() => setFilterLetter(null)}
+              aria-pressed={!filterLetter}
               className={`flex-shrink-0 px-2 py-1 rounded text-xs font-medium transition-colors ${
                 !filterLetter ? "bg-amber-500 text-black" : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
               }`}
@@ -129,6 +152,8 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
               <button
                 key={letter}
                 onClick={() => setFilterLetter(filterLetter === letter ? null : letter)}
+                aria-pressed={filterLetter === letter}
+                aria-label={`Filter by letter ${letter}`}
                 className={`flex-shrink-0 w-7 py-1 rounded text-xs font-medium transition-colors ${
                   filterLetter === letter ? "bg-amber-500 text-black" : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
                 }`}
@@ -141,7 +166,7 @@ export default function FilmsClient({ films, screeningLookup }: FilmsClientProps
       </header>
 
       {/* Film Grid */}
-      <main className="max-w-7xl mx-auto px-4 py-4">
+      <main id="main-content" className="max-w-7xl mx-auto px-4 py-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filteredFilms.map((film) => {
             const screenings = getScreenings(film);

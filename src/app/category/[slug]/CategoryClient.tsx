@@ -72,7 +72,7 @@ export default function CategoryClient({ category, films, scheduleData }: Catego
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main id="main-content" className="min-h-screen bg-zinc-950">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

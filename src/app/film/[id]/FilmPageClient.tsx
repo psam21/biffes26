@@ -10,6 +10,7 @@ import { formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { RatingBadges } from "@/components/RatingBadges";
 import { SiteNav } from "@/components/SiteNav";
+import { VENUE_NAMES } from "@/lib/constants";
 
 interface Screening {
   date: string;
@@ -26,12 +27,8 @@ interface FilmPageClientProps {
   screenings: Screening[];
 }
 
-const venueNames: Record<string, string> = {
-  cinepolis: "LuLu Mall",
-  rajkumar: "Dr. Rajkumar Bhavana",
-  banashankari: "Suchitra Cinema",
-  openair: "Open Air @ LuLu",
-};
+// Use centralized venue names (1.5)
+const venueNames = VENUE_NAMES;
 
 const venueColors: Record<string, string> = {
   cinepolis: "bg-blue-500/20 border-blue-500/30 text-blue-300",
@@ -62,7 +59,7 @@ export function FilmPageClient({ film, category, allFilms, screenings }: FilmPag
     .slice(0, 6);
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main id="main-content" className="min-h-screen bg-zinc-950">
       {/* Header */}
       <div className="bg-zinc-900/50 border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 py-3">

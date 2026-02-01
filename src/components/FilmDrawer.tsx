@@ -8,6 +8,7 @@ import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight, 
 import { Film } from "@/types";
 import { cn, formatDuration } from "@/lib/utils";
 import { WatchlistButton } from "./WatchlistButton";
+import { VENUE_NAMES, getScheduleTitleVariants } from "@/lib/constants";
 
 interface Screening {
   date: string;
@@ -41,12 +42,8 @@ interface ScheduleData {
   };
 }
 
-const venueNames: Record<string, string> = {
-  cinepolis: "LuLu Mall Cinepolis",
-  rajkumar: "Dr. Rajkumar Rangamandira",
-  banashankari: "Suchitra Banashankari",
-  openair: "PVR INOX Open Air",
-};
+// Use centralized venue names (5.6)
+const venueNames = VENUE_NAMES;
 
 const drawerVenueColors: Record<string, string> = {
   cinepolis: "bg-blue-500/15 border-blue-500/30 text-blue-300",
@@ -55,99 +52,7 @@ const drawerVenueColors: Record<string, string> = {
   openair: "bg-purple-500/15 border-purple-500/30 text-purple-300",
 };
 
-// Title aliases: maps schedule titles to database titles
-// Used for reverse lookup (DB title -> possible schedule titles)
-const titleAliases: Record<string, string> = {
-  'GANARRAAG': 'GANARAAG',
-  'VAMYA': 'VANYA',
-  'ROOSTER': 'KOKORAS',
-  'SIRAT': 'SIRĀT',
-  'SARKEET': 'SIRĀT',
-  'PHOLDIBEE': 'PHOUOIBEE (THE GODDESS OF PADDY)',
-  'REPUBLIC OF PIPULPIPAS': 'REPUBLIC OF PIPOLIPINAS',
-  "HOMTIVENTAI '25": "KONTINENTAL '25",
-  'HOMTIVENTAI 25': "KONTINENTAL '25",
-  'KONTINENTAL 25': "KONTINENTAL '25",
-  'HY NAM INN': 'KY NAM INN',
-  'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA',
-  'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
-  'THE MYSTERIOUS CASE OF THE FLAMINGO': 'THE MYSTERIOUS GAZE OF THE FLAMINGO',
-  'SRIMANTHI DARSAIL PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-  'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-  'SIR JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-  'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1',
-  'MATAPA A LEGEND CHAPTER-1': 'KANTARA A LEGEND CHAPTER-1',
-  'K-POPPER': 'K POPPER',
-  'MINO': 'NINO',
-  'MOHAM': 'DESIRE',
-  'FIRE FLY': 'FLAMES',
-  'MOSQUITOS': 'MOSQUITOES',
-  'ASAD AND BEAUTIFUL WORLD': 'A SAD AND BEAUTIFUL WORLD',
-  'JHANE MOVES TO THE COUNTRY': 'JANINE MOVES TO THE COUNTRY',
-  'THE SEASONS, TWO STRANGERS': 'TWO SEASONS, TWO STRANGERS',
-  'ANMOL - LOVINGLY OURS': 'ANMOL- LOVINGLY OURS',
-  'LA CHAPELLE': 'THE CHAPEL',
-  'LA VIE EST BELLE': 'LIFE IS ROSY',
-  'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
-  'NATIONALITÉ IMMIGRÉ': 'NATIONALITY: IMMIGRANT',
-  "WERODON, L'ENFANT DU BON DIEU": "WENDEMI, THE GOOD LORD'S CHILD",
-  'TETES BRULEES': 'TÊTES BRÛLÉES',
-  'TÊTES BRULÉES': 'TÊTES BRÛLÉES',
-  'SAMBA TRAORE': 'SAMBA TRAORÉ',
-  'CALLE MALAGA': 'CALLE MÁLAGA',
-  'BELEN': 'BELÉN',
-  'NINO OF POPULAR ENTERTAINMENT': 'NINO',
-  'THAAY! SAHEBA': 'THAAYI SAHEBA',
-  'AGNIVATHWASI': 'AGNYATHAVASI',
-  'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
-  'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU',
-  'KANAL': 'CANAL',
-  'PORTE BAGAGE': 'PORTE BAGAGE',
-  'JEEVANN': 'JEVANN',
-  'JEEV': 'JEVANN',
-  'BHOOTHALAM': 'HIDDEN TREMORS',
-  'GHARDEV': 'FAMILT DEITY',
-  'KANASEMBA KUDUREYAMERI': 'RIDING THE STALLION OF DREAM',
-  'KANGBO ALOTI': 'THE LOST PATH',
-  'KHALI PUTA': 'EMPTY PAGE',
-  'MAHAKAVI': 'THE EPIC POET',
-  'MRIGATRISHNA': 'MIRAGE',
-  'SABAR BONDA': 'CACTUS PEARS',
-  'VAGHACHIPANI': "TIGER'S POND",
-  'VASTHUHARA': 'THE DISPOSSESSED',
-  'DO BIGHA ZAMIN': 'TWO ACRES OF LAND',
-  'DO BHEEGA ZAMIN': 'TWO ACRES OF LAND',
-  'DO BEEGHA ZAMIN': 'TWO ACRES OF LAND',
-  'CLEO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
-  'CLÉO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
-  'GEHEMU LAMAI': 'GEHENU LAMAI',
-  'GEHENNU LAMAI': 'GEHENU LAMAI',
-  'THE EARRINGS OF MADAME DE...': 'THE EARRINGS OF MADAM DE',
-  'THE EARRINGS OF MADAME DE': 'THE EARRINGS OF MADAM DE',
-  'PADUVAARAHALLI PANDAVARU': 'PADUVARAHALLI PANDAVARU',
-  'PADUVARAHALLI PANDAVRU': 'PADUVARAHALLI PANDAVARU',
-};
-
-// Build reverse lookup: DB title -> all schedule titles that map to it
-function getScheduleTitleVariants(dbTitle: string): string[] {
-  const normalizedDbTitle = dbTitle.toUpperCase();
-  const variants = new Set<string>([normalizedDbTitle]);
-  
-  // Find all schedule titles that map to this DB title
-  for (const [scheduleTitle, mappedDbTitle] of Object.entries(titleAliases)) {
-    if (mappedDbTitle.toUpperCase() === normalizedDbTitle) {
-      variants.add(scheduleTitle.toUpperCase());
-    }
-  }
-  
-  // Also add normalized version without accents for matching
-  const normalized = normalizedDbTitle
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-  variants.add(normalized);
-  
-  return Array.from(variants);
-}
+// Use centralized getScheduleTitleVariants from constants (5.2)
 
 function getScreeningsForFilm(filmTitle: string, scheduleData?: ScheduleData): Screening[] {
   if (!scheduleData) return [];
@@ -268,17 +173,24 @@ export function FilmDrawer({
     return getNextScreening(screenings);
   }, [screenings]);
 
+  // 2.3: Add bounds checking to navigation callbacks
   const navigatePrev = useCallback(() => {
-    if (canGoPrev && onNavigate) {
-      setDirection(-1);
-      onNavigate(films[currentIndex - 1], currentIndex - 1);
+    if (canGoPrev && onNavigate && currentIndex > 0 && currentIndex <= films.length) {
+      const prevFilm = films[currentIndex - 1];
+      if (prevFilm) {
+        setDirection(-1);
+        onNavigate(prevFilm, currentIndex - 1);
+      }
     }
   }, [canGoPrev, onNavigate, films, currentIndex]);
 
   const navigateNext = useCallback(() => {
-    if (canGoNext && onNavigate) {
-      setDirection(1);
-      onNavigate(films[currentIndex + 1], currentIndex + 1);
+    if (canGoNext && onNavigate && currentIndex >= 0 && currentIndex < films.length - 1) {
+      const nextFilm = films[currentIndex + 1];
+      if (nextFilm) {
+        setDirection(1);
+        onNavigate(nextFilm, currentIndex + 1);
+      }
     }
   }, [canGoNext, onNavigate, films, currentIndex]);
 
@@ -306,6 +218,24 @@ export function FilmDrawer({
         navigatePrev();
       } else if (e.key === "ArrowRight" && canGoNext) {
         navigateNext();
+      } else if (e.key === "Tab") {
+        // 2.5: Keyboard trap - keep focus within drawer
+        const drawer = drawerRef.current;
+        if (!drawer) return;
+        
+        const focusableElements = drawer.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable?.focus();
+        }
       }
     };
 
@@ -341,10 +271,9 @@ export function FilmDrawer({
             aria-hidden="true"
           />
 
-          {/* Drawer */}
+          {/* Drawer - 3.5: Remove key to prevent full remount on navigation */}
           <motion.div
             ref={drawerRef}
-            key={film.id}
             initial={{ x: "100%", opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: direction >= 0 ? "-30%" : "100%", opacity: 0 }}

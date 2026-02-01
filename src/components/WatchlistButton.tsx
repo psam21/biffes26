@@ -34,6 +34,7 @@ function WatchlistButtonComponent({ filmId, variant = "icon", className }: Watch
     return (
       <button
         onClick={handleClick}
+        aria-label={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
         className={cn(
           "flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm",
           "transition-all duration-150 ease-out",

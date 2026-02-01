@@ -79,7 +79,7 @@ export default function WatchlistClient({ films, scheduleData }: WatchlistClient
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950">
+    <main id="main-content" className="min-h-screen bg-zinc-950">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -115,11 +115,15 @@ export default function WatchlistClient({ films, scheduleData }: WatchlistClient
           </div>
         </div>
 
-        {/* Watchlist Content */}
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 space-y-8 sm:space-y-10">
+        {/* Watchlist Content - 4.3: Added aria-busy for loading state */}
+        <div 
+          className="max-w-7xl mx-auto px-4 py-6 sm:py-8 space-y-8 sm:space-y-10"
+          aria-busy={watchlistLoading}
+          aria-live="polite"
+        >
           {watchlistLoading ? (
-            <div className="text-center py-16">
-              <div className="animate-spin w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <div className="text-center py-16" role="status">
+              <div className="animate-spin w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full mx-auto mb-4" aria-hidden="true"></div>
               <p className="text-zinc-400">Loading your watchlist...</p>
             </div>
           ) : watchlistFilms.length > 0 ? (
