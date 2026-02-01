@@ -55,15 +55,118 @@ const drawerVenueColors: Record<string, string> = {
   openair: "bg-purple-500/15 border-purple-500/30 text-purple-300",
 };
 
+// Title aliases: maps schedule titles to database titles
+// Used for reverse lookup (DB title -> possible schedule titles)
+const titleAliases: Record<string, string> = {
+  'GANARRAAG': 'GANARAAG',
+  'VAMYA': 'VANYA',
+  'ROOSTER': 'KOKORAS',
+  'SIRAT': 'SIRĀT',
+  'SARKEET': 'SIRĀT',
+  'PHOLDIBEE': 'PHOUOIBEE (THE GODDESS OF PADDY)',
+  'REPUBLIC OF PIPULPIPAS': 'REPUBLIC OF PIPOLIPINAS',
+  "HOMTIVENTAI '25": "KONTINENTAL '25",
+  'HOMTIVENTAI 25': "KONTINENTAL '25",
+  'KONTINENTAL 25': "KONTINENTAL '25",
+  'HY NAM INN': 'KY NAM INN',
+  'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA',
+  'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
+  'THE MYSTERIOUS CASE OF THE FLAMINGO': 'THE MYSTERIOUS GAZE OF THE FLAMINGO',
+  'SRIMANTHI DARSAIL PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+  'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+  'SIR JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+  'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1',
+  'MATAPA A LEGEND CHAPTER-1': 'KANTARA A LEGEND CHAPTER-1',
+  'K-POPPER': 'K POPPER',
+  'MINO': 'NINO',
+  'MOHAM': 'DESIRE',
+  'FIRE FLY': 'FLAMES',
+  'MOSQUITOS': 'MOSQUITOES',
+  'ASAD AND BEAUTIFUL WORLD': 'A SAD AND BEAUTIFUL WORLD',
+  'JHANE MOVES TO THE COUNTRY': 'JANINE MOVES TO THE COUNTRY',
+  'THE SEASONS, TWO STRANGERS': 'TWO SEASONS, TWO STRANGERS',
+  'ANMOL - LOVINGLY OURS': 'ANMOL- LOVINGLY OURS',
+  'LA CHAPELLE': 'THE CHAPEL',
+  'LA VIE EST BELLE': 'LIFE IS ROSY',
+  'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
+  'NATIONALITÉ IMMIGRÉ': 'NATIONALITY: IMMIGRANT',
+  "WERODON, L'ENFANT DU BON DIEU": "WENDEMI, THE GOOD LORD'S CHILD",
+  'TETES BRULEES': 'TÊTES BRÛLÉES',
+  'TÊTES BRULÉES': 'TÊTES BRÛLÉES',
+  'SAMBA TRAORE': 'SAMBA TRAORÉ',
+  'CALLE MALAGA': 'CALLE MÁLAGA',
+  'BELEN': 'BELÉN',
+  'NINO OF POPULAR ENTERTAINMENT': 'NINO',
+  'THAAY! SAHEBA': 'THAAYI SAHEBA',
+  'AGNIVATHWASI': 'AGNYATHAVASI',
+  'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
+  'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU',
+  'KANAL': 'CANAL',
+  'PORTE BAGAGE': 'PORTE BAGAGE',
+  'JEEVANN': 'JEVANN',
+  'JEEV': 'JEVANN',
+  'BHOOTHALAM': 'HIDDEN TREMORS',
+  'GHARDEV': 'FAMILT DEITY',
+  'KANASEMBA KUDUREYAMERI': 'RIDING THE STALLION OF DREAM',
+  'KANGBO ALOTI': 'THE LOST PATH',
+  'KHALI PUTA': 'EMPTY PAGE',
+  'MAHAKAVI': 'THE EPIC POET',
+  'MRIGATRISHNA': 'MIRAGE',
+  'SABAR BONDA': 'CACTUS PEARS',
+  'VAGHACHIPANI': "TIGER'S POND",
+  'VASTHUHARA': 'THE DISPOSSESSED',
+  'DO BIGHA ZAMIN': 'TWO ACRES OF LAND',
+  'DO BHEEGA ZAMIN': 'TWO ACRES OF LAND',
+  'DO BEEGHA ZAMIN': 'TWO ACRES OF LAND',
+  'CLEO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
+  'CLÉO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
+  'GEHEMU LAMAI': 'GEHENU LAMAI',
+  'GEHENNU LAMAI': 'GEHENU LAMAI',
+  'THE EARRINGS OF MADAME DE...': 'THE EARRINGS OF MADAM DE',
+  'THE EARRINGS OF MADAME DE': 'THE EARRINGS OF MADAM DE',
+  'PADUVAARAHALLI PANDAVARU': 'PADUVARAHALLI PANDAVARU',
+  'PADUVARAHALLI PANDAVRU': 'PADUVARAHALLI PANDAVARU',
+};
+
+// Build reverse lookup: DB title -> all schedule titles that map to it
+function getScheduleTitleVariants(dbTitle: string): string[] {
+  const normalizedDbTitle = dbTitle.toUpperCase();
+  const variants = new Set<string>([normalizedDbTitle]);
+  
+  // Find all schedule titles that map to this DB title
+  for (const [scheduleTitle, mappedDbTitle] of Object.entries(titleAliases)) {
+    if (mappedDbTitle.toUpperCase() === normalizedDbTitle) {
+      variants.add(scheduleTitle.toUpperCase());
+    }
+  }
+  
+  // Also add normalized version without accents for matching
+  const normalized = normalizedDbTitle
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  variants.add(normalized);
+  
+  return Array.from(variants);
+}
+
 function getScreeningsForFilm(filmTitle: string, scheduleData?: ScheduleData): Screening[] {
   if (!scheduleData) return [];
   const screenings: Screening[] = [];
-  const filmKey = filmTitle.toUpperCase();
+  
+  // Get all possible title variants to search for
+  const titleVariants = getScheduleTitleVariants(filmTitle);
 
   for (const day of scheduleData.days) {
     for (const screening of day.screenings) {
       for (const showing of screening.showings) {
-        if (showing.film.toUpperCase() === filmKey) {
+        const showingTitle = showing.film.toUpperCase();
+        const showingTitleNormalized = showingTitle
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+        
+        // Check if showing matches any of our title variants
+        if (titleVariants.includes(showingTitle) || 
+            titleVariants.includes(showingTitleNormalized)) {
           screenings.push({
             date: day.date,
             dayLabel: day.label,
