@@ -91,9 +91,12 @@ export async function POST(request: NextRequest) {
 
     const key = getWatchlistKey(userId);
 
+    // TTL: 30 days to match sync code expiry
+    const WATCHLIST_TTL = 30 * 24 * 60 * 60;
+
     if (action === "sync" && Array.isArray(syncWatchlist)) {
-      // Full sync - replace entire watchlist
-      await redis.set(key, syncWatchlist);
+      // Full sync - replace entire watchlist with TTL
+      await redis.set(key, syncWatchlist, { ex: WATCHLIST_TTL });
       return NextResponse.json({ success: true, watchlist: syncWatchlist });
     }
 
@@ -116,7 +119,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
-    await redis.set(key, updated);
+    // Set with TTL to auto-expire inactive watchlists
+    await redis.set(key, updated, { ex: WATCHLIST_TTL });
     
     return NextResponse.json({ success: true, watchlist: updated });
   } catch (error) {

@@ -16,6 +16,16 @@ export function ShareWatchlist() {
   const [importSuccess, setImportSuccess] = useState(false);
   const [generating, setGenerating] = useState(false);
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
+
   // Auto-generate code when modal opens and no code exists
   useEffect(() => {
     if (isOpen && activeTab === "share" && !syncCode && watchlist.length > 0) {
@@ -86,6 +96,7 @@ export function ShareWatchlist() {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => setIsOpen(true)}
+        aria-label="Share or import watchlist"
         className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-amber-600/20 to-orange-600/20 hover:from-amber-600/30 hover:to-orange-600/30 border border-amber-500/30 rounded-lg transition-all"
       >
         <Ticket className="w-4 h-4 text-amber-400" />
@@ -109,6 +120,9 @@ export function ShareWatchlist() {
 
             {/* Modal - Movie Ticket Style */}
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="share-modal-title"
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 30 }}
@@ -136,10 +150,11 @@ export function ShareWatchlist() {
                     <div className="relative flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Film className="w-6 h-6 text-zinc-900" />
-                        <h3 className="text-lg font-bold text-zinc-900 tracking-wide">WATCHLIST PASS</h3>
+                        <h3 id="share-modal-title" className="text-lg font-bold text-zinc-900 tracking-wide">WATCHLIST PASS</h3>
                       </div>
                       <button
                         onClick={() => setIsOpen(false)}
+                        aria-label="Close share dialog"
                         className="p-1 hover:bg-black/20 rounded-full transition-colors"
                       >
                         <X className="w-5 h-5 text-zinc-900" />
@@ -260,6 +275,9 @@ export function ShareWatchlist() {
                               }}
                               placeholder="XXXXXX"
                               maxLength={6}
+                              aria-label="Enter 6-character pass code"
+                              aria-describedby={importError ? "import-error" : undefined}
+                              aria-invalid={!!importError}
                               className="w-full bg-zinc-950 border-2 border-zinc-700 focus:border-emerald-500 rounded-xl px-4 py-4 text-center font-mono text-2xl tracking-[0.3em] text-white placeholder:text-zinc-700 focus:outline-none transition-colors"
                             />
                             <div className="absolute top-1 left-3 text-[10px] font-bold text-zinc-600 tracking-widest">
@@ -269,6 +287,8 @@ export function ShareWatchlist() {
 
                           {importError && (
                             <motion.p 
+                              id="import-error"
+                              role="alert"
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
                               className="text-red-400 text-sm text-center bg-red-500/10 py-2 rounded-lg"

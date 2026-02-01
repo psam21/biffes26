@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -76,7 +77,33 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
   const [drawerFilms, setDrawerFilms] = useState<Film[]>([]);
   const [drawerIndex, setDrawerIndex] = useState(-1);
   
-  const { watchlist } = useWatchlist();
+  // Shared watchlist import notification
+  const [importNotification, setImportNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  
+  const { watchlist, loadFromSyncCode } = useWatchlist();
+  const searchParams = useSearchParams();
+  
+  // Handle shared watchlist URL (?watchlist=XXXXXX)
+  useEffect(() => {
+    const sharedCode = searchParams.get('watchlist');
+    if (sharedCode && sharedCode.length === 6) {
+      // Remove from URL to prevent re-importing on refresh
+      const url = new URL(window.location.href);
+      url.searchParams.delete('watchlist');
+      window.history.replaceState({}, '', url.pathname + url.search);
+      
+      // Import the shared watchlist
+      loadFromSyncCode(sharedCode).then(success => {
+        if (success) {
+          setImportNotification({ type: 'success', message: 'Watchlist imported successfully!' });
+        } else {
+          setImportNotification({ type: 'error', message: 'Invalid or expired share code' });
+        }
+        // Auto-dismiss after 4 seconds
+        setTimeout(() => setImportNotification(null), 4000);
+      });
+    }
+  }, [searchParams, loadFromSyncCode]);
 
   // 3.2: Debounce search query to avoid jank during fast typing
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
@@ -192,6 +219,29 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
 
   return (
     <main id="main-content" className="min-h-screen bg-zinc-950">
+      {/* Import notification toast */}
+      <AnimatePresence>
+        {importNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            role="status"
+            aria-live="polite"
+            className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl shadow-lg ${
+              importNotification.type === 'success' 
+                ? 'bg-green-600 text-white' 
+                : 'bg-red-600 text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <span>{importNotification.type === 'success' ? '✅' : '❌'}</span>
+              <span className="font-medium">{importNotification.message}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
