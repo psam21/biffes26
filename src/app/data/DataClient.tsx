@@ -464,6 +464,59 @@ export default function DataClient({ stats }: { stats: Stats }) {
           </div>
         </section>
 
+        {/* Quick Links */}
+        <section className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <span>🔗</span> Quick Links
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <a
+              href="/"
+              className="flex items-center gap-2 p-3 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            >
+              <span className="text-lg">🏠</span>
+              <span className="text-sm text-zinc-300">Home</span>
+            </a>
+            <a
+              href="/films"
+              className="flex items-center gap-2 p-3 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            >
+              <span className="text-lg">🔤</span>
+              <span className="text-sm text-zinc-300">A-Z Films</span>
+            </a>
+            <a
+              href="/schedule"
+              className="flex items-center gap-2 p-3 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            >
+              <span className="text-lg">📅</span>
+              <span className="text-sm text-zinc-300">Schedule</span>
+            </a>
+            <a
+              href="/recommendations"
+              className="flex items-center gap-2 p-3 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            >
+              <span className="text-lg">✨</span>
+              <span className="text-sm text-zinc-300">Daily Picks</span>
+            </a>
+            <a
+              href="/watchlist"
+              className="flex items-center gap-2 p-3 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            >
+              <span className="text-lg">❤️</span>
+              <span className="text-sm text-zinc-300">Watchlist</span>
+            </a>
+            <a
+              href="https://github.com/psam21/biffes26"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-3 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            >
+              <span className="text-lg">💻</span>
+              <span className="text-sm text-zinc-300">GitHub</span>
+            </a>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="border-t border-zinc-800 pt-8 text-center">
           <p className="text-sm text-zinc-500">
