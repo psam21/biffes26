@@ -8,6 +8,7 @@ import { Film } from "@/types";
 import { RatingBadges } from "@/components/RatingBadges";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { SiteNav } from "@/components/SiteNav";
+import { useWatchlist } from "@/lib/watchlist-context";
 import { 
   VENUE_COLORS, 
   VENUE_ICONS, 
@@ -140,6 +141,9 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [currentTimeMinutes, setCurrentTimeMinutes] = useState(getCurrentTimeMinutesIST);
+  
+  // Get watchlist context
+  const { isInWatchlist } = useWatchlist();
 
   // 2.2: Debounce search query to avoid jank
   useEffect(() => {
@@ -546,15 +550,17 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               const filmData = findFilmByTitle(showing.film);
                               const hasFilmData = !!filmData;
                               const nowShowing = isNowShowing(time, showing.duration, isSelectedDayToday);
+                              const filmId = filmData?.id || `schedule-${showing.film.replace(/\s+/g, '-').toLowerCase()}`;
+                              const inWatchlist = isInWatchlist(filmId);
                               return (
                                 <div 
                                   key={idx}
-                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group cursor-pointer hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-gray-900`}
+                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : inWatchlist ? "bg-rose-500/10 border-rose-500/40" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group cursor-pointer hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-gray-900`}
                                   onClick={() => handleFilmClick(showing.film)}
                                   role="button"
                                   tabIndex={0}
                                   onKeyDown={(e) => e.key === "Enter" && handleFilmClick(showing.film)}
-                                  aria-label={`${showing.film}${nowShowing ? ' - Now Showing' : ''}`}
+                                  aria-label={`${showing.film}${nowShowing ? ' - Now Showing' : ''}${inWatchlist ? ' - In your watchlist' : ''}`}
                                 >
                                   {/* Now Showing badge (4.2 accessibility) */}
                                   {nowShowing && (
@@ -565,6 +571,12 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                     >
                                       <span className="w-1 h-1 bg-black rounded-full" aria-hidden="true"></span>
                                       LIVE
+                                    </div>
+                                  )}
+                                  {/* Watchlist indicator */}
+                                  {inWatchlist && !nowShowing && (
+                                    <div className="absolute -top-2 left-2 text-[9px] bg-rose-500/80 text-white px-1.5 py-0.5 rounded-full font-medium">
+                                      ❤️ Saved
                                     </div>
                                   )}
                                   {/* Watchlist button - for all films */}
@@ -661,17 +673,21 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               const filmData = findFilmByTitle(showing.film);
                               const hasFilmData = !!filmData;
                               const nowShowing = isNowShowing(showing.time, showing.duration, isSelectedDayToday);
+                              const filmIdCards = filmData?.id || `schedule-${showing.film.replace(/\s+/g, '-').toLowerCase()}`;
+                              const inWatchlistCards = isInWatchlist(filmIdCards);
                               return (
                                 <div
                                   key={idx}
                                   className={`p-3 transition-colors relative group ${
                                     nowShowing ? "bg-green-500/20 border-l-4 border-green-400" :
+                                    inWatchlistCards ? "bg-rose-500/10 border-l-2 border-rose-500/50" :
                                     showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
                                   } hover:bg-white/10 cursor-pointer`}
                                   onClick={() => handleFilmClick(showing.film)}
                                   role="button"
                                   tabIndex={0}
                                   onKeyDown={(e) => e.key === "Enter" && handleFilmClick(showing.film)}
+                                  aria-label={`${showing.film}${nowShowing ? ' - Now showing' : ''}${inWatchlistCards ? ' - In your watchlist' : ''}`}
                                 >
                                   {/* Now Showing badge (4.2 accessibility) */}
                                   {nowShowing && (
@@ -684,14 +700,20 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       NOW
                                     </div>
                                   )}
+                                  {/* Watchlist indicator for cards view */}
+                                  {inWatchlistCards && !nowShowing && (
+                                    <div className="absolute top-2 left-2 text-[10px] bg-rose-500/80 text-white px-2 py-0.5 rounded-full font-medium">
+                                      ❤️ Saved
+                                    </div>
+                                  )}
                                   {/* Watchlist button - for all films */}
                                   <div 
                                     className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                     onClick={(e) => e.stopPropagation()}
                                   >
-                                    <WatchlistButton filmId={filmData?.id || `schedule-${showing.film.replace(/\s+/g, '-').toLowerCase()}`} />
+                                    <WatchlistButton filmId={filmIdCards} />
                                   </div>
-                                  <div className={`flex items-start gap-3 ${nowShowing ? "mt-6" : ""}`}>
+                                  <div className={`flex items-start gap-3 ${nowShowing || inWatchlistCards ? "mt-6" : ""}`}>
                                     <div className="text-sm font-mono font-bold text-yellow-400 w-14 flex-shrink-0">
                                       {showing.time}
                                     </div>
