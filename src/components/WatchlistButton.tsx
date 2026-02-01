@@ -8,10 +8,11 @@ import { cn } from "@/lib/utils";
 interface WatchlistButtonProps {
   filmId: string;
   variant?: "icon" | "full";
+  size?: "sm" | "md";
   className?: string;
 }
 
-function WatchlistButtonComponent({ filmId, variant = "icon", className }: WatchlistButtonProps) {
+function WatchlistButtonComponent({ filmId, variant = "icon", size = "md", className }: WatchlistButtonProps) {
   // Use optimized hook that only triggers re-render when THIS film's status changes
   const { inWatchlist, toggle, isLoading } = useWatchlistItem(filmId);
 
@@ -24,7 +25,9 @@ function WatchlistButtonComponent({ filmId, variant = "icon", className }: Watch
     return (
       <div className={cn(
         "animate-pulse bg-zinc-700 rounded-full",
-        variant === "icon" ? "w-8 h-8" : "w-24 h-8",
+        variant === "icon" 
+          ? size === "sm" ? "w-7 h-7" : "w-8 h-8"
+          : "w-24 h-8",
         className
       )} />
     );
@@ -56,16 +59,17 @@ function WatchlistButtonComponent({ filmId, variant = "icon", className }: Watch
       onClick={handleClick}
       aria-label={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
       className={cn(
-        "flex items-center justify-center w-9 h-9 rounded-lg",
+        "flex items-center justify-center rounded-lg",
         "transition-all duration-150 ease-out",
         "hover:scale-110 active:scale-90",
+        size === "sm" ? "w-7 h-7" : "w-9 h-9",
         inWatchlist
           ? "bg-amber-500 hover:bg-amber-600 text-zinc-900"
           : "bg-black/70 hover:bg-black/90 text-zinc-300 hover:text-white backdrop-blur-sm",
         className
       )}
     >
-      <WatchlistIcon filled={inWatchlist} size={22} />
+      <WatchlistIcon filled={inWatchlist} size={size === "sm" ? 16 : 22} />
     </button>
   );
 }
