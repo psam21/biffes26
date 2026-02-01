@@ -126,12 +126,16 @@ function computeStats() {
   })).sort((a, b) => b.screenings - a.screenings);
 
   // --- Category Statistics ---
-  const categoryStats = categories.map(cat => ({
-    name: cat.name,
-    slug: cat.slug,
-    filmCount: cat.filmCount,
-    color: cat.color,
-  })).sort((a, b) => b.filmCount - a.filmCount);
+  const categoryStats = categories.map(cat => {
+    // Compute actual film count dynamically
+    const actualFilmCount = films.filter(f => f.categoryId === cat.id).length;
+    return {
+      name: cat.name,
+      slug: cat.slug,
+      filmCount: actualFilmCount,
+      color: cat.color,
+    };
+  }).sort((a, b) => b.filmCount - a.filmCount);
 
   // --- Technical/Meta Statistics ---
   const totalPages = 1 + totalCategories + totalFilms + 5; // home + categories + films + static pages

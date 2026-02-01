@@ -8,9 +8,11 @@ interface CategoryCardProps {
   category: Category;
   onClick?: () => void;
   index: number;
+  actualFilmCount?: number;
 }
 
-export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
+export function CategoryCard({ category, onClick, index, actualFilmCount }: CategoryCardProps) {
+  const displayCount = actualFilmCount ?? category.filmCount;
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if ((e.key === "Enter" || e.key === " ") && onClick) {
       e.preventDefault();
@@ -24,7 +26,7 @@ export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
-      aria-label={`View ${category.name} - ${category.filmCount} films`}
+      aria-label={`View ${category.name} - ${displayCount} films`}
       style={{
         animationDelay: `${Math.min(index * 30, 300)}ms`,
       }}
@@ -46,7 +48,7 @@ export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
       <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-2 py-0.5">
         <Film className="w-3 h-3 text-white/80" />
         <span className="text-xs font-medium text-white/90">
-          {category.filmCount}
+          {displayCount}
         </span>
       </div>
 

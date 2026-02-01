@@ -434,6 +434,7 @@ export default function HomeClient({ data, scheduleData }: HomeClientProps) {
                 <CategoryCard
                   category={category}
                   index={index}
+                  actualFilmCount={films.filter(f => f.categoryId === category.id).length}
                 />
               </Link>
             ))}
