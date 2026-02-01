@@ -233,6 +233,9 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       
       // Title variations
       'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1',
+      'MATAPA A LEGEND CHAPTER-1': 'KANTARA A LEGEND CHAPTER-1',
+      'K-POPPER': 'K POPPER',
+      'MINO': 'NINO',
       'FIRE FLY': 'FLAMES',
       'MOSQUITOS': 'MOSQUITOES',
       'GEHEMU LAMAI': 'GEHENNU LAMAI',
