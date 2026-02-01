@@ -611,15 +611,13 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       LIVE
                                     </div>
                                   )}
-                                  {/* Watchlist button - only for films in database */}
-                                  {filmData && (
-                                    <div 
-                                      className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
-                                      onClick={(e) => e.stopPropagation()}
-                                    >
-                                      <WatchlistButton filmId={filmData.id} />
-                                    </div>
-                                  )}
+                                  {/* Watchlist button - for all films */}
+                                  <div 
+                                    className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <WatchlistButton filmId={filmData?.id || `schedule-${showing.film.replace(/\s+/g, '-').toLowerCase()}`} />
+                                  </div>
                                   {/* Screen badge */}
                                   {venueKey !== "openair" && (
                                     <span className={`text-[10px] ${colors.text} font-bold uppercase tracking-wide`}>
@@ -726,15 +724,13 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       NOW
                                     </div>
                                   )}
-                                  {/* Watchlist button - only for films in database */}
-                                  {filmData && (
-                                    <div 
-                                      className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
-                                      onClick={(e) => e.stopPropagation()}
-                                    >
-                                      <WatchlistButton filmId={filmData.id} />
-                                    </div>
-                                  )}
+                                  {/* Watchlist button - for all films */}
+                                  <div 
+                                    className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <WatchlistButton filmId={filmData?.id || `schedule-${showing.film.replace(/\s+/g, '-').toLowerCase()}`} />
+                                  </div>
                                   <div className={`flex items-start gap-3 ${nowShowing ? "mt-6" : ""}`}>
                                     <div className="text-sm font-mono font-bold text-yellow-400 w-14 flex-shrink-0">
                                       {showing.time}
