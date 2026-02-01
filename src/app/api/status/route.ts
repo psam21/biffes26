@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLastUpdated, getFestivalData } from "@/lib/upstash";
+import { getLastUpdated, getFestivalData, redis } from "@/lib/upstash";
 import staticData from "@/data/biffes_data.json";
 
 export const dynamic = "force-dynamic";
@@ -14,12 +14,39 @@ export async function GET() {
 
     let redisLastUpdated: string | null = null;
     let redisFilmCount: number | null = null;
+    let syncCodesCreated: number | null = null;
+    let activeWatchlists: number | null = null;
 
-    if (isUpstashConfigured) {
+    if (isUpstashConfigured && redis) {
       redisLastUpdated = await getLastUpdated();
       const data = await getFestivalData();
       if (data) {
         redisFilmCount = data.films.length;
+      }
+      
+      // Count sync codes and watchlists using SCAN
+      try {
+        // Count sync codes (pattern: biffes:sync:*)
+        let syncCursor = 0;
+        let syncCount = 0;
+        do {
+          const [newCursor, keys] = await redis.scan(syncCursor, { match: "biffes:sync:*", count: 100 });
+          syncCursor = Number(newCursor);
+          syncCount += keys.length;
+        } while (syncCursor !== 0);
+        syncCodesCreated = syncCount;
+
+        // Count watchlists (pattern: biffes:watchlist:*)
+        let watchlistCursor = 0;
+        let watchlistCount = 0;
+        do {
+          const [newCursor, keys] = await redis.scan(watchlistCursor, { match: "biffes:watchlist:*", count: 100 });
+          watchlistCursor = Number(newCursor);
+          watchlistCount += keys.length;
+        } while (watchlistCursor !== 0);
+        activeWatchlists = watchlistCount;
+      } catch (scanError) {
+        console.error("Error scanning Redis keys:", scanError);
       }
     }
 
@@ -35,6 +62,8 @@ export async function GET() {
         filmCount: (staticData as { films: unknown[] }).films.length,
       },
       source: isUpstashConfigured && redisLastUpdated ? "upstash" : "static",
+      syncCodesCreated,
+      activeWatchlists,
     });
   } catch (error) {
     return NextResponse.json(
