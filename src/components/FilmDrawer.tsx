@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Clock, Globe, Languages, Calendar, User, ChevronLeft, ChevronRight, ExternalLink, MapPin } from "@/lib/icons";
@@ -220,19 +220,6 @@ export function FilmDrawer({
     }
   };
 
-  const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50;
-    const velocity = 0.5;
-    
-    if (info.offset.x > threshold || info.velocity.x > velocity) {
-      // Swiped right -> go to previous
-      if (canGoPrev) navigatePrev();
-    } else if (info.offset.x < -threshold || info.velocity.x < -velocity) {
-      // Swiped left -> go to next
-      if (canGoNext) navigateNext();
-    }
-  };
-
   if (!film) return null;
 
   const hasNavigation = films.length > 1 && onNavigate;
@@ -259,10 +246,7 @@ export function FilmDrawer({
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: direction >= 0 ? "-30%" : "100%", opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            drag={hasNavigation ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={handleDragEnd}
+
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
@@ -270,8 +254,7 @@ export function FilmDrawer({
             className={cn(
               "fixed right-0 top-0 h-full w-full max-w-lg z-50",
               "bg-zinc-900 border-l border-zinc-800",
-              "overflow-y-auto focus:outline-none",
-              hasNavigation && "cursor-grab active:cursor-grabbing"
+              "overflow-y-auto focus:outline-none"
             )}
           >
             {/* Navigation buttons */}

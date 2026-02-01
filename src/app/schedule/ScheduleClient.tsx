@@ -213,33 +213,48 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
     
     // Known title variations in schedule vs database
     const titleAliases: Record<string, string> = {
+      // Spelling variations
+      'GANARRAAG': 'GANARAAG',
+      'VAMYA': 'VANYA',
+      'ROOSTER': 'KOKORAS',
+      'SIRAT': 'SIRĀT',
+      'SARKEET': 'SIRĀT',
+      'PHOLDIBEE': 'PHOUOIBEE (THE GODDESS OF PADDY)',
+      'REPUBLIC OF PIPULPIPAS': 'REPUBLIC OF PIPOLIPINAS',
+      'HOMTIVENTAI \'25': "KONTINENTAL '25",
+      'KONTINENTAL 25': "KONTINENTAL '25",
+      'HY NAM INN': 'KY NAM INN',
+      'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA',
+      'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
+      'THE MYSTERIOUS CASE OF THE FLAMINGO': 'THE MYSTERIOUS GAZE OF THE FLAMINGO',
+      'SRIMANTHI DARSAIL PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+      'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+      'SIR JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
+      
       // Title variations
       'KANTARA II (LEGEND CHAPTER-1)': 'KANTARA A LEGEND CHAPTER-1',
-      'FIRE FLY': 'FLAMES', // Kannada film
+      'FIRE FLY': 'FLAMES',
       'MOSQUITOS': 'MOSQUITOES',
+      'GEHEMU LAMAI': 'GEHENNU LAMAI',
       'GEHENU LAMAI': 'GEHENNU LAMAI',
       'ASAD AND BEAUTIFUL WORLD': 'A SAD AND BEAUTIFUL WORLD',
       'JHANE MOVES TO THE COUNTRY': 'JANINE MOVES TO THE COUNTRY',
       'THE SEASONS, TWO STRANGERS': 'TWO SEASONS, TWO STRANGERS',
       'ANMOL - LOVINGLY OURS': 'ANMOL- LOVINGLY OURS',
-      'KONTINENTAL 25': "KONTINENTAL '25",
       'LA CHAPELLE': 'THE CHAPEL',
       'LA VIE EST BELLE': 'LIFE IS ROSY',
       'NATIONALITE IMMIGRE': 'NATIONALITY: IMMIGRANT',
       "WERODON, L'ENFANT DU BON DIEU": "WENDEMI, THE GOOD LORD'S CHILD",
       'TETES BRULEES': 'TÊTES BRÛLÉES',
       'SAMBA TRAORE': 'SAMBA TRAORÉ',
-      'CEMETERY OF CINEMA': 'THE CEMETERY OF CINEMA',
       'CALLE MALAGA': 'CALLE MÁLAGA',
       'BELEN': 'BELÉN',
       'NINO OF POPULAR ENTERTAINMENT': 'NINO',
-      'SARKEET': 'SIRĀT',
       'THAAY! SAHEBA': 'THAAYI SAHEBA',
-      'SRI JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
-      'SIR JAGANNATHA DASKARU PART 2': 'SRI JAGANNATHA DAASARU PART 2',
       'AGNIVATHWASI': 'AGNYATHAVASI',
-      'ACCIDENT': 'IT WAS JUST AN ACCIDENT',
+      // 'ACCIDENT' is a different film from 'IT WAS JUST AN ACCIDENT' - no alias needed
       'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
+      'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU',
     };
     
     // Add aliases pointing to the same films
@@ -268,7 +283,20 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
 
   const currentDay = days[selectedDay];
 
-  // Handle film click - navigate to film page
+  // Find showing data from current day's screenings
+  const findShowingData = useCallback((filmTitle: string): Showing | undefined => {
+    const filmUpper = filmTitle.toUpperCase();
+    for (const screening of currentDay.screenings) {
+      for (const showing of screening.showings) {
+        if (showing.film.toUpperCase() === filmUpper) {
+          return showing;
+        }
+      }
+    }
+    return undefined;
+  }, [currentDay]);
+
+  // Handle film click - navigate to film page or show drawer
   const handleFilmClick = useCallback((filmTitle: string, openInNewTab = false) => {
     const film = findFilmByTitle(filmTitle);
     if (film) {
@@ -278,8 +306,25 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
         setSelectedFilm(film);
         setIsDrawerOpen(true);
       }
+    } else {
+      // Film not in database - create a temporary Film object from schedule data
+      const showingData = findShowingData(filmTitle);
+      const tempFilm: Film = {
+        id: `schedule-${filmTitle.replace(/\s+/g, '-').toLowerCase()}`,
+        title: filmTitle,
+        director: showingData?.director || 'Director information unavailable',
+        country: showingData?.country || '',
+        year: showingData?.year || 0,
+        duration: showingData?.duration || 0,
+        language: showingData?.language || '',
+        synopsis: 'This is a special screening at BIFFes 2026. Detailed information is not available in our database.',
+        posterUrl: '',
+        categoryId: 'special',
+      };
+      setSelectedFilm(tempFilm);
+      setIsDrawerOpen(true);
     }
-  }, [findFilmByTitle]);
+  }, [findFilmByTitle, findShowingData]);
 
   const handleCloseDrawer = useCallback(() => {
     setIsDrawerOpen(false);
@@ -550,11 +595,11 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                               return (
                                 <div 
                                   key={idx}
-                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group ${hasFilmData ? "cursor-pointer hover:bg-white/10 transition-colors" : "opacity-80"}`}
-                                  onClick={() => hasFilmData && handleFilmClick(showing.film)}
-                                  role={hasFilmData ? "button" : undefined}
-                                  tabIndex={hasFilmData ? 0 : undefined}
-                                  onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
+                                  className={`${nowShowing ? "bg-green-500/20 border-green-400" : colors.bg + " " + colors.border} border rounded-lg p-3 relative group cursor-pointer hover:bg-white/10 transition-colors`}
+                                  onClick={() => handleFilmClick(showing.film)}
+                                  role="button"
+                                  tabIndex={0}
+                                  onKeyDown={(e) => e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
                                   {/* Now Showing badge */}
                                   {nowShowing && (
@@ -564,16 +609,12 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                     </div>
                                   )}
                                   {/* Watchlist button - only for films in database */}
-                                  {filmData ? (
+                                  {filmData && (
                                     <div 
                                       className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <WatchlistButton filmId={filmData.id} />
-                                    </div>
-                                  ) : (
-                                    <div className="absolute top-2 right-2 text-[9px] text-white/30 bg-white/5 px-1.5 py-0.5 rounded">
-                                      Archive
                                     </div>
                                   )}
                                   {/* Screen badge */}
@@ -587,9 +628,9 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                     {showing.film}
                                   </h4>
                                   {/* Director */}
-                                  {showing.director && (
+                                  {filmData?.director && (
                                     <p className="text-xs text-white/60 mt-1 truncate">
-                                      Dir: {showing.director}
+                                      Dir: {filmData.director}
                                     </p>
                                   )}
                                   {/* Ratings */}
@@ -601,13 +642,15 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                     </div>
                                   )}
                                   {/* Meta info */}
-                                  <div className="flex flex-wrap gap-x-2 mt-2 text-[10px] text-white/50">
-                                    <span>{showing.country}</span>
-                                    <span>•</span>
-                                    <span>{showing.language}</span>
-                                    <span>•</span>
-                                    <span>{showing.duration}&apos;</span>
-                                  </div>
+                                  {filmData && (filmData.country || filmData.language || filmData.duration) && (
+                                    <div className="flex flex-wrap gap-x-2 mt-2 text-[10px] text-white/50">
+                                      {filmData.country && <span>{filmData.country}</span>}
+                                      {filmData.country && filmData.language && <span>•</span>}
+                                      {filmData.language && <span>{filmData.language}</span>}
+                                      {(filmData.country || filmData.language) && filmData.duration && <span>•</span>}
+                                      {filmData.duration && <span>{filmData.duration}&apos;</span>}
+                                    </div>
+                                  )}
                                 </div>
                               );
                             })}
@@ -667,11 +710,11 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                   className={`p-3 transition-colors relative group ${
                                     nowShowing ? "bg-green-500/20 border-l-4 border-green-400" :
                                     showing.special ? "bg-yellow-500/10 border-l-2 border-yellow-400" : ""
-                                  } ${hasFilmData ? "hover:bg-white/10 cursor-pointer" : "hover:bg-white/5 opacity-80"}`}
-                                  onClick={() => hasFilmData && handleFilmClick(showing.film)}
-                                  role={hasFilmData ? "button" : undefined}
-                                  tabIndex={hasFilmData ? 0 : undefined}
-                                  onKeyDown={(e) => hasFilmData && e.key === "Enter" && handleFilmClick(showing.film)}
+                                  } hover:bg-white/10 cursor-pointer`}
+                                  onClick={() => handleFilmClick(showing.film)}
+                                  role="button"
+                                  tabIndex={0}
+                                  onKeyDown={(e) => e.key === "Enter" && handleFilmClick(showing.film)}
                                 >
                                   {/* Now Showing badge */}
                                   {nowShowing && (
@@ -681,16 +724,12 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                     </div>
                                   )}
                                   {/* Watchlist button - only for films in database */}
-                                  {filmData ? (
+                                  {filmData && (
                                     <div 
                                       className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10"
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <WatchlistButton filmId={filmData.id} />
-                                    </div>
-                                  ) : (
-                                    <div className="absolute top-2 right-2 text-[9px] text-white/30 bg-white/5 px-1.5 py-0.5 rounded">
-                                      Archive
                                     </div>
                                   )}
                                   <div className={`flex items-start gap-3 ${nowShowing ? "mt-6" : ""}`}>
@@ -698,9 +737,9 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
                                       {showing.time}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <div className={`font-medium text-white text-sm leading-tight ${hasFilmData ? "hover:text-yellow-400" : ""}`} title={showing.film}>
+                                      <div className="font-medium text-white text-sm leading-tight hover:text-yellow-400" title={showing.film}>
                                         {showing.film}
-                                        {hasFilmData && <span className="ml-1 text-[10px] text-yellow-400/60">↗</span>}
+                                        <span className="ml-1 text-[10px] text-yellow-400/60">↗</span>
                                         {showing.special && (
                                           <span className="ml-2 text-[10px] bg-yellow-400 text-black px-1.5 py-0.5 rounded font-bold">
                                             {showing.special}
