@@ -23,6 +23,7 @@ const CATEGORIES = [
   { id: "24", name: "50 Years of Cinematic Journey", slug: "50-years", color: "retrospective" },
   // Added missing categories
   { id: "10", name: "Unsung Incredible India", slug: "unsung-india", color: "indian" },
+  { id: "21", name: "Restored Classics", slug: "restored-classics", color: "retrospective" },
   // Subcategories - Country Focus
   { id: "5", subcategoryId: "17", name: "Country Focus: Poland", slug: "country-focus-poland", color: "world" },
   // Subcategories - Retrospective
@@ -84,6 +85,9 @@ async function scrapeCategory(categoryId: string, subcategoryId?: string): Promi
   const url = subcategoryId 
     ? `${BASE_URL}/films?category_id=${categoryId}&subcategory_id=${subcategoryId}`
     : `${BASE_URL}/films?category_id=${categoryId}`;
+  
+  // Use combined ID for subcategories (e.g., "11-18" for Retrospective: Dr. Rajkumar)
+  const effectiveCategoryId = subcategoryId ? `${categoryId}-${subcategoryId}` : categoryId;
 
   try {
     console.log(`  📁 Fetching: ${url}`);
@@ -134,7 +138,7 @@ async function scrapeCategory(categoryId: string, subcategoryId?: string): Promi
           language,
           synopsis: "",
           posterUrl: posterUrl.startsWith("http") ? posterUrl : posterUrl ? `${BASE_URL}${posterUrl}` : "",
-          categoryId,
+          categoryId: effectiveCategoryId,
         });
       }
     });
@@ -395,7 +399,9 @@ async function main() {
     console.log("  🔍 Scanning categories for changes...\n");
     
     for (const cat of CATEGORIES) {
-      const films = await scrapeCategory(cat.id, (cat as any).subcategoryId);
+      const subcategoryId = (cat as any).subcategoryId;
+      const films = await scrapeCategory(cat.id, subcategoryId);
+      const effectiveCategoryId = subcategoryId ? `${cat.id}-${subcategoryId}` : cat.id;
       
       for (const film of films) {
         scrapedFilms.push(film);
@@ -410,13 +416,13 @@ async function main() {
       }
 
       categoryData.push({
-        id: cat.id,
+        id: effectiveCategoryId,
         name: cat.name,
         slug: cat.slug,
         description: getDescription(cat.name),
         filmCount: films.length,
         color: cat.color,
-        hasSubcategories: !!(cat as any).subcategoryId,
+        hasSubcategories: !!subcategoryId,
       });
 
       await delay(300);

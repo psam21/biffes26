@@ -221,7 +221,8 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       'SARKEET': 'SIRĀT',
       'PHOLDIBEE': 'PHOUOIBEE (THE GODDESS OF PADDY)',
       'REPUBLIC OF PIPULPIPAS': 'REPUBLIC OF PIPOLIPINAS',
-      'HOMTIVENTAI \'25': "KONTINENTAL '25",
+      "HOMTIVENTAI '25": "KONTINENTAL '25",
+      'HOMTIVENTAI 25': "KONTINENTAL '25",
       'KONTINENTAL 25': "KONTINENTAL '25",
       'HY NAM INN': 'KY NAM INN',
       'CEMETARY OF CINEMA': 'THE CEMETERY OF CINEMA',
@@ -239,8 +240,6 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       'MOHAM': 'DESIRE',  // Kannada title for DESIRE
       'FIRE FLY': 'FLAMES',
       'MOSQUITOS': 'MOSQUITOES',
-      'GEHEMU LAMAI': 'GEHENNU LAMAI',
-      'GEHENU LAMAI': 'GEHENNU LAMAI',
       'ASAD AND BEAUTIFUL WORLD': 'A SAD AND BEAUTIFUL WORLD',
       'JHANE MOVES TO THE COUNTRY': 'JANINE MOVES TO THE COUNTRY',
       'THE SEASONS, TWO STRANGERS': 'TWO SEASONS, TWO STRANGERS',
@@ -258,20 +257,37 @@ export default function ScheduleClient({ scheduleData, films }: ScheduleClientPr
       'NINO OF POPULAR ENTERTAINMENT': 'NINO',
       'THAAY! SAHEBA': 'THAAYI SAHEBA',
       'AGNIVATHWASI': 'AGNYATHAVASI',
-      // 'ACCIDENT' is a different film from 'IT WAS JUST AN ACCIDENT' - no alias needed
       'SECRET OF A MOUNTAIN SERPENT': 'KOORMAVATARA',
       'WHAT DOES THE HARVEST SAY TO YOU': 'WHAT DOES THAT NATURE SAY TO YOU',
-      // Cleo variations
-      'CLEO FROM 5 TO 7': 'CLÉO FROM 5 TO 7',
-      // Kanal variations
       'KANAL': 'CANAL',
-      // Porte Bagage
       'PORTE BAGAGE': 'PORTE BAGAGE',
-      // Jeevann variations
       'JEEVANN': 'JEVANN',
       'JEEV': 'JEVANN',
-      // Family Deity typo
-      'FAMILT DEITY': 'FAMILY PATTABIC',
+      
+      // Kannada title aliases (local names to English DB titles)
+      'BHOOTHALAM': 'HIDDEN TREMORS',
+      'GHARDEV': 'FAMILT DEITY',
+      'KANASEMBA KUDUREYAMERI': 'RIDING THE STALLION OF DREAM',
+      'KANGBO ALOTI': 'THE LOST PATH',
+      'KHALI PUTA': 'EMPTY PAGE',
+      'MAHAKAVI': 'THE EPIC POET',
+      'MRIGATRISHNA': 'MIRAGE',
+      'SABAR BONDA': 'CACTUS PEARS',
+      'VAGHACHIPANI': "TIGER'S POND",
+      'VASTHUHARA': 'THE DISPOSSESSED',
+      
+      // Restored Classics film titles
+      'DO BIGHA ZAMIN': 'TWO ACRES OF LAND',
+      'DO BHEEGA ZAMIN': 'TWO ACRES OF LAND',
+      'DO BEEGHA ZAMIN': 'TWO ACRES OF LAND',
+      'CLEO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
+      'CLÉO FROM 5 TO 7': 'CLEO FROM 5 TO 7',
+      'GEHEMU LAMAI': 'GEHENU LAMAI',
+      'GEHENNU LAMAI': 'GEHENU LAMAI',
+      'THE EARRINGS OF MADAME DE...': 'THE EARRINGS OF MADAM DE',
+      'THE EARRINGS OF MADAME DE': 'THE EARRINGS OF MADAM DE',
+      'PADUVAARAHALLI PANDAVARU': 'PADUVARAHALLI PANDAVARU',
+      'PADUVARAHALLI PANDAVRU': 'PADUVARAHALLI PANDAVARU',
     };
     
     // Add aliases pointing to the same films

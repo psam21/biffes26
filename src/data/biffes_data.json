@@ -4,7 +4,7 @@
     "edition": 17,
     "year": 2026,
     "dates": "January 29 – February 6, 2026",
-    "totalFilms": 208,
+    "totalFilms": 216,
     "totalCountries": 31,
     "venues": [
       {
@@ -23,7 +23,7 @@
         "mapUrl": "https://maps.app.goo.gl/ruU2WZ2T991hrSLo7"
       }
     ],
-    "lastUpdated": "2026-02-01T02:03:41.416Z"
+    "lastUpdated": "2026-02-01T02:39:36.605Z"
   },
   "categories": [
     {
@@ -153,7 +153,16 @@
       "hasSubcategories": false
     },
     {
-      "id": "5",
+      "id": "21",
+      "name": "Restored Classics",
+      "slug": "restored-classics",
+      "description": "Curated film selection",
+      "filmCount": 8,
+      "color": "retrospective",
+      "hasSubcategories": false
+    },
+    {
+      "id": "5-17",
       "name": "Country Focus: Poland",
       "slug": "country-focus-poland",
       "description": "Curated film selection",
@@ -162,7 +171,7 @@
       "hasSubcategories": true
     },
     {
-      "id": "11",
+      "id": "11-23",
       "name": "Retrospective: Smita Patil",
       "slug": "retro-smita-patil",
       "description": "Curated film selection",
@@ -171,7 +180,7 @@
       "hasSubcategories": true
     },
     {
-      "id": "11",
+      "id": "11-19",
       "name": "Retrospective: Andrzej Wajda",
       "slug": "retro-andrzej-wajda",
       "description": "Curated film selection",
@@ -180,7 +189,7 @@
       "hasSubcategories": true
     },
     {
-      "id": "11",
+      "id": "11-18",
       "name": "Retrospective: Dr. Rajkumar",
       "slug": "retro-dr-rajkumar",
       "description": "Curated film selection",
@@ -189,7 +198,7 @@
       "hasSubcategories": true
     },
     {
-      "id": "27",
+      "id": "27-24",
       "name": "Contemporary Filmmaker: Apichatpong Weerasethakul",
       "slug": "filmmaker-apichatpong",
       "description": "Curated film selection",
@@ -4295,6 +4304,188 @@
       "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/426202601191237508510.jpeg"
     },
     {
+      "id": "229",
+      "title": "CLEO FROM 5 TO 7",
+      "director": "",
+      "country": "FRANCE",
+      "year": 1962,
+      "duration": 90,
+      "language": "French",
+      "synopsis": "CLÉO FROM 5 TO 7 follows Florence, a young singer known professionally as “Cléo Victoire,” over a brief stretch of time on June 21, from 5 p.m. to 6:30 p.m., as she waits for the results of a biopsy that may confirm stomach cancer. As she moves through Paris, meeting friends and strangers, moments of everyday life prompt reflection. As time passes, her playful confidence gives way to deeper self-awareness and vulnerability.",
+      "posterUrl": "/posters/229.jpg",
+      "categoryId": "21",
+      "kannadaTitle": "CLÉO FROM 5 TO 7 follows Florence, a young singer known professionally as “Cléo Victoire,” over a brief stretch of time on June 21, from 5 p.m. to 6:30 p.m., as she waits for the results of a biopsy that may confirm stomach cancer. As she moves through Paris, meeting friends and strangers, moments of everyday life prompt reflection. As time passes, her playful confidence gives way to deeper self-awareness and vulnerability.\n                                \n                                                            \n                            \n                            ಈ ಸಿನಿಮಾವು 'ಕ್ಲಿಯೋ ವಿಕ್ಟೋರಿ' ಎಂಬ ಹೆಸರಿನಿಂದ ಪ್ರಖ್ಯಾತಳಾದ ಯುವ ಗಾಯಕಿ ಫ್ಲಾರೆನ್ಸ್ಳ ಬದುಕಿನ ಕೇವಲ ಒಂದೂವರೆ ಗಂಟೆಯ ಕಥೆಯನ್ನು ಹೇಳುತ್ತದೆ. ಜೂನ್ 21ರ ಸಂಜೆ 5 ರಿಂದ 6:30ರ ವರೆಗೆ, ತನಗೆ ಹೊಟ್ಟೆಯ ಕ್ಯಾನ್ಸರ್ ಇರಬಹುದೇ ಎಂಬ ಆತಂಕದಲ್ಲಿ ತನ್ನ ವೈದ್ಯಕೀಯ ವರದಿಯ ಫಲಿತಾಂಶಕ್ಕಾಗಿ ಕಾಯುತ್ತಿರುತ್ತಾಳೆ. ಆ ಸಮಯದಲ್ಲಿ ಅವಳು ಪ್ಯಾರಿಸ್ ನಗರದ ಬೀದಿಗಳಲ್ಲಿ ಸುತ್ತುತ್ತಾ, ಗೆಳೆಯರನ್ನು ಮತ್ತು ಅಪರಿಚಿತರನ್ನು ಭೇಟಿಯಾಗುತ್ತಾಳೆ. ಈ ಸಣ್ಣ ಪ್ರಯಾಣದಲ್ಲಿ ಅವಳು ಬದುಕಿನ ಬಗ್ಗೆ ಹೊಸದಾಗಿ ಆಲೋಚಿಸತೊಡಗುತ್ತಾಳೆ. ಸಮಯ ಕಳೆದಂತೆ, ಕೇವಲ ವಿನೋದ ಮತ್ತು ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ಕೂಡಿದ್ದ ಕ್ಲಿಯೋ, ತನ್ನೊಳಗಿನ ಭಯ ಮತ್ತು ಸೂಕ್ಷ್ಮತೆಯನ್ನು ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳುತ್ತಾ ಹೆಚ್ಚು ಗಂಭೀರವಾಗುತ್ತಾಳೆ.",
+      "producer": "Georges de Beauregard, Carlo Ponti",
+      "screenplay": "Agnès Varda",
+      "cinematography": "Jean Rabier, Paul Bonis, Alain Levent",
+      "editor": "Pascale Laverrière, Janine Verneau",
+      "music": "Michel Legrand",
+      "sound": "Jacques Maumont, Jean Labussière, Julien Coutelier",
+      "cast": "Antoine Bourseiller, Corinne Marchand, Dominique Davray, Dorothée Blanck, Michel Legrand",
+      "awardsWon": "French Syndicate of Cinema Critics 1963 (Best Film), OFTA 2022 (Best Film)",
+      "awardsNominated": "Cannes FF 1962 (Palme d'Or)",
+      "filmCourtesy": "IFcinéma - Institut français / Alliance française de Bangalore",
+      "letterboxdRating": "4.18/5",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/431202601131308194324.jpg"
+    },
+    {
+      "id": "219",
+      "title": "GEHENU LAMAI",
+      "director": "",
+      "country": "SRI LANKA",
+      "year": 1978,
+      "duration": 110,
+      "language": "Sinhala",
+      "synopsis": "Set in rural Sri Lanka, the movie tells the heartbreaking tale of two sisters whose dreams come to nought in the face of insurmountable class barriers. Kusum falls in love with Nimal, an upper-class boy in whose house she works. Nimal’s outraged mother fires Kusum, ending the couple’s romance. Her happy-go-lucky sister Soma’s dreams of becoming a beauty queen are shattered when she becomes pregnant. The story progresses as a lyrical exploration of the end of innocence and romantic dreams.",
+      "posterUrl": "/posters/219.jpg",
+      "categoryId": "21",
+      "kannadaTitle": "Set in rural Sri Lanka, the movie tells the heartbreaking tale of two sisters whose dreams come to nought in the face of insurmountable class barriers. Kusum falls in love with Nimal, an upper-class boy in whose house she works. Nimal’s outraged mother fires Kusum, ending the couple’s romance. Her happy-go-lucky sister Soma’s  dreams of becoming a beauty queen are shattered when she becomes pregnant. The story progresses as a lyrical exploration of the end of innocence and romantic dreams.\n                                \n                                                            \n                            \n                            ಶ್ರೀಲಂಕಾದ ಹಳ್ಳಿಯೊಂದರಲ್ಲಿ ನಡೆಯುವ ಈ ಸಿನಿಮಾ, ಸಮಾಜದ ಶ್ರೀಮಂತ ಮತ್ತು ಬಡವರ ನಡುವಿನ ಗೋಡೆಯಿಂದಾಗಿ ಇಬ್ಬರು ಸಹೋದರಿಯರ ಕನಸುಗಳು ಹೇಗೆ ನುಚ್ಚುನೂರಾಗುತ್ತವೆ ಎಂಬ ಕರುಣಾಜನಕ ಕಥೆಯನ್ನು ಹೇಳುತ್ತದೆ. ಕುಸುಮ್ ಎಂಬ ಹುಡುಗಿ ತಾನು ಕೆಲಸ ಮಾಡುವ ಶ್ರೀಮಂತ ಮನೆತನದ ನಿಮಲ್ ಎಂಬುವವನನ್ನು ಪ್ರೀತಿಸುತ್ತಾಳೆ. ಆದರೆ ವಿಷಯ ತಿಳಿದ ನಿಮಲ್‌ನ ತಾಯಿ ಕೋಪದಿಂದ ಕುಸುಮ್‌ಳನ್ನು ಕೆಲಸದಿಂದ ತೆಗೆದುಹಾಕುವ ಮೂಲಕ ಅವರ ಪ್ರೇಮಕಥೆಗೆ ಅಂತ್ಯ ಹಾಡುತ್ತಾಳೆ. ಇತ್ತ ಕುಸುಮ್‌ಳ ಸಹೋದರಿ ಸೋಮಾ, ಸದಾ ಲವಲವಿಕೆಯಿಂದ ಇರುತ್ತಾ ತಾನು ಬ್ಯೂಟಿ ಕ್ವೀನ್ ಆಗಬೇಕೆಂದು ಕನಸು ಕಾಣುತ್ತಿರುತ್ತಾಳೆ. ಆದರೆ ಅವಳು ಗರ್ಭಿಣಿಯಾದಾಗ ಅವಳ ಸುಂದರ ಕನಸುಗಳೆಲ್ಲಾ ಒಡೆದು ಹೋಗುತ್ತವೆ. ಈ ಸಿನಿಮಾವು ಮುಗ್ಧತೆ ಮತ್ತು ಪ್ರೀತಿಯ ಕನಸುಗಳು ಹೇಗೆ ನಿಧಾನವಾಗಿ ಕಮರಿ ಹೋಗುತ್ತವೆ ಎಂಬುದನ್ನು ಅತ್ಯಂತ ಸುಂದರವಾಗಿ ಮತ್ತು ಭಾವನಾತ್ಮಕವಾಗಿ ಚಿತ್ರಿಸುತ್ತದೆ.",
+      "producer": "Lester James Peries",
+      "screenplay": "Sumitra Peries",
+      "cinematography": "M. S. Ananda",
+      "editor": "Sumitra Peries",
+      "music": "Nimal Mendis",
+      "cast": "Vasanthi Chathurani, Ajith Jinadasa, Jenita Samaraweera, Shyama Ananda, Trilicia Gunawardena, Chitra Wakishta",
+      "awardsWon": "London FF 2025 (Outstanding Film of the Year), National Awards - Sri Lanka 1979 (Presidential Film Awards- Merit award for her debut performance), O.C.I.C. Film Awards (Best Actress)",
+      "awardsNominated": "Cannes FF 2025 (Official Selection- Cannes Classics)",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/340202601121819237441.jpg"
+    },
+    {
+      "id": "171",
+      "title": "HEMAVATHI",
+      "director": "",
+      "country": "INDIA",
+      "year": 1977,
+      "duration": 140,
+      "language": "Kannada",
+      "synopsis": "Set in a rural landscape, the film explores the life of Hemavathi, a woman whose existence is deeply intertwined with the social traditions and agricultural rhythms of her village. It delves into the complexities of human relationships and the struggles against stagnant societal norms, capturing the lyrical yet harsh realities of life in 1970s rural Karnataka.",
+      "posterUrl": "/posters/171.png",
+      "categoryId": "21",
+      "kannadaTitle": "Set in a rural landscape, the film explores the life of Hemavathi, a woman whose existence is deeply intertwined with the social traditions and agricultural rhythms of her village. It delves into the complexities of human relationships and the struggles against stagnant societal norms, capturing the lyrical yet harsh realities of life in 1970s rural Karnataka.\n                                \n                                                            \n                            \n                            ಗ್ರಾಮೀಣ ಪರಿಸರದ ಹಿನ್ನೆಲೆಯಲ್ಲಿರುವ ಈ ಚಿತ್ರ, ಹೇಮಾವತಿ ಎಂಬಾಕೆಯ ಬದುಕಿನ ಸುತ್ತ ಸಾಗುತ್ತದೆ. ಅವಳ ಜೀವನವು ಆ ಊರಿನ ಕೃಷಿ ಮತ್ತು ಅಲ್ಲಿನ ಆಚಾರ-ವಿಚಾರಗಳೊಂದಿಗೆ ಬೆಸೆದುಕೊಂಡಿರುತ್ತದೆ. ಬದಲಾಗದ ಹಳೆಯ ಕಾಲದ ಕಟ್ಟುಪಾಡುಗಳ ನಡುವೆ ಅವಳು ಪಡುವ ಕಷ್ಟಗಳು ಮತ್ತು ಜನರ ನಡುವಿನ ಸಂಕೀರ್ಣ ಸಂಬಂಧಗಳ ಬಗ್ಗೆ ಈ ಚಿತ್ರ ಮಾತನಾಡುತ್ತದೆ. 1970ರ ದಶಕದ ಕರ್ನಾಟಕದ ಹಳ್ಳಿಯ ಬದುಕು ಕಾವ್ಯಾತ್ಮಕವಾಗಿ ಕಂಡರೂ, ಅದರ ಹಿಂದಿರುವ ಕಠಿಣ ವಾಸ್ತವವನ್ನು ಈ ಸಿನಿಮಾ ಅತ್ಯಂತ ಆಪ್ತವಾಗಿ ಚಿತ್ರಿಸುತ್ತದೆ.",
+      "producer": "N Veeraswamy, S P Varadaraj, Chandulal Jain, Siddalingaiah",
+      "screenplay": "S. Siddalingaiah",
+      "cinematography": "S.V. Srikanth",
+      "editor": "P. Bhaktavatsalam",
+      "music": "L. Vaidyanathan",
+      "sound": "Govindaswamy and P.J. Lakshman",
+      "cast": "Udaykumar, G. V. Iyer, Bharathi Vishnuvardhan, Lokanath, Shantala, Ashwath, B. S. Dwarakanath",
+      "awardsWon": "Karnataka State Film Awards (Best Supporting Actor)",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/240202601061923359466.png"
+    },
+    {
+      "id": "231",
+      "title": "INDIA SONG",
+      "director": "",
+      "country": "FRANCE",
+      "year": 1975,
+      "duration": 120,
+      "language": "French",
+      "synopsis": "India Song unfolds within the decaying decadence of a French embassy in 1930s India. Here, a diplomat’s wife drifts through a series of hollow affairs, surrendering to a suffocating sense of ennui. Interweaving themes of sex, madness, and colonial guilt, the film creates a haunting, almost incantatory experience—a cinematic fever dream with few precedents in the history of art.",
+      "posterUrl": "/posters/231.jpg",
+      "categoryId": "21",
+      "kannadaTitle": "India Song unfolds within the decaying decadence of a French embassy in 1930s India. Here, a diplomat’s wife drifts through a series of hollow affairs, surrendering to a suffocating sense of ennui. Interweaving themes of sex, madness, and colonial guilt, the film creates a haunting, almost incantatory experience—a cinematic fever dream with few precedents in the history of art.\n                                \n                                                            \n                            \n                            1930ರ ದಶಕದ ಭಾರತದಲ್ಲಿದ್ದ ಫ್ರೆಂಚ್ ರಾಯಭಾರಿ ಕಚೇರಿಯ ವೈಭವ ಮತ್ತು ಅಲ್ಲಿನ ಸೊರಗುತ್ತಿರುವ ವಾತಾವರಣದ ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಈ ಸಿನಿಮಾ ಸಾಗುತ್ತದೆ. ಇಲ್ಲಿ ಉನ್ನತ ಅಧಿಕಾರಿಯೊಬ್ಬರ ಪತ್ನಿ, ತನ್ನ ಬದುಕಿನ ಏಕತಾನತೆಯಿಂದ ಬೇಸತ್ತು ಹೋಗಿರುತ್ತಾಳೆ. ಆ ಬೇಸರವನ್ನು ಮರೆಯಲು ಅವಳು ಹಲವಾರು ಸಂಬಂಧಗಳಲ್ಲಿ ತನ್ನನ್ನು ತೊಡಗಿಸಿಕೊಳ್ಳುತ್ತಾಳೆ. ಕಾಮ, ಉನ್ಮಾದ ಮತ್ತು ವಸಾಹತುಶಾಹಿ ಕಾಲದ ಅಪರಾಧ ಪ್ರಜ್ಞೆಯಂತಹ ವಿಷಯಗಳನ್ನು ಒಳಗೊಂಡಿರುವ ಈ ಸಿನಿಮಾ, ಒಂದು ವಿಭಿನ್ನ ಅನುಭವವನ್ನು ನೀಡುತ್ತದೆ. ಕೇವಲ ಒಂದು ಕಥೆಯಾಗಿ ಉಳಿಯದೆ, ಇದು ನೋಡುಗರನ್ನು ಒಂದು ನಿಗೂಢ ಕನಸಿನ ಲೋಕಕ್ಕೆ ಕರೆದೊಯ್ಯುತ್ತದೆ. ಇಂತಹ ಪ್ರಯೋಗವು ಚಿತ್ರರಂಗದ ಇತಿಹಾಸದಲ್ಲೇ ಅತ್ಯಂತ ಅಪರೂಪ.",
+      "producer": "Stéphane Tchal Gadjieff",
+      "screenplay": "Marguerite Duras",
+      "cinematography": "Bruno Nuytten",
+      "editor": "Solange Leprince",
+      "music": "Carlos d’Alessio",
+      "sound": "Michel Vionnet",
+      "cast": "Delphine Seyrig, Michael Lonsdale, Mathieu Carrière, Claude Mann, Vernon Dobtcheff, Didier Flamand, Claude Juan",
+      "awardsNominated": "César Awards, France 1976 (Best Actress, Best Music, Best Sound), Cannes FF 2006 (Official Selection- Cannes Classics), IFFR 1975 (Official Selection), Mar del Plata IFF 2023 (Screened)",
+      "filmCourtesy": "IFcinéma - Institut français / Alliance française de Bangalore",
+      "letterboxdRating": "3.71/5",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/948202601131323409546.jpg"
+    },
+    {
+      "id": "173",
+      "title": "PADUVARAHALLI PANDAVARU",
+      "director": "",
+      "country": "INDIA",
+      "year": 1978,
+      "duration": 146,
+      "language": "Kannada",
+      "synopsis": "Set in a rural village, five young men, unite to challenge the oppressive tyranny of a wealthy, corrupt landlord. Highlighting themes of collective justice and the struggle against feudalism.",
+      "posterUrl": "/posters/173.png",
+      "categoryId": "21",
+      "kannadaTitle": "ಪಡುವಾರಹಳ್ಳಿ ಪಾಂಡವರು",
+      "producer": "Puttanna Kanagal",
+      "screenplay": "Puttanna Kanagal",
+      "cinematography": "S. Maruthi Rao",
+      "editor": "V. P. Krishnan",
+      "music": "Vijaya Bhaskar",
+      "sound": "M. Shiva Rao, Jyothi, A. Govindaswamy",
+      "cast": "Ambareesh, Ramakrishna, Jai Jagadish, Dheerendra Gopal, Musuri Krishnamurthy, Srilalitha, Shanthala, M. Jayashree, Aarathi.",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/669202601061930558793.png"
+    },
+    {
+      "id": "220",
+      "title": "THE DISPOSSESSED",
+      "director": "",
+      "country": "INDIA",
+      "year": 1991,
+      "duration": 101,
+      "language": "Malayalam",
+      "synopsis": "Vaasthuhara is based on the short story of the same name by C. V. Sreeraman. The film looks into the lives of partition refugees from East Bengal to West Bengal. At a larger level, it's the universal story of refugees.",
+      "posterUrl": "/posters/220.png",
+      "categoryId": "21",
+      "kannadaTitle": "Vaasthuhara is based on the short story of the same name by C. V. Sreeraman. The film looks into the lives of partition refugees from East Bengal to West Bengal. At a larger level, it's the universal story of refugees.\n                                \n                                                            \n                            \n                            ಈ ಸಿನಿಮಾವು ಸಿ. ವಿ. ಶ್ರೀರಾಮನ್ ಅವರ ಇದೇ ಹೆಸರಿನ ಸಣ್ಣಕಥೆಯನ್ನು ಆಧರಿಸಿದೆ. ಭಾರತದ ವಿಭಜನೆಯ ಸಮಯದಲ್ಲಿ ಪೂರ್ವ ಬಂಗಾಳದಿಂದ ಪಶ್ಚಿಮ ಬಂಗಾಳಕ್ಕೆ ನಿರಾಶ್ರಿತರಾಗಿ ವಲಸೆ ಬಂದ ಜನರ ಬದುಕನ್ನು ಈ ಚಿತ್ರವು ಕಣ್ಣಿಗೆ ಕಟ್ಟುವಂತೆ ವಿವರಿಸುತ್ತದೆ. ಇದನ್ನು ಕೇವಲ ಒಂದು ಪ್ರಾಂತ್ಯದ ಕಥೆಯಾಗಿ ನೋಡುವ ಬದಲು, ಜಗತ್ತಿನ ಯಾವುದೇ ಮೂಲೆಯ ನಿರಾಶ್ರಿತರು ಅನುಭವಿಸುವ ಸಂಕಟದ ಕಥೆಯಾಗಿಯೂ ನೋಡಬಹುದು.",
+      "producer": "T. Ravindranath",
+      "screenplay": "G. Aravindan",
+      "cinematography": "Sunny Joseph",
+      "editor": "K. R. Bose",
+      "music": "Salil Chowdhury",
+      "sound": "T. Krishnanunni",
+      "cast": "Mohanlal, Shobhana, Neelanjana Mitra, Neena Gupta, Padmini, N.L. Balakrishnan, Lakshmi Krishnamurthy, Shyama, C.V. Sreeraman, Valsala Menon",
+      "awardsWon": "National Film Award 1991 (Best Feature Film in Malayalam), Kerala State Film Awards (Best Film, Best Director, Best Story)",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/385202601121825248770.png"
+    },
+    {
+      "id": "230",
+      "title": "THE EARRINGS OF MADAM DE",
+      "director": "",
+      "country": "FRANCE",
+      "year": 1953,
+      "duration": 105,
+      "language": "French",
+      "synopsis": "In the gilded world of 19th-century Paris, the Countess Louise sells her wedding earrings to settle a secret debt, claiming she simply lost them. This small, frivolous lie triggers a devastating chain of events as the jewels travel through the hands of her husband and her lover, the Baron Donati. What began as a trivial deception soon returns to haunt her, transforming a pair of trinkets into a catalyst for scandal, heartbreak, and a fatal clash of honor.",
+      "posterUrl": "/posters/230.jpg",
+      "categoryId": "21",
+      "kannadaTitle": "In the gilded world of 19th-century Paris, the Countess Louise sells her wedding earrings to settle a secret debt, claiming she simply lost them. This small, frivolous lie triggers a devastating chain of events as the jewels travel through the hands of her husband and her lover, the Baron Donati. What began as a trivial deception soon returns to haunt her, transforming a pair of trinkets into a catalyst for scandal, heartbreak, and a fatal clash of honor.\n                                \n                                                            \n                            \n                            19ನೇ ಶತಮಾನದ ಪ್ಯಾರಿಸ್‌ನ ಶ್ರೀಮಂತ ಲೋಕದಲ್ಲಿ, ಕೌಂಟೆಸ್ ಲೂಯಿಸ್ ತನ್ನ ರಹಸ್ಯ ಸಾಲ ತೀರಿಸಲು ತನ್ನ ಮದುವೆಯ ಕಿವಿಯೋಲೆಗಳನ್ನು ಮಾರಿಬಿಡುತ್ತಾಳೆ; ಆದರೆ ಅವು ಕಳೆದುಹೋಗಿವೆ ಎಂದು ಹೇಳಿಕೊಳ್ಳುತ್ತಾಳೆ. ಈ ಸಣ್ಣ, ತೀರಾ ಹಗುರವಾದ ಸುಳ್ಳೇ ಒಂದು ಭೀಕರ ಘಟನೆಗಳ ಸರಣಿಗೆ ಕಾರಣವಾಗುತ್ತದೆ—ಅವು ಅವಳ ಗಂಡನ ಕೈಗೂ, ಅವಳ ಪ್ರೇಮಿಯಾದ ಬ್ಯಾರನ್ ಡೊನಾಟಿಯ ಕೈಗೂ ಬದಲಾಗುತ್ತಾ ಸಾಗುತ್ತವೆ. ಅಲ್ಪವಾದ ಮೋಸವೆಂದು ಆರಂಭವಾದದ್ದು, ಬೇಗನೇ ಅವಳನ್ನು ಹಿಂಬಾಲಿಸಿ ಕಾಡುತ್ತದೆ; ಒಂದು ಜೋಡಿ ಆಭರಣಗಳು ಹಗರಣ, ಹೃದಯಭಂಗ, ಮತ್ತು ಮಾನದ ಘೋರ ಸಂಘರ್ಷಕ್ಕೆ ಕಾರಣವಾಗುವ ದಿಕ್ಕಿನಲ್ಲಿ ಕಥೆ ತಿರುಗಿಕೊಳ್ಳುತ್ತದೆ.",
+      "producer": "Henri Bérard, Henry Deutschmeister, Angelo Rizzoli",
+      "screenplay": "Marcel Achard, Max Ophüls",
+      "cinematography": "Christian Matras",
+      "editor": "Borys Lewin",
+      "music": "Oscar Straus, Georges van Parys",
+      "sound": "Antoine Petitjean",
+      "cast": "Charles Boyer, Danielle Darrieux, Vittorio De Sica, Jean Debucourt",
+      "awardsNominated": "Academy Awards, USA (Best Costume Design, Black-and-White)",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/130202601131316431164.jpg"
+    },
+    {
+      "id": "218",
+      "title": "TWO ACRES OF LAND",
+      "director": "",
+      "country": "INDIA",
+      "year": 1953,
+      "duration": 131,
+      "language": "Hindi",
+      "synopsis": "Do Bigha Zamin follows Shambhu, a poor farmer fighting to save his small plot of land from an exploitative landlord. Given a short deadline to repay his debt, he travels to the city with his young son to earn money. Forced into harsh urban labor as a rickshaw-puller while his son shines shoes, they confront poverty, humiliation, and fragile hope. Though they ultimately lose their land to industrial development, the film powerfully affirms their resilience, dignity, and unbroken moral strength amid relentless social injustice.",
+      "posterUrl": "/posters/218.png",
+      "categoryId": "21",
+      "kannadaTitle": "ದೊ ಬಿಘ ಝಮೀನ್",
+      "producer": "Bimal Roy",
+      "screenplay": "Salil Choudhury, Hrishikesh Mukherjee, Paul Mahendra",
+      "cinematography": "Kamal Bose",
+      "editor": "Hrishikesh Mukherjee",
+      "music": "Salil Choudhury, Shailendra",
+      "sound": "Essa M. Suratwala",
+      "cast": "Balraj Sahni, Nirupa Roy, Ratan Kumar, Murad, Nana Palsikar, Nasir Hussain, Rajlakshmi, Noorjahan, Nazir Hussain, Rekha, Mishra, Chitra, Jagdeep, Tiwari, Meena Kumari",
+      "awardsWon": "Cannes FF 1954 (International Prize), National Film Awards 1954 (Certificate of Merit), Karlovy Vary IFF (Prize for Social Progress), Filmfare Awards 1954 (Best Film, Best Director)",
+      "awardsNominated": "Cannes FF 1954 (Grand Prize of the Festival), Venice FF 2025 (Best Restored Film)",
+      "letterboxdRating": "3.80/5",
+      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/812202601121813476349.png"
+    },
+    {
       "id": "58",
       "title": "CHOPIN, A SONATA IN PARIS",
       "director": "",
@@ -4303,8 +4494,8 @@
       "duration": 133,
       "language": "French | Polish",
       "synopsis": "Who is this young, fearless pianist? Who is this Polish composer who is using music to transcend its power? Who is this star that turns the heads of all Parisians? They refer to him as Chopin. The most romantic character of opulent Parisian evenings, he is the buzz of the town. Chopin realizes his days are running out when his lungs begin to hemorrhage. His sole concentration is composing. He is driven to transform music by the passing of time.",
-      "posterUrl": "/posters/58.jpeg",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/184202512291615031677.jpeg",
+      "categoryId": "5-17",
       "kannadaTitle": "ಚೋಪಿನ್, ಎ ಸೊನಾಟಾ ಇನ್ ಪ್ಯಾರಿಸ್",
       "producer": "Michal Kwiecinski, Tomasz Morawski",
       "screenplay": "Bartosz Janiszewski, Michal Sobocinski",
@@ -4316,8 +4507,7 @@
       "awardsWon": "Camerimage (Bronze Frog), Gdynia FF (Best Production, Costume Design)",
       "awardsNominated": "Warsaw IFF(Official screening), Gdynia FF (Opening Film), CinÉast (Opening Film), IFF Kerla (World Cinema), Poland FF in Tokyo (Opening Film)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.18/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/184202512291615031677.jpeg"
+      "letterboxdRating": "3.18/5"
     },
     {
       "id": "106",
@@ -4328,8 +4518,8 @@
       "duration": 127,
       "language": "German | Czech",
       "synopsis": "A kaleidoscopic biopic of the iconic 20th-century Czech writer Franz Kafka, the film traces the imprint he left on the world from his birth in 19th-century Prague to his death in post–World War I Vienna. FRANZ offers a fresh, intimate perspective on the life of the man behind the literary giant, revealing the contradictions, obsessions, and inner worlds that shaped his enduring legacy.",
-      "posterUrl": "/posters/106.jpg",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/812202512311658494421.jpg",
+      "categoryId": "5-17",
       "kannadaTitle": "ಫ್ರಾಂಝ್",
       "producer": "Šárka Cimbalová; Agnieszka Holland",
       "screenplay": "Marek Epstein",
@@ -4340,8 +4530,7 @@
       "cast": "Idan Weiss, Peter Kurth, Jenovéfa Boková, Ivan Trojan, Katharina Stark, Sandra Korzeniak, Sebastian Schwarz, Aaron Friesz, Carol Schuler, Gesa Schermuly, Josef Trojan, Jan Budař",
       "awardsWon": "Gdynia Polish FF (Best film & Actor)",
       "awardsNominated": "Toronto IFF (World Premier), San Sebastián FF (Official Selection), Busan IFF (Official Selection)",
-      "filmCourtesy": "Polish Institute, New Delhi",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/812202512311658494421.jpg"
+      "filmCourtesy": "Polish Institute, New Delhi"
     },
     {
       "id": "157",
@@ -4352,8 +4541,8 @@
       "duration": 90,
       "language": "Polish",
       "synopsis": "Pernat finds himself in a police interrogation, accused of murder, and unable to recall any details of the crime, or even his own life. He’s released back into a world of raving lunatics and deranged dentists, murderous doctors and scientists who believe the secret of human creation is inside the walls of a cast-iron oven.",
-      "posterUrl": "/posters/157.png",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/530202601051354594315.png",
+      "categoryId": "5-17",
       "kannadaTitle": "ಗೊಲೆಮ್",
       "producer": "Zespół Filmowy",
       "screenplay": "Piotr Szulkin, Tadeusz Sobolewski",
@@ -4365,8 +4554,7 @@
       "awardsWon": "Polish FF (Best Directorial), Madrid Sci-Fi FF (Best Director and Best Screenplay).",
       "awardsNominated": "Warsaw IFF, 2022 (Classics from Poland)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.59/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/530202601051354594315.png"
+      "letterboxdRating": "3.59/5"
     },
     {
       "id": "163",
@@ -4377,8 +4565,8 @@
       "duration": 97,
       "language": "Polish | English",
       "synopsis": "Indian filmmaker Arjun Talwar turns his lens on Warsaw’s Wilcza Street, where he has lived for a decade. Through witty encounters with an eclectic mix of neighbors—from a lonely postman to a Syrian exile—the film explores the complexities of integration, the shadow of a lost friend, and the pulse of a modern Poland caught between tradition and multiculturalism.",
-      "posterUrl": "/posters/163.jpeg",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/894202601051859535814.jpeg",
+      "categoryId": "5-17",
       "kannadaTitle": "ಲೆಟರ್ಸ್ ಫ್ರಮ್ ವುಲ್ಫ್ ಸ್ಟ್ರೀಟ್",
       "producer": "Karolina Śmigiel, Jarosław Wszędybył",
       "screenplay": "Arjun Talwar",
@@ -4390,8 +4578,7 @@
       "awardsWon": "Millennium Docs Against Gravity (Cinema Association Award), Neisse FF (Best Documentary and Audience Documentary Award)",
       "awardsNominated": "Berlin IFF (World Premiere), CPH:DOX (Millenium Docs Against Gravity), Beldocs IDFF, Neisse FF, Transylvania IFF, Beyond Borders FF, Melbourne Indian FF, Cin East Luxembourg, IDFA (Best of Fests).",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.88/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/894202601051859535814.jpeg"
+      "letterboxdRating": "3.88/5"
     },
     {
       "id": "159",
@@ -4402,8 +4589,8 @@
       "duration": 157,
       "language": "Polish",
       "synopsis": "A lady is among the few cosmic explorers who depart Earth to establish a new civilization. They are unaware that the end of their own dream is within them. As their offspring revert to a primitive local culture and create new myths and gods, they perish one by one.",
-      "posterUrl": "/posters/159.jpeg",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/281202601051546522211.jpeg",
+      "categoryId": "5-17",
       "kannadaTitle": "ಆನ್ ದ ಸಿಲ್ವರ್ ಗ್ಲೋಬ್",
       "producer": "Tadeusz Lampka",
       "screenplay": "Andrzej Żuławski",
@@ -4414,8 +4601,7 @@
       "cast": "Andrzej Seweryn, Jerzy Trela, Grażyna Dyląg, Waldemar Kownacki, Iwona Bielska, Jerzy Grałek, Elżbieta Karkoszka",
       "awardsNominated": "Cannes FF, 1988 (Un Certain Regard)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "4.04/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/281202601051546522211.jpeg"
+      "letterboxdRating": "4.04/5"
     },
     {
       "id": "155",
@@ -4426,8 +4612,8 @@
       "duration": 125,
       "language": "Polish",
       "synopsis": "While visiting his father at a dilapidated sanatorium, Joseph discovers that the old man has stopped breathing but hasn’t died. Has his arrival halted time itself? He takes a strange journey through the many rooms of the hospital, each conjuring worlds composed of memories, dreams and nightmares.",
-      "posterUrl": "/posters/155.png",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/219202601051252225106.png",
+      "categoryId": "5-17",
       "kannadaTitle": "ದಿ ಅವರ್‌ಗ್ಲಾಸ್ ಸ್ಯಾನಟೋರಿಯಂ",
       "producer": "Zespół Filmowy",
       "screenplay": "Wojciech Jerzy Has",
@@ -4439,8 +4625,7 @@
       "awardsWon": "Cannes FF, 1973 (Jury Prize).",
       "awardsNominated": "Cannes FF, 1973 (Palme d’Or), Thessaloniki FF 2025 (Special Screening)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.99/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/219202601051252225106.png"
+      "letterboxdRating": "3.99/5"
     },
     {
       "id": "162",
@@ -4451,8 +4636,8 @@
       "duration": 105,
       "language": "Ukrainian | Spanish | English | Russian | German",
       "synopsis": "A Ukrainian family is spending their final day of vacation in Tenerife, Spain, when suddenly Russia’s ongoing occupation of Ukraine turns into a full-scale invasion. As their return to Kyiv becomes impossible, the tourists are forced to become refugees overnight.",
-      "posterUrl": "/posters/162.jpeg",
-      "categoryId": "5",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/911202601051802061186.jpeg",
+      "categoryId": "5-17",
       "kannadaTitle": "ಅಂಡರ್ ದ ವಾಲ್ಕೇನೋ",
       "producer": "Mikolaj Lizut, Agnieszka Jastrzębska",
       "screenplay": "Damian Kocur, Marta Konarzewska",
@@ -4463,8 +4648,7 @@
       "awardsWon": "Polish FF, 2024 (Best Debut Actor), Marrakech IFF, 2024 (Best Actor, Best Director)",
       "awardsNominated": "Toronto IFF, 2024 (World Premiere), BFI London FF, 2024 (Official Selection), Zurich FF 2024 (Official Selection)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.52/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/911202601051802061186.jpeg"
+      "letterboxdRating": "3.52/5"
     },
     {
       "id": "227",
@@ -4475,8 +4659,8 @@
       "duration": 142,
       "language": "Hindi",
       "synopsis": "The film follows the life of a successful film star, revealing her increasing alienation in a role both glamorized and patronized by society. After being forced into show business by her family, she spends her time between studios and disastrous love affairs, and feels more and more dissatisfied.",
-      "posterUrl": "/posters/227.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/278202601131203543765.jpg",
+      "categoryId": "11-23",
       "kannadaTitle": "ಭೂಮಿಕಾ",
       "producer": "Lalit M. Bijlani, Freni Variava",
       "screenplay": "Satyadev Dubey, Girish Karnad, Shyam Benegal",
@@ -4487,8 +4671,7 @@
       "cast": "Smita Patil, Amol Palekar, Anant Nag, Naseeruddin Shah, Amrish Puri.",
       "awardsWon": "Filmfare Awards 1978 (Best Film), National Film Awards 1978 (Silver Lotus Award: Best Screenplay)",
       "awardsNominated": "Chicago IFF 1978(Gold Hugo - Best Feature)",
-      "letterboxdRating": "3.70/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/278202601131203543765.jpg"
+      "letterboxdRating": "3.70/5"
     },
     {
       "id": "228",
@@ -4499,8 +4682,8 @@
       "duration": 135,
       "language": "Hindi",
       "synopsis": "Gaman follows Ghulam Hasan, a young man from Lucknow who migrates to Bombay to support his family, leaving behind his sick mother and devoted wife, Khairun. Working as a taxi driver, he faces exploitation, poverty, and isolation in the city’s slums, sustained only by letters home and fragile friendships with other migrants. As his hopes fade and losses mount, including his mother’s death, Ghulam is pushed toward despair and self-destruction, revealing a city that deepens rather than relieves rural hardship.",
-      "posterUrl": "/posters/228.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/266202601131215472117.jpg",
+      "categoryId": "11-23",
       "kannadaTitle": "ಗಮನ್",
       "producer": "Muzaffar Ali",
       "screenplay": "Muzaffar Ali, Hriday Lani",
@@ -4510,8 +4693,7 @@
       "sound": "G.S. Bhatia, A.M. Padmanabhan",
       "cast": "Farooq Shaikh, Smita Patil, Gita Siddharth, Jalal Agha, Amir Bano, Hira Devi Mishra, Sulabha Deshpande, Nana Patekar, Arvind Deshpande, Satish Shah, Arun Joglekar",
       "awardsWon": "National Film Awards 1979 (Special Mention: Feature Film, Best Music Direction, Best Female Playback Singer)",
-      "letterboxdRating": "3.63/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/266202601131215472117.jpg"
+      "letterboxdRating": "3.63/5"
     },
     {
       "id": "226",
@@ -4522,8 +4704,8 @@
       "duration": 100,
       "language": "Malayalam",
       "synopsis": "Muniyandi, a farm laborer, marries and brings Shivakami to the farm, where she befriends Shankaran. Muniyandi later catches them together, and, devastated, dies by suicide. Overcome with guilt, Shankaran flees and tries alcohol and spirituality to escape his torment. His journey ends in the temple town of Chidambaram, where he finds Shivakami working as a shoe keeper at the temple.",
-      "posterUrl": "/posters/226.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/887202601131155499165.jpg",
+      "categoryId": "11-23",
       "kannadaTitle": "ಚಿದಂಬರಂ",
       "producer": "Govindan Aravindan",
       "screenplay": "Govindan Aravindan",
@@ -4534,8 +4716,7 @@
       "cast": "Bharat Gopy, Smita Patil, Sreenivasan",
       "awardsWon": "National Film Awards 1985 (Golden Lotus Award: Best Film)",
       "awardsNominated": "Chicago IFF 1986 (Gold Hugo - Best Feature), Leeds IFF 2024 (Official Screening - Retrospective)",
-      "letterboxdRating": "3.77/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/887202601131155499165.jpg"
+      "letterboxdRating": "3.77/5"
     },
     {
       "id": "225",
@@ -4546,8 +4727,8 @@
       "duration": 128,
       "language": "Hindi",
       "synopsis": "Subedars (tax collectors) in colonial India traveled from village to village with troops, demanding far more than taxes. When one of these tax collectors sets his gaze on Sonbai, she seeks shelter in a pepper factory, which inevitably leads to the village’s marginalised women speaking up.",
-      "posterUrl": "/posters/225.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/821202601131144541046.jpg",
+      "categoryId": "11-23",
       "kannadaTitle": "ಮಿರ್ಚ್ ಮಸಾಲ",
       "producer": "National Film Development Corporation of India (NFDC)",
       "screenplay": "Shafi Hakim, Hriday Lani, Ketan Meht, Tripurari Sharma",
@@ -4558,8 +4739,7 @@
       "cast": "Smita Patil, Naseeruddin Shah, Om Puri, Ratna Pathak, Supriya Pathak, Suresh Oberoi, Neena Kulkarni",
       "awardsWon": "Hawaii IFF 1987 (East-West Center Award Best Narrative), National Film Awards 1987 (Golden Lotus Award: Best Feature Film)",
       "awardsNominated": "Moscow IFF(Golden Prize), Leeds IFF 2024 (Official Screening - Classic Retrospective)",
-      "letterboxdRating": "4.02/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/821202601131144541046.jpg"
+      "letterboxdRating": "4.02/5"
     },
     {
       "id": "165",
@@ -4570,8 +4750,8 @@
       "duration": 96,
       "language": "Polish",
       "synopsis": "“Watch them closely, for these are the last hours of their lives,” announces a narrator, foretelling the tragedy that unfolds as a war-ravaged company of Home Army resistance fighters tries to escape the Nazis through the sewers of Warsaw.",
-      "posterUrl": "/posters/165.jpeg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/605202601051909366240.jpeg",
+      "categoryId": "11-19",
       "kannadaTitle": "ಕ್ಯಾನಾಲ್",
       "producer": "Zespół Filmowy Kadr",
       "screenplay": "Jerzy Stefan Stawinski",
@@ -4582,8 +4762,7 @@
       "cast": "Teresa Izewska, Tadeusz Janczar, Wienczyslaw Glinski, Tadeusz Gwiazdowski",
       "awardsWon": "Cannes FF, 1957 (Jury Special Prize)",
       "awardsNominated": "BAFTA Award, 1959 (Most Promising Newcomer to Film), Cannes FF, 1957 (Palme d'Or)",
-      "filmCourtesy": "Polish Institute, New Delhi",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/605202601051909366240.jpeg"
+      "filmCourtesy": "Polish Institute, New Delhi"
     },
     {
       "id": "164",
@@ -4594,8 +4773,8 @@
       "duration": 103,
       "language": "Polish",
       "synopsis": "On the final day of a major global conflict, a young resistance fighter receives orders to carry out one last assignment. As the nation transitions between eras of control, he experiences a chance romantic encounter that sparks a profound moral crisis. He finds himself torn between his ingrained sense of duty and a newfound desire for a normal, peaceful life.",
-      "posterUrl": "/posters/164.png",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/365202601051901385874.png",
+      "categoryId": "11-19",
       "kannadaTitle": "ಆಶೆಸ್ ಅಂಡ್ ಡೈಮಂಡ್ಸ್",
       "producer": "Zespół Filmowy Kadr",
       "screenplay": "Andrzej Wajda, Jerzy Andrzejewski",
@@ -4606,8 +4785,7 @@
       "cast": "Zbigniew Cybulski, Ewa Krzyzewska, Waclaw Zastrzezynski, Adam Pawlikowski, Bogumił Kobiela",
       "awardsWon": "Venice FF, 1959 (FIPRESCI)",
       "awardsNominated": "BAFTA Awards, 1960 (Best Foreign Actor, Best Film)",
-      "filmCourtesy": "Polish Institute, New Delhi",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/365202601051901385874.png"
+      "filmCourtesy": "Polish Institute, New Delhi"
     },
     {
       "id": "156",
@@ -4618,8 +4796,8 @@
       "duration": 87,
       "language": "Polish",
       "synopsis": "A bachelor doctor, who is also a jazz musician, can’t quite commit himself to his superficial girlfriend. Him and his aimless friends find any kind of human contact or emotional commitment as a trouble and uninviting prospect.",
-      "posterUrl": "/posters/156.jpeg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/978202601051334344009.jpeg",
+      "categoryId": "11-19",
       "kannadaTitle": "ಇನ್ನಸೆಂಟ್ ಸೊರ್ಸರರ್ಸ್",
       "producer": "Zespół Filmowy Kadr",
       "screenplay": "Jerzy Andrzejewski, Jerzy Skolimowski",
@@ -4631,8 +4809,7 @@
       "awardsWon": "Edinburgh IFF 1961 (Diploma of Merit), Jussi Awards (Finland) 1963  (Best Foreign Film)",
       "awardsNominated": "Melbourne IFF 1963 (Screened), IFFI 1965 (Screened), São Paulo IFF 2016 (Screened)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.86/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/978202601051334344009.jpeg"
+      "letterboxdRating": "3.86/5"
     },
     {
       "id": "158",
@@ -4643,8 +4820,8 @@
       "duration": 179,
       "language": "Polish",
       "synopsis": "The Promised Land follows three ambitious friends - a Pole, a German, and a Jew - who strive to build a textile factory in 19th-century Łódź. Their quest for wealth exposes the brutal realities of industrial capitalism and moral compromise.",
-      "posterUrl": "/posters/158.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/399202601051546523889.jpg",
+      "categoryId": "11-19",
       "kannadaTitle": "ದಿ ಪ್ರಾಮಿಸ್ಡ್ ಲ್ಯಾಂಡ್",
       "producer": "Barbara Pec-Ślesicka, Janina Krassowska",
       "screenplay": "Andrzej Wajda",
@@ -4655,8 +4832,7 @@
       "cast": "Daniel Olbrychski, Wojciech Pszoniak, Andrzej Seweryn, Kalina Jędrusik, Anna Nehrebecka",
       "awardsWon": "Chicago IFF, 1975 (Golden Hugo), Moscow FF, 1975 (Golden Prize), Valladolid IFF, 1977 (Golden Corn)",
       "awardsNominated": "Academy Award, 1976 (Best Foreign Language)",
-      "filmCourtesy": "Polish Institute, New Delhi",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/399202601051546523889.jpg"
+      "filmCourtesy": "Polish Institute, New Delhi"
     },
     {
       "id": "160",
@@ -4667,8 +4843,8 @@
       "duration": 165,
       "language": "Polish",
       "synopsis": "A young Polish filmmaker sets out to find out what happened to Mateusz Birkut, a bricklayer who became apropaganda hero in the 1950s but later fell out of favor and disappeared.",
-      "posterUrl": "/posters/160.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/255202601051636556171.avif",
+      "categoryId": "11-19",
       "kannadaTitle": "ಮ್ಯಾನ್ ಆಫ್ ಮಾರ್ಬಲ್",
       "producer": "Andrzej Wajda",
       "screenplay": "Aleksander Ścibor-Rylski",
@@ -4680,8 +4856,7 @@
       "awardsWon": "Cannes FF, 1977 (FIPRESCI Prize), Polish FF (Critics Award), New York Film Critics Circle Awards, 1981 (Special Award), Zlote Kaczki, Poland, 2009 (Best Polish Actor in period pieces)",
       "awardsNominated": "Cannes FF, 1977 (Un Certain Regard Award), New York Film Critics Circle Awards, 1981 (Best Foreign Language Film)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.84/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/255202601051636556171.avif"
+      "letterboxdRating": "3.84/5"
     },
     {
       "id": "167",
@@ -4692,8 +4867,8 @@
       "duration": 116,
       "language": "Polish",
       "synopsis": "Set in the late ’20s. A thirtyish young man, who heads a small factory, faints at the funeral of a close friend. He decides to go home to his aunt and uncle for a while, but gets involved with a family of five women who had been in love with him at one time.",
-      "posterUrl": "/posters/167.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/948202601051920174528.jpg",
+      "categoryId": "11-19",
       "kannadaTitle": "ದಿ ಮೇಡ್ಸ್ ಆಫ್ ವಿಲ್ಕೋ",
       "producer": "Tony Molière",
       "screenplay": "Zbigniew Kamiński",
@@ -4705,8 +4880,7 @@
       "awardsWon": "Polish FF (Special Jury Prize, Best Production Design)",
       "awardsNominated": "Academy Awards, USA 1980 (Best Foreign Language Film), Valladolid IFF (Best Film)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.58/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/948202601051920174528.jpg"
+      "letterboxdRating": "3.58/5"
     },
     {
       "id": "166",
@@ -4717,8 +4891,8 @@
       "duration": 98,
       "language": "Polish",
       "synopsis": "In Andrzej Wajda’s final film, Afterimage, legendary avant-garde painter Władysław Strzemiński defies the Soviet-imposed doctrine of Socialist Realism in post-war Poland. As the Stalinist regime strips him off his teaching position and dignity, the disabled artist wages a tragic, uncompromising battle for creative freedom and personal integrity.",
-      "posterUrl": "/posters/166.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/902202601051914388078.jpg",
+      "categoryId": "11-19",
       "kannadaTitle": "ಆಫ್ಟರಿಮೇಜ್",
       "producer": "Michał Kwieciński",
       "screenplay": "Andrzej Mularczyk, Andrzej Wajda",
@@ -4730,8 +4904,7 @@
       "awardsWon": "Polish FF (Special Jury Prize), New York Polish FF (Best Film)",
       "awardsNominated": "Cleveland IFF (Best Feature Film), Seattle IFF (Best Actor), Polish Film Awards (Best Cinematography, Best Production Design, Best Costume Design , Best Sound), Montclair FF (Best feature film)",
       "filmCourtesy": "Polish Institute, New Delhi",
-      "letterboxdRating": "3.54/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/902202601051914388078.jpg"
+      "letterboxdRating": "3.54/5"
     },
     {
       "id": "232",
@@ -4742,8 +4915,8 @@
       "duration": 127,
       "language": "Kannada",
       "synopsis": "Thimmappa Nayaka, a fierce warrior and chieftain, renounces his worldly life after a divine intervention by Lord Krishna during a battle. Transforming into the saint poet Kanakadasa, he faces severe caste-based discrimination. His unwavering devotion eventually leads to a miracle at the Udupi temple, where the deity turns to grant him a vision through a crack in the wall.",
-      "posterUrl": "/posters/232.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/689202601141142523110.jpg",
+      "categoryId": "11-18",
       "kannadaTitle": "ಭಕ್ತ ಕನಕದಾಸ",
       "producer": "D. R. Naidu",
       "screenplay": "Hunsur Krishnamurthy",
@@ -4752,8 +4925,7 @@
       "music": "M. Venkataraju",
       "sound": "Kanniyappan, Mohana Sundaram",
       "cast": "Dr. Rajkumar, Udaya Kumar, Krishna Kumari, K. S. Ashwath, T. R. Narasimharaju, B. Hanumanthachar",
-      "awardsWon": "National Film Awards 1960 (Best Feature Film in Kannada)",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/689202601141142523110.jpg"
+      "awardsWon": "National Film Awards 1960 (Best Feature Film in Kannada)"
     },
     {
       "id": "233",
@@ -4764,8 +4936,8 @@
       "duration": 153,
       "language": "Kannada",
       "synopsis": "Young Lakshmana, from a sophisticated family, dedicates his life to classical music against familial opposition. His musical journey explores devotion, sacrifice, and the evening raga's emotional depth. Featuring legendary vocalists Bhimsen Joshi and Balamurali Krishna, the film celebrates Karnataka's musical heritage through Lakshmana's artistic struggles and triumphs.",
-      "posterUrl": "/posters/233.png",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/200202601141152559634.png",
+      "categoryId": "11-18",
       "kannadaTitle": "ಸಂಧ್ಯಾ ರಾಗ",
       "producer": "A. C. Narasimha Murthy, A. Prabhakara Rao",
       "screenplay": "S. K. Bhagavan",
@@ -4773,8 +4945,7 @@
       "editor": "N.C Rajan",
       "music": "G. K. Venkatesh, Balamurali Krishna",
       "sound": "Suryanarayan Rao, Ramanathan",
-      "cast": "Dr. Rajkumar, Bharathi, Udayakumar, K. S. Ashwath, Narasimharaju, Pandaribai, H. R. Shastry",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/200202601141152559634.png"
+      "cast": "Dr. Rajkumar, Bharathi, Udayakumar, K. S. Ashwath, Narasimharaju, Pandaribai, H. R. Shastry"
     },
     {
       "id": "234",
@@ -4785,8 +4956,8 @@
       "duration": 129,
       "language": "Kannada",
       "synopsis": "The film follows Radha, a woman increasingly isolated by her husband Seshagiri Rao, a professor more devoted to his academic research than his domestic life. The emotional chasm between them widens. Into this void enters Krishna. As a deep, forbidden bond forms between Radha and Krishna, the film navigates the tension between individual desire and the moral structures of 1960s society.",
-      "posterUrl": "/posters/234.png",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/580202601141201359398.png",
+      "categoryId": "11-18",
       "kannadaTitle": "ಉಯ್ಯಾಲೆ",
       "producer": "Gopal-Lakshman",
       "screenplay": "N. Lakshminarayan",
@@ -4796,8 +4967,7 @@
       "sound": "D. Mohanasundaram, K. Rajagopalan",
       "cast": "Dr. Rajkumar, Kalpana, K. S. Ashwath, T. N. Balakrishna, Jayashree, Papamma, Ramadevi, Premalatha, Baby Girija, Umashree, Malashree, Namdev, Dr. Sridhar, N. K. Narasimhaiah, M. Leelavathi",
       "awardsWon": "Karnataka State Film Awards, 1969 (Second Best Film, Best Story Writer)",
-      "awardsNominated": "Screened at IFFI (Retrospective Sections in 1992 and 2019)",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/580202601141201359398.png"
+      "awardsNominated": "Screened at IFFI (Retrospective Sections in 1992 and 2019)"
     },
     {
       "id": "235",
@@ -4808,8 +4978,8 @@
       "duration": 179,
       "language": "Kannada",
       "synopsis": "Rajashekhar, an honest businessman, is forced to flee after accidentally killing a corrupt associate, losing contact with his pregnant wife Sumathi. Years later, Sumathi lives in Delhi with their son Shankar, while Rajashekhar has become a wealthy estate owner in Kashmir. When Shankar is invited to manage the estate, father and son unknowingly reconnect. But Rajashekhar’s former partners return seeking a stolen temple necklace and kidnap Sumathi, forcing Shankar and his twin Guru to rescue their parents and reunite the family.",
-      "posterUrl": "/posters/235.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/429202601141224463618.jpg",
+      "categoryId": "11-18",
       "kannadaTitle": "ಶಂಕರ್ ಗುರು",
       "producer": "Smt. Parvathamma Rajkumar",
       "screenplay": "M. D. Sundar",
@@ -4818,8 +4988,7 @@
       "music": "Upendra Kumar",
       "sound": "S. P Ramanathan",
       "cast": "Dr. Rajkumar, Kanchana, Jayamala, Padmapriya, T. N. Balakrishna, Vajramuni, Thoogudeepa Srinivas",
-      "awardsWon": "Karnataka State Film Awards 1977-78 (Best Editing)",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/429202601141224463618.jpg"
+      "awardsWon": "Karnataka State Film Awards 1977-78 (Best Editing)"
     },
     {
       "id": "236",
@@ -4830,8 +4999,8 @@
       "duration": 157,
       "language": "Kannada",
       "synopsis": "Vishwanatha Raya, a benevolent Jodidar of Simhadri village, fights social evils like liquor and gambling while raising three sons. Family rifts emerge as his educated sons prioritize urban ambitions over rural values - eldest loves a liquor baron's daughter, middle son's wife resents village life, youngest defies arranged marriage. After losing his wife and memory in a pilgrimage accident, Vishwanath returns transformed, reunites family, defeats corruption, and ascends spiritually.",
-      "posterUrl": "/posters/236.jpg",
-      "categoryId": "11",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/883202601141239057962.jpg",
+      "categoryId": "11-18",
       "kannadaTitle": "ಜೀವನ ಚೈತ್ರ",
       "producer": "Smt. Parvathamma Rajkumar",
       "screenplay": "Chi Udayashankar",
@@ -4840,8 +5009,7 @@
       "music": "Upendra Kumar",
       "sound": "S. P Ramanathan, Kodandapaani",
       "cast": "Dr. Rajkumar, Madhavi, Sudharani, Gurudutt, Abhijith, Balaraj, K. S. Ashwath, Thoogudeepa Srinivas, Tennis Krishna",
-      "awardsWon": "Karnataka State Film Awards 1992-93 (Best Film, Best Actor, Best Music Director, Best Dialogue Writer)",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/883202601141239057962.jpg"
+      "awardsWon": "Karnataka State Film Awards 1992-93 (Best Film, Best Actor, Best Music Director, Best Dialogue Writer)"
     },
     {
       "id": "203",
@@ -4852,8 +5020,8 @@
       "duration": 122,
       "language": "Thai",
       "synopsis": "Soldiers with a mysterious sleeping sickness are transferred to a temporary clinic in a former school. The memory-filled space becomes a revelatory world for housewife and volunteer Jenjira, as she watches over Itt, a handsome soldier with no family visitors. There may be a connection between the soldiers’ enigmatic syndrome and the mythic ancient site that lies beneath the clinic. Magic, healing, romance and dreams are all part of Jen’s tender path to a deeper awareness of herself and the world around her.",
-      "posterUrl": "/posters/203.jpg",
-      "categoryId": "27",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/414202601081914189949.jpg",
+      "categoryId": "27-24",
       "kannadaTitle": "ಸಮೇತ್ರ್ಯ್ ಆಫ್  ಸ್ಪ್ಲೆಂದೌರ್",
       "producer": "Charles de Meaux, Simon Field, Hans W. Geissendörfer, Michael Weber",
       "screenplay": "Apichatpong Weerasethakul",
@@ -4863,8 +5031,7 @@
       "cast": "Banlop Lomnoi, Jenjira Pongpas, Jarinpattra Rueangram",
       "awardsWon": "Asia Pacific Screen Awards, 2015 (Best Film), Chlotrudis Awards, 2021 (Best Cinematography, Best Director)",
       "awardsNominated": "Cannes FF, 2015 (Official Selection: Un Certain Regard), Indiewire Critics' Poll, 2015 (Most Anticipated of 2016)",
-      "letterboxdRating": "3.95/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/414202601081914189949.jpg"
+      "letterboxdRating": "3.95/5"
     },
     {
       "id": "272",
@@ -4875,8 +5042,8 @@
       "duration": 136,
       "language": "Spanish | English",
       "synopsis": "Ever since being startled by a loud ‘bang’ at daybreak, Jessica is unable to sleep. In Bogotá to visit her sister, she befriends Agnes , an archaeologist studying human remains discovered within a tunnel under construction. Jessica travels to see Agnes at the excavation site. In a small town nearby, she encounters a fish scaler, Hernan. They share memories by the river. As the day comes to a close, Jessica is awakened to a sense of clarity.",
-      "posterUrl": "/posters/272.jpg",
-      "categoryId": "27",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/352202601211854487417.jpg",
+      "categoryId": "27-24",
       "kannadaTitle": "ಮೆಮೊರಿಯ",
       "producer": "Apichatpong Weerasethakul",
       "screenplay": "Apichatpong Weerasethakul",
@@ -4887,8 +5054,7 @@
       "cast": "Tilda Swinton, Jeanne Balibar, Elkin Díaz, Juan Pablo Urrego",
       "awardsWon": "Cannes FF 2021 (Jury Prize), Chicago IFF 2021 (Gold Hugo - Best Feature)",
       "awardsNominated": "Indiewire Critics' Poll 2021 (Best International Film, Best Film, Best Director, Best Cinematography), Toronto IFF 2021 (Official Selection), AFI Fest 2021 (World Cinema)",
-      "filmCourtesy": "Royal Thai Consulate-General, Chennai, India",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/352202601211854487417.jpg"
+      "filmCourtesy": "Royal Thai Consulate-General, Chennai, India"
     },
     {
       "id": "201",
@@ -4899,8 +5065,8 @@
       "duration": 89,
       "language": "Thai",
       "synopsis": "Armed with a tape recorder, Apichatpong Weerasethakul travels through Thailand inviting strangers to build a shared story. Each person continues the narrative where the last one stopped, creating a collective tale about a young disabled boy and his teacher. The storytellers come from very different worlds, including street vendors, a boxer obsessed with television, a devout policewoman, and a lonely rubber tapper. As more voices join in, the story grows stranger, richer, and more unpredictable. The film becomes a playful portrait of imagination, community, and the many lives that shape a single narrative.",
-      "posterUrl": "/posters/201.jpg",
-      "categoryId": "27",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/268202601081729298474.jpg",
+      "categoryId": "27-24",
       "kannadaTitle": "ಮಿಸ್ಟೀರಿಯಸ್  ಆಬ್ಜೆಕ್ಟ್  ಅಟ್ ನೂನ್",
       "producer": "Gridthiya Gaweewong, Mingmongkol Sonakul",
       "screenplay": "Apichatpong Weerasethakul",
@@ -4911,8 +5077,7 @@
       "awardsWon": "Jeonju IFF (Woosuk Award), Yamagata International Documentary IFF, 2001 (Special Mention: NETPAC Award, Runner-up Prize), Vancouver IFF, 2000 (Special Mention: Dragons and Tigers Award)",
       "awardsNominated": "Rotterdam IFF, 2000 (World Premier), BFI London FF, 2000 (Official Screening)",
       "filmCourtesy": "Royal Thai Consulate-General, Chennai, India",
-      "letterboxdRating": "3.69/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/268202601081729298474.jpg"
+      "letterboxdRating": "3.69/5"
     },
     {
       "id": "202",
@@ -4923,8 +5088,8 @@
       "duration": 113,
       "language": "Thai",
       "synopsis": "Suffering from acute kidney failure, Uncle Boonmee has chosen to spend his final days surrounded by his loved ones in the coun- tryside. Surprisingly, the ghost of his deceased wife appears to care for him, and his long lost son returns home in a non-human form. Contemplating the reasons for his illness, Boonmee treks through the jungle with his family to a mysterious hilltop cave - the birthplace of his first life.",
-      "posterUrl": "/posters/202.jpg",
-      "categoryId": "27",
+      "posterUrl": "https://biffes.org/public/uploads/stills_img/925202601081800442168.jpg",
+      "categoryId": "27-24",
       "kannadaTitle": "ಅಂಕಲ್ ಬೂನ್ಮೀ ಹೂ ಕ್ಯಾನ್ ರಿಕಾಲ್ ಹಿಸ್ ಪಾಸ್ಟ್ ಲೈವ್ಸ್",
       "producer": "Simon Field, Keith Griffiths, Charles de Meaux, Apichatpong Weerasethakul, Hans W. Geissendoerfer, Luis Miñarro,  Michael Weber",
       "screenplay": "Apichatpong Weerasethakul",
@@ -4935,8 +5100,7 @@
       "awardsWon": "Cannes FF, 2010 (Palme d'Or), Sitges - Catalonian IFF, 2010 (José Luis Guarner Critic's Award - Best Film), Chicago IFF, 2011 (Winner: Silver Plaque - International Film Poster Competition)",
       "awardsNominated": "Indiewire Critics' Poll, 2011 (Best Film, Best Director), Independent Spirit Awards, 2011 (Best Foreign Film), New York FF, 2010 (Official Screening)",
       "filmCourtesy": "Royal Thai Consulate-General, Chennai, India",
-      "letterboxdRating": "3.93/5",
-      "posterUrlRemote": "https://biffes.org/public/uploads/stills_img/925202601081800442168.jpg"
+      "letterboxdRating": "3.93/5"
     },
     {
       "id": "opening-1",
